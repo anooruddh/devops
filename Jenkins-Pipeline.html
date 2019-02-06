@@ -1,0 +1,227 @@
+node
+{
+	stage('Checkout Code from GITHub')
+	{
+		git 'https://github.com/anooruddh/EC2-Linux'
+	}
+	stage('Compile Code')
+	{
+		//maven home path
+		def mvnHome = tool name: 'Apache_Maven_3_6_0', type: 'maven'
+		sh "${mvnHome}/bin/mvn compile"		
+	}
+	stage('Send Email Notification')
+	{
+		mail bcc: '', body: '''Hi this Aooruddh notification about the build
+			Thanks
+			Anooruddh''', to: 'sendtoanoo@gmail.com', from: 'sendtoanoo@gmail.com', subject: 'Jenkins Job'
+	}
+	stage('SonarQube Analysis')
+	{
+		//maven home path
+		def mvnHome = tool name: 'Apache_Maven_3_6_0', type: 'maven'
+		withSonarQubeEnv('Sonar-6')
+		{
+			sh "${mvnHome}/bin/mvn sonar:sonar
+		}
+	}
+	
+}
+
+
+
+=====================
+
+pipeline {
+    agent any 
+    stages {
+        stage('Compile') { 
+            steps {
+                withMaven(maven : 'Apache_Maven_3_6_0')
+					{
+						sh 'mvn clean compile'
+					}
+            }
+        }
+        
+    }
+}
+
+curl http://localhost:8081		apche 
+
+Groovy
+
+def jobName = "Pipeline-Project"
+def job = Jenkins.instance.getItem(jobName)
+job.getBuilds().each { it.delete() }
+job.nextBuildNumber = 1
+job.save()
+
+
+================
+
+node
+{
+	stage('Checkout Code from GITHub')
+	{
+		git 'https://github.com/anooruddh/EC2-Linux'
+	}
+	stage('Package Application')
+	{
+		//maven home path
+		def mvnHome = tool name: 'Apache_Maven_3_6_0', type: 'maven'
+		sh "${mvnHome}/bin/mvn package"		
+	}
+	stage('Apache Cleaning - delete old war file')
+	{
+		sh 'rm -rf /usr/share/tomcat8/webapps/*hello-guddu-war*'	
+	}
+	stage('Deployment - To Apache tomcat')
+	{
+        sh 'cp /root/.jenkins/workspace/Pipeline-Project/target/hello-guddu-war-1.0.0.war  /usr/share/tomcat8/webapps/'	
+        sh 'service tomcat8 restart'
+	}
+
+	
+	stage('Send Email Notification')
+	{
+		mail bcc: '', body: '''Hi this Aooruddh notification about the build
+	Thanks
+	Anooruddh''', to: 'sendtoanoo@gmail.com', from: 'sendtoanoo@gmail.com', subject: 'Jenkins Job - email notification '
+	}
+}
+=========================
+
+
+node {
+  stage('SCM') {
+    git 'https://github.com/foo/bar.git'
+  }
+  stage('SonarQube analysis') {
+    withSonarQubeEnv('My SonarQube Server') {
+      // requires SonarQube Scanner for Maven 3.2+
+      sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar'
+    }
+  }
+}
+---------------------
+
+Pause pipeline until quality gate is computed
+
+The waitForQualityGate step will pause the pipeline until SonarQube analysis is completed and returns quality gate status.
+
+Pre-requisites:
+
+    SonarQube server 6.2+ (need webhook feature)
+    Configure a webhook in your SonarQube server pointing to <your Jenkins instance>/sonarqube-webhook/ (info) The trailing slash is mandatory with SonarQube 6.2 and 6.3!
+
+    Use withSonarQubeEnv step in your pipeline (so that SonarQube taskId is correctly attached to the pipeline context).
+
+Example (scripted pipeline):
+
+Wait for Quality Gate under Maven (scripted)
+node {
+  stage('SCM') {
+    git 'https://github.com/foo/bar.git'
+  }
+  stage('SonarQube analysis') {
+    withSonarQubeEnv('My SonarQube Server') {
+      sh 'mvn clean package sonar:sonar'
+    } // SonarQube taskId is automatically attached to the pipeline context
+  }
+}
+  
+// No need to occupy a node
+stage("Quality Gate"){
+  timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
+    def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+    if (qg.status != 'OK') {
+      error "Pipeline aborted due to quality gate failure: ${qg.status}"
+    }
+  }
+}
+
+
+-----------------------------------------
+
+def jobName = '(...)'
+Jenkins.instance.getItemByFullName(jobName).builds.findAll { it.result == Result.FAILURE}.each { it.delete() }
+-------------------------------------------------------------------------------------------------------------
+Jenkins Set Environment Variables
+
+When a Jenkins job executes, it sets some environment variables that you may use in your shell script, batch command, Ant script or Maven POM #1. The following table contains a list of all of these environment variables.
+
+BUILD_NUMBER
+	
+
+The current build number, such as "153"
+
+BUILD_ID
+	
+
+The current build id, such as "2005-08-22_23-59-59" (YYYY-MM-DD_hh-mm-ss, defunct since version 1.597)
+
+BUILD_URL
+	
+
+The URL where the results of this build can be found (e.g. http://buildserver/jenkins/job/MyJobName/666/)
+
+NODE_NAME
+	
+
+The name of the node the current build is running on. Equals 'master' for master node.
+
+JOB_NAME
+	
+
+Name of the project of this build. This is the name you gave your job when you first set it up. It's the third column of the Jenkins Dashboard main page.
+
+BUILD_TAG
+	
+
+String of jenkins-${JOB_NAME}-${BUILD_NUMBER}. Convenient to put into a resource file, a jar file, etc for easier identification.
+
+JENKINS_URL
+	
+
+Set to the URL of the Jenkins master that's running the build. This value is used by Jenkins CLI for example
+
+EXECUTOR_NUMBER
+	
+
+The unique number that identifies the current executor (among executors of the same machine) that's carrying out this build. This is the number you see in the "build executor status", except that the number starts from 0, not 1.
+
+JAVA_HOME
+	
+
+If your job is configured to use a specific JDK, this variable is set to the JAVA_HOME of the specified JDK. When this variable is set, PATH is also updated to have $JAVA_HOME/bin.
+
+WORKSPACE
+	
+
+The absolute path of the workspace.
+
+SVN_REVISION
+	
+
+For Subversion-based projects, this variable contains the revision number of the module. If you have more than one module specified, this won't be set.
+
+CVS_BRANCH
+	
+
+For CVS-based projects, this variable contains the branch of the module. If CVS is configured to check out the trunk, this environment variable will not be set.
+
+GIT_COMMIT
+	
+
+For Git-based projects, this variable contains the Git hash of the commit checked out for the build (like ce9a3c1404e8c91be604088670e93434c4253f03) (all the GIT_* variables require git plugin)    
+
+GIT_URL
+	
+
+For Git-based projects, this variable contains the Git url (like git@github.com:user/repo.git or [https://github.com/user/repo.git])
+
+GIT_BRANCH
+	
+
+For Git-based projects, this variable contains the Git branch that was checked out for the build (normally origin/master)
