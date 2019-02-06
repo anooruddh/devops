@@ -1,0 +1,1068 @@
+docker swarm init --advertise-addr 172.31.26.214:2377
+
+[root@manager1 ec2-user]# docker swarm join-token manager
+To add a manager to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-2ztjdmmo18ouzendeklt2lhyjd53zjjx8pg278ghoc6s6dx8oq-1euzwgqh9lfhgvr7u40nlvxig 172.31.26.214:2377
+
+[root@manager1 ec2-user]# docker swarm join-token worker
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-2ztjdmmo18ouzendeklt2lhyjd53zjjx8pg278ghoc6s6dx8oq-8e6sf9e1gmsfa17vqerd90fa3 172.31.26.214:2377
+
+[root@manager1 ec2-user]#
+
+login as: ec2-user
+Authenticating with public key "imported-openssh-key"
+Last login: Wed Dec 19 20:32:31 2018 from 49.35.252.79
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-ami/2018.03-release-notes/
+[ec2-user@ip-172-31-29-153 ~]$ sudo su - root
+Last login: Wed Dec 19 20:36:06 UTC 2018 on pts/1
+[root@ip-172-31-29-153 ~]# docker-machine ls
+NAME   ACTIVE   DRIVER   STATE   URL   SWARM   DOCKER   ERRORS
+[root@ip-172-31-29-153 ~]# docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+c90xq0i30ozq0x231xjv174nx     ip-172-31-18-165    Ready               Active                                  18.06.1-ce
+uzdn1iav7qylpesz888yoqk66     ip-172-31-26-214    Ready               Active                                  18.06.1-ce
+xeclvp791iwivfkg3auheqlsa *   ip-172-31-29-153    Ready               Active              Leader              18.06.1-ce
+[root@ip-172-31-29-153 ~]#
+login as: ec2-user
+Authenticating with public key "imported-openssh-key"
+Last login: Wed Dec 19 20:53:19 2018 from 49.35.252.79
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-ami/2018.03-release-notes/
+[ec2-user@ip-172-31-29-153 ~]$ sudo su root
+[root@ip-172-31-29-153 ec2-user]# docker-machine ls
+NAME   ACTIVE   DRIVER   STATE   URL   SWARM   DOCKER   ERRORS
+[root@ip-172-31-29-153 ec2-user]# docker nodes ls
+
+Usage:  docker [OPTIONS] COMMAND
+
+A self-sufficient runtime for containers
+
+Options:
+      --config string      Location of client config files (default "/root/.docker")
+  -D, --debug              Enable debug mode
+  -H, --host list          Daemon socket(s) to connect to
+  -l, --log-level string   Set the logging level ("debug"|"info"|"warn"|"error"|"fatal") (default "info")
+      --tls                Use TLS; implied by --tlsverify
+      --tlscacert string   Trust certs signed only by this CA (default "/root/.docker/ca.pem")
+      --tlscert string     Path to TLS certificate file (default "/root/.docker/cert.pem")
+      --tlskey string      Path to TLS key file (default "/root/.docker/key.pem")
+      --tlsverify          Use TLS and verify the remote
+  -v, --version            Print version information and quit
+
+Management Commands:
+  config      Manage Docker configs
+  container   Manage containers
+  image       Manage images
+  network     Manage networks
+  node        Manage Swarm nodes
+  plugin      Manage plugins
+  secret      Manage Docker secrets
+  service     Manage services
+  stack       Manage Docker stacks
+  swarm       Manage Swarm
+  system      Manage Docker
+  trust       Manage trust on Docker images
+  volume      Manage volumes
+
+Commands:
+  attach      Attach local standard input, output, and error streams to a running container
+  build       Build an image from a Dockerfile
+  commit      Create a new image from a container's changes
+  cp          Copy files/folders between a container and the local filesystem
+  create      Create a new container
+  diff        Inspect changes to files or directories on a container's filesystem
+  events      Get real time events from the server
+  exec        Run a command in a running container
+  export      Export a container's filesystem as a tar archive
+  history     Show the history of an image
+  images      List images
+  import      Import the contents from a tarball to create a filesystem image
+  info        Display system-wide information
+  inspect     Return low-level information on Docker objects
+  kill        Kill one or more running containers
+  load        Load an image from a tar archive or STDIN
+  login       Log in to a Docker registry
+  logout      Log out from a Docker registry
+  logs        Fetch the logs of a container
+  pause       Pause all processes within one or more containers
+  port        List port mappings or a specific mapping for the container
+  ps          List containers
+  pull        Pull an image or a repository from a registry
+  push        Push an image or a repository to a registry
+  rename      Rename a container
+  restart     Restart one or more containers
+  rm          Remove one or more containers
+  rmi         Remove one or more images
+  run         Run a command in a new container
+  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+  search      Search the Docker Hub for images
+  start       Start one or more stopped containers
+  stats       Display a live stream of container(s) resource usage statistics
+  stop        Stop one or more running containers
+  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+  top         Display the running processes of a container
+  unpause     Unpause all processes within one or more containers
+  update      Update configuration of one or more containers
+  version     Show the Docker version information
+  wait        Block until one or more containers stop, then print their exit codes
+
+Run 'docker COMMAND --help' for more information on a command.
+[root@ip-172-31-29-153 ec2-user]# docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+c90xq0i30ozq0x231xjv174nx     ip-172-31-18-165    Ready               Active                                  18.06.1-ce
+uzdn1iav7qylpesz888yoqk66     ip-172-31-26-214    Ready               Active                                  18.06.1-ce
+xeclvp791iwivfkg3auheqlsa *   ip-172-31-29-153    Ready               Active              Leader              18.06.1-ce
+[root@ip-172-31-29-153 ec2-user]# docker service create --replicas 3 -p 88:80 --name serviceName nginx
+bv836wv4uiah4od31zajwk9i0
+overall progress: 3 out of 3 tasks
+1/3: running   [==================================================>]
+2/3: running   [==================================================>]
+3/3: running   [==================================================>]
+verify: Service converged
+[root@ip-172-31-29-153 ec2-user]# docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+bv836wv4uiah        serviceName         replicated          3/3                 nginx:latest        *:88->80/tcp
+[root@ip-172-31-29-153 ec2-user]# docker service ls serviceName
+"docker service ls" accepts no arguments.
+See 'docker service ls --help'.
+
+Usage:  docker service ls [OPTIONS]
+
+List services
+[root@ip-172-31-29-153 ec2-user]#  docker service ps serviceName
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE           ERROR               PORTS
+lbpxhiregfah        serviceName.1       nginx:latest        ip-172-31-18-165    Running             Running 3 minutes ago
+jyrqglsagd85        serviceName.2       nginx:latest        ip-172-31-26-214    Running             Running 3 minutes ago
+fuibu62nejjz        serviceName.3       nginx:latest        ip-172-31-29-153    Running             Running 3 minutes ago
+[root@ip-172-31-29-153 ec2-user]# docker service scale serviceName=4
+serviceName scaled to 4
+overall progress: 4 out of 4 tasks
+1/4: running   [==================================================>]
+2/4: running   [==================================================>]
+3/4: running   [==================================================>]
+4/4: running   [==================================================>]
+verify: Service converged
+[root@ip-172-31-29-153 ec2-user]# docker service ps serviceName
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS
+lbpxhiregfah        serviceName.1       nginx:latest        ip-172-31-18-165    Running             Running 8 minutes ago
+jyrqglsagd85        serviceName.2       nginx:latest        ip-172-31-26-214    Running             Running 8 minutes ago
+fuibu62nejjz        serviceName.3       nginx:latest        ip-172-31-29-153    Running             Running 8 minutes ago
+87fgyit7o700        serviceName.4       nginx:latest        ip-172-31-29-153    Running             Running 15 seconds ago
+[root@ip-172-31-29-153 ec2-user]# docker service scale serviceName=5
+serviceName scaled to 5
+overall progress: 5 out of 5 tasks
+1/5: running   [==================================================>]
+2/5: running   [==================================================>]
+3/5: running   [==================================================>]
+4/5: running   [==================================================>]
+5/5: running   [==================================================>]
+verify: Service converged
+[root@ip-172-31-29-153 ec2-user]# docker service ps serviceName
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS
+lbpxhiregfah        serviceName.1       nginx:latest        ip-172-31-18-165    Running             Running 8 minutes ago
+jyrqglsagd85        serviceName.2       nginx:latest        ip-172-31-26-214    Running             Running 8 minutes ago
+fuibu62nejjz        serviceName.3       nginx:latest        ip-172-31-29-153    Running             Running 8 minutes ago
+87fgyit7o700        serviceName.4       nginx:latest        ip-172-31-29-153    Running             Running 50 seconds ago
+ifryvsrf9sol        serviceName.5       nginx:latest        ip-172-31-18-165    Running             Running 11 seconds ago
+[root@ip-172-31-29-153 ec2-user]# docker service scale serviceName=2
+serviceName scaled to 2
+overall progress: 2 out of 2 tasks
+1/2: running   [==================================================>]
+2/2: running   [==================================================>]
+verify: Service converged
+[root@ip-172-31-29-153 ec2-user]# docker service ps serviceName
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS
+lbpxhiregfah        serviceName.1       nginx:latest        ip-172-31-18-165    Running             Running 11 minutes ago
+jyrqglsagd85        serviceName.2       nginx:latest        ip-172-31-26-214    Running             Running 11 minutes ago
+[root@ip-172-31-29-153 ec2-user]# docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+c90xq0i30ozq0x231xjv174nx     ip-172-31-18-165    Ready               Active                                  18.06.1-ce
+uzdn1iav7qylpesz888yoqk66     ip-172-31-26-214    Ready               Active                                  18.06.1-ce
+xeclvp791iwivfkg3auheqlsa *   ip-172-31-29-153    Ready               Active              Leader              18.06.1-ce
+[root@ip-172-31-29-153 ec2-user]# docker inspect node self
+[]
+Error: No such object: node
+Error: No such object: self
+[root@ip-172-31-29-153 ec2-user]# docker node inspect self
+[
+    {
+        "ID": "xeclvp791iwivfkg3auheqlsa",
+        "Version": {
+            "Index": 9
+        },
+        "CreatedAt": "2018-12-19T20:37:43.186356691Z",
+        "UpdatedAt": "2018-12-19T20:37:43.690409829Z",
+        "Spec": {
+            "Labels": {},
+            "Role": "manager",
+            "Availability": "active"
+        },
+        "Description": {
+            "Hostname": "ip-172-31-29-153",
+            "Platform": {
+                "Architecture": "x86_64",
+                "OS": "linux"
+            },
+            "Resources": {
+                "NanoCPUs": 1000000000,
+                "MemoryBytes": 1033658368
+            },
+            "Engine": {
+                "EngineVersion": "18.06.1-ce",
+                "Plugins": [
+                    {
+                        "Type": "Log",
+                        "Name": "awslogs"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "fluentd"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "gcplogs"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "gelf"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "journald"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "json-file"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "logentries"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "splunk"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "syslog"
+                    },
+                    {
+                        "Type": "Network",
+                        "Name": "bridge"
+                    },
+                    {
+                        "Type": "Network",
+                        "Name": "host"
+                    },
+                    {
+                        "Type": "Network",
+                        "Name": "macvlan"
+                    },
+                    {
+                        "Type": "Network",
+                        "Name": "null"
+                    },
+                    {
+                        "Type": "Network",
+                        "Name": "overlay"
+                    },
+                    {
+                        "Type": "Volume",
+                        "Name": "local"
+                    }
+                ]
+            },
+            "TLSInfo": {
+                "TrustRoot": "-----BEGIN CERTIFICATE-----\nMIIBajCCARCgAwIBAgIUA+/MlbDQYGol2PPFboOOKUYF7/gwCgYIKoZIzj0EAwIw\nEzERMA8GA1UEAxMIc3dhcm0tY2EwHhcNMTgxMjE5MjAzMzAwWhcNMzgxMjE0MjAz\nMzAwWjATMREwDwYDVQQDEwhzd2FybS1jYTBZMBMGByqGSM49AgEGCCqGSM49AwEH\nA0IABGurU6k+5tQ2gLpAoXYfcbbkQl5Mps13aYFbSR6N4Beyw/9HILJJyY2XolzJ\n+vrz5fX1K5PA5PjrW0gyVOUSfKmjQjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMB\nAf8EBTADAQH/MB0GA1UdDgQWBBQWcJeMWdYaCreWt6HiWmxjrefkTDAKBggqhkjO\nPQQDAgNIADBFAiEArV7zLKYTalg42zcgdR1m0owRBlLswFCKlsk7MTj7JpMCIFIl\nM79cS6NTtZ79r1xymvSI9ArOgim/HdqCO287IGgz\n-----END CERTIFICATE-----\n",
+                "CertIssuerSubject": "MBMxETAPBgNVBAMTCHN3YXJtLWNh",
+                "CertIssuerPublicKey": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEa6tTqT7m1DaAukChdh9xtuRCXkymzXdpgVtJHo3gF7LD/0cgsknJjZeiXMn6+vPl9fUrk8Dk+OtbSDJU5RJ8qQ=="
+            }
+        },
+        "Status": {
+            "State": "ready",
+            "Addr": "172.31.29.153"
+        },
+        "ManagerStatus": {
+            "Leader": true,
+            "Reachability": "reachable",
+            "Addr": "172.31.29.153:2377"
+        }
+    }
+]
+[root@ip-172-31-29-153 ec2-user]# docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+c90xq0i30ozq0x231xjv174nx     ip-172-31-18-165    Ready               Active                                  18.06.1-ce
+uzdn1iav7qylpesz888yoqk66     ip-172-31-26-214    Ready               Active                                  18.06.1-ce
+xeclvp791iwivfkg3auheqlsa *   ip-172-31-29-153    Ready               Active              Leader              18.06.1-ce
+[root@ip-172-31-29-153 ec2-user]# docker node inspect ip-172-31-18-165
+[
+    {
+        "ID": "c90xq0i30ozq0x231xjv174nx",
+        "Version": {
+            "Index": 15
+        },
+        "CreatedAt": "2018-12-19T20:46:45.71534898Z",
+        "UpdatedAt": "2018-12-19T20:46:45.752179744Z",
+        "Spec": {
+            "Labels": {},
+            "Role": "worker",
+            "Availability": "active"
+        },
+        "Description": {
+            "Hostname": "ip-172-31-18-165",
+            "Platform": {
+                "Architecture": "x86_64",
+                "OS": "linux"
+            },
+            "Resources": {
+                "NanoCPUs": 1000000000,
+                "MemoryBytes": 1033658368
+            },
+            "Engine": {
+                "EngineVersion": "18.06.1-ce",
+                "Plugins": [
+                    {
+                        "Type": "Log",
+                        "Name": "awslogs"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "fluentd"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "gcplogs"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "gelf"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "journald"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "json-file"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "logentries"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "splunk"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "syslog"
+                    },
+                    {
+                        "Type": "Network",
+                        "Name": "bridge"
+                    },
+                    {
+                        "Type": "Network",
+                        "Name": "host"
+                    },
+                    {
+                        "Type": "Network",
+                        "Name": "macvlan"
+                    },
+                    {
+                        "Type": "Network",
+                        "Name": "null"
+                    },
+                    {
+                        "Type": "Network",
+                        "Name": "overlay"
+                    },
+                    {
+                        "Type": "Volume",
+                        "Name": "local"
+                    }
+                ]
+            },
+            "TLSInfo": {
+                "TrustRoot": "-----BEGIN CERTIFICATE-----\nMIIBajCCARCgAwIBAgIUA+/MlbDQYGol2PPFboOOKUYF7/gwCgYIKoZIzj0EAwIw\nEzERMA8GA1UEAxMIc3dhcm0tY2EwHhcNMTgxMjE5MjAzMzAwWhcNMzgxMjE0MjAz\nMzAwWjATMREwDwYDVQQDEwhzd2FybS1jYTBZMBMGByqGSM49AgEGCCqGSM49AwEH\nA0IABGurU6k+5tQ2gLpAoXYfcbbkQl5Mps13aYFbSR6N4Beyw/9HILJJyY2XolzJ\n+vrz5fX1K5PA5PjrW0gyVOUSfKmjQjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMB\nAf8EBTADAQH/MB0GA1UdDgQWBBQWcJeMWdYaCreWt6HiWmxjrefkTDAKBggqhkjO\nPQQDAgNIADBFAiEArV7zLKYTalg42zcgdR1m0owRBlLswFCKlsk7MTj7JpMCIFIl\nM79cS6NTtZ79r1xymvSI9ArOgim/HdqCO287IGgz\n-----END CERTIFICATE-----\n",
+                "CertIssuerSubject": "MBMxETAPBgNVBAMTCHN3YXJtLWNh",
+                "CertIssuerPublicKey": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEa6tTqT7m1DaAukChdh9xtuRCXkymzXdpgVtJHo3gF7LD/0cgsknJjZeiXMn6+vPl9fUrk8Dk+OtbSDJU5RJ8qQ=="
+            }
+        },
+        "Status": {
+            "State": "ready",
+            "Addr": "172.31.18.165"
+        }
+    }
+]
+[root@ip-172-31-29-153 ec2-user]# docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+c90xq0i30ozq0x231xjv174nx     ip-172-31-18-165    Ready               Active                                  18.06.1-ce
+uzdn1iav7qylpesz888yoqk66     ip-172-31-26-214    Ready               Active                                  18.06.1-ce
+xeclvp791iwivfkg3auheqlsa *   ip-172-31-29-153    Ready               Active              Leader              18.06.1-ce
+[root@ip-172-31-29-153 ec2-user]# docker node inspect ip-172-31-26-214
+[
+    {
+        "ID": "uzdn1iav7qylpesz888yoqk66",
+        "Version": {
+            "Index": 20
+        },
+        "CreatedAt": "2018-12-19T20:49:47.004992916Z",
+        "UpdatedAt": "2018-12-19T20:49:47.092428999Z",
+        "Spec": {
+            "Labels": {},
+            "Role": "worker",
+            "Availability": "active"
+        },
+        "Description": {
+            "Hostname": "ip-172-31-26-214",
+            "Platform": {
+                "Architecture": "x86_64",
+                "OS": "linux"
+            },
+            "Resources": {
+                "NanoCPUs": 1000000000,
+                "MemoryBytes": 1033658368
+            },
+            "Engine": {
+                "EngineVersion": "18.06.1-ce",
+                "Plugins": [
+                    {
+                        "Type": "Log",
+                        "Name": "awslogs"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "fluentd"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "gcplogs"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "gelf"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "journald"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "json-file"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "logentries"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "splunk"
+                    },
+                    {
+                        "Type": "Log",
+                        "Name": "syslog"
+                    },
+                    {
+                        "Type": "Network",
+                        "Name": "bridge"
+                    },
+                    {
+                        "Type": "Network",
+                        "Name": "host"
+                    },
+                    {
+                        "Type": "Network",
+                        "Name": "macvlan"
+                    },
+                    {
+                        "Type": "Network",
+                        "Name": "null"
+                    },
+                    {
+                        "Type": "Network",
+                        "Name": "overlay"
+                    },
+                    {
+                        "Type": "Volume",
+                        "Name": "local"
+                    }
+                ]
+            },
+            "TLSInfo": {
+                "TrustRoot": "-----BEGIN CERTIFICATE-----\nMIIBajCCARCgAwIBAgIUA+/MlbDQYGol2PPFboOOKUYF7/gwCgYIKoZIzj0EAwIw\nEzERMA8GA1UEAxMIc3dhcm0tY2EwHhcNMTgxMjE5MjAzMzAwWhcNMzgxMjE0MjAz\nMzAwWjATMREwDwYDVQQDEwhzd2FybS1jYTBZMBMGByqGSM49AgEGCCqGSM49AwEH\nA0IABGurU6k+5tQ2gLpAoXYfcbbkQl5Mps13aYFbSR6N4Beyw/9HILJJyY2XolzJ\n+vrz5fX1K5PA5PjrW0gyVOUSfKmjQjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMB\nAf8EBTADAQH/MB0GA1UdDgQWBBQWcJeMWdYaCreWt6HiWmxjrefkTDAKBggqhkjO\nPQQDAgNIADBFAiEArV7zLKYTalg42zcgdR1m0owRBlLswFCKlsk7MTj7JpMCIFIl\nM79cS6NTtZ79r1xymvSI9ArOgim/HdqCO287IGgz\n-----END CERTIFICATE-----\n",
+                "CertIssuerSubject": "MBMxETAPBgNVBAMTCHN3YXJtLWNh",
+                "CertIssuerPublicKey": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEa6tTqT7m1DaAukChdh9xtuRCXkymzXdpgVtJHo3gF7LD/0cgsknJjZeiXMn6+vPl9fUrk8Dk+OtbSDJU5RJ8qQ=="
+            }
+        },
+        "Status": {
+            "State": "ready",
+            "Addr": "172.31.26.214"
+        }
+    }
+]
+[root@ip-172-31-29-153 ec2-user]# docker service ps serviceName
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS
+lbpxhiregfah        serviceName.1       nginx:latest        ip-172-31-18-165    Running             Running 19 minutes ago
+jyrqglsagd85        serviceName.2       nginx:latest        ip-172-31-26-214    Running             Running 19 minutes ago
+[root@ip-172-31-29-153 ec2-user]# docker service rm serviceName
+serviceName
+[root@ip-172-31-29-153 ec2-user]# docker service ps serviceName
+no such service: serviceName
+[root@ip-172-31-29-153 ec2-user]# docker service create --replicas 3 -p 88:80 --name nginxweb1 nginx
+8i055sj8si3gboq659mvvng69
+overall progress: 3 out of 3 tasks
+1/3: running   [==================================================>]
+2/3: running   [==================================================>]
+3/3: running   [==================================================>]
+verify: Service converged
+[root@ip-172-31-29-153 ec2-user]# docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+8i055sj8si3g        web1                replicated          3/3                 nginx:latest        *:88->80/tcp
+[root@ip-172-31-29-153 ec2-user]# docker service ps web1
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS
+awyy8wfqmbuv        web1.1              nginx:latest        ip-172-31-18-165    Running             Running 32 seconds ago
+6jp9jc65s28u        web1.2              nginx:latest        ip-172-31-26-214    Running             Running 32 seconds ago
+nvcoi8tnqy92        web1.3              nginx:latest        ip-172-31-29-153    Running             Running 32 seconds ago
+[root@ip-172-31-29-153 ec2-user]#
+
+
+docker service inspect --pretty web1
+
+docker service update --image nginx:1.14.0 web1
+
+docker node update --availability drain worker1
+
+stop and delete node
+
+docker node rm swarm-node-02x
+
+A manager node must be demoted to a worker node (using docker node demote ) before you can remove it from the swarm.
+
+docker service create \ 
+--name web1 \
+--replicas 4 \
+--publish 88:80 \
+nginx/1.14.0
+
+
+$ docker service update \
+--update-parallelism 2 \
+--update-delay 10s \
+vote
+
+docker service scale web=8
+
+docker node promote worker1                                                          
+Node worker1 promoted to a manager in the swarm.
+
+docker node demote worker1                                                          
+Manager worker1 demoted in the swarm.
+
+Changing node availability
+==========================
+Docker Swarm nodes have a concept of availability. The availability of a node determines whether or not tasks can be scheduled on that node. Use the docker node update –availability command to set the availability state. There are three availability states that can be set—pause, drain, and active.
+--------------------------------------------------------
+docker node update --availability pause worker2
+worker2
+$ docker node ls
+ID                           HOSTNAME STATUS AVAILABILITY MANAGER STATUS
+
+1i3wtacdjz5p509bu3l3qfbei   worker1   Ready   Active       Reachable
+
+3f2t4wwwthgcahs9089b8przv   worker2   Ready   Pause         Reachable
+
+6d6e6kxlyjuo9vb9w1uug95zh * manager   Ready   Active       Leader
+--------------------------------------------------------
+docker node update --availability drain manager
+
+docker node update --availability active worker2
+
+Remove Node
+docker node ls
+
+Step two is to run docker swarm leave from the node that will be leaving the swarm. This will assign the node a Down status. In the following example, worker2 has left the swarm:
+
+If the node that is being removed is a manager, it must first be demoted to a worker as described earlier before running docker swarm leave. When removing managers, take care that you do not lose quorum or your cluster will stop working.
+
+Once the node has been marked Down, it can be removed from the swarm. From a manager node, use docker node rm to remove the node from the swarm
+docker node rm worker2
+
+docker node rm --force worker2
+
+
+Backing up the Swarm
+
+Each manager keeps the cluster information in /var/lib/docker/swarm/raft. If, for some reason, you need to completely rebuild your cluster, you will need this data. Make sure you have at least one good backup of the raft data. It does not matter which of the managers the backups are pulled from. It might be wise to pull backups from a couple of managers, just in case one is corrupted.
+
+Inspect an individual node
+
+You can run docker node inspect <NODE-ID> on a manager node to view the details for an individual node. The output defaults to JSON format, but you can pass the --pretty flag to print the results in human-readable format. For example:
+
+$ docker node inspect self --pretty
+
+
+docker node promote and docker node demote are convenience commands for 
+docker node update --role manager and 
+docker node update --role worker respectively.
+
+Raft consensus in swarm mode
+When the Docker Engine runs in swarm mode, manager nodes implement the Raft Consensus Algorithm to manage the global cluster state.
+
+The reason why Docker swarm mode is using a consensus algorithm is to make sure that all the manager nodes that are in charge of managing and scheduling tasks in the cluster, are storing the same consistent state.
+
+Having the same consistent state across the cluster means that in case of a failure, any Manager node can pick up the tasks and restore the services to a stable state. For example, if the Leader Manager which is responsible for scheduling tasks in the cluster dies unexpectedly, any other Manager can pick up the task of scheduling and re-balance tasks to match the desired state
+
+Each manager keeps the cluster information in /var/lib/docker/swarm/raft
+============================================
+
+docker service create --name vote --replicas 4 --publish 5000:80 instavote/vote
+
+
+Node Address: 172.31.26.214		(worker)
+	Manager Addresses:
+	172.31.26.214:2377
+	172.31.29.153:2377
+
+  
+  =================================******************************************================================================================
+  
+  base=https://github.com/docker/machine/releases/download/v0.16.0 &&  curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&  sudo install /tmp/docker-machine /usr/local/bin/docker-machine
+
+
+curl -L https://github.com/docker/machine/releases/download/v0.15.0/docker-machine-`uname -s`-`uname -m` >/opt/docker-machine/docker-machine &&
+chmod +x /tmp/docker-machine &&
+sudo cp /tmp/docker-machine /usr/local/bin/docker-machine
+
+
+
+curl -L https://github.com/docker/machine/releases/download/v0.15.0/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine
+
+sudo -s
+curl -L https://github.com/docker/machine/releases/download/v0.7.0/docker-machine-`uname -s`-`uname -m` >/usr/local/bin/docker-machine && \
+  chmod +x /usr/local/bin/docker-machine
+
+
+
+===========================================
+
+
+[root@ip-172-31-26-214 opt]# mkdir /opt/docker-machine
+[root@ip-172-31-26-214 opt]# curl -L https://github.com/docker/machine/releases/download/v0.15.0/docker-machine-`uname -s`-`uname -m` >/opt/docker-machine
+bash: /opt/docker-machine: Is a directory
+[root@ip-172-31-26-214 opt]# curl -L https://github.com/docker/machine/releases/download/v0.15.0/docker-machine-`uname -s`-`uname -m` >/opt/docker-machine/docker-machine
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   617    0   617    0     0    607      0 --:--:--  0:00:01 --:--:--   608
+100 26.8M  100 26.8M    0     0  4433k      0  0:00:06  0:00:06 --:--:-- 5974k
+[root@ip-172-31-26-214 opt]# pwd
+/opt
+[root@ip-172-31-26-214 opt]# ls -lrt
+total 12
+drwxr-xr-x 5 root root 4096 Nov 16 23:06 aws
+drwxrwxrwx 2 root root 4096 Dec 19 15:26 ag1
+drwxr-xr-x 2 root root 4096 Dec 19 16:14 docker-machine
+[root@ip-172-31-26-214 opt]# cd docker-machine/
+[root@ip-172-31-26-214 docker-machine]# ls -lrt
+total 27504
+-rw-r--r-- 1 root root 28160480 Dec 19 16:14 docker-machine
+[root@ip-172-31-26-214 docker-machine]# chmod 777 /opt/docker-machine/docker-machine
+[root@ip-172-31-26-214 docker-machine]# ln -s /opt/docker-machine/docker-machine ^C
+[root@ip-172-31-26-214 docker-machine]# cd /bin
+
+[root@ip-172-31-26-214 bin]# cd -
+/opt/docker-machine
+[root@ip-172-31-26-214 docker-machine]# pwd
+/opt/docker-machine
+[root@ip-172-31-26-214 docker-machine]# ln -s /opt/docker-machine/docker-machine /bin/docker-machine
+[root@ip-172-31-26-214 docker-machine]# docker-machine v
+docker-machine: 'v' is not a docker-machine command. See 'docker-machine --help'.
+[root@ip-172-31-26-214 docker-machine]# docker-machine version
+docker-machine version 0.15.0, build b48dc28d
+[root@ip-172-31-26-214 docker-machine]#
+
+
+
+docker-machine create --driver virtualbox Instance-1
+
+[root@ip-172-31-26-214 docker-machine]# docker swarm init --advertise-addr eth0
+Swarm initialized: current node (ve2h0gwjm8f8hl1b7v8hy23h2) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-2gcrlej4g625rgxlgqg0lws429t6jqhcbx8x1musrqdar5kqka-a2n1pcaugfdplqwps9uey0gdl 172.31.26.214:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+
+[root@ip-172-31-26-214 docker-machine]#
+
+
+
+[root@ip-172-31-29-153 ec2-user]# history
+    1  sudo yum update -y
+    2  sudo yum install -y docker
+    3  sudo service docker start
+    4  sudo usermod -a -G docker ec2-user
+    5  sudo yum install -y git
+    6  docker info
+    7  mkdir /opt/docker-machine
+    8  curl -L https://github.com/docker/machine/releases/download/v0.15.0/docker-machine-`uname -s`-`uname -m` >/opt/docker-machine/docker-machine
+    9  docker-machine
+   10  chmod 777 /opt/docker-machine/docker-machine
+   11  ln -s /opt/docker-machine/docker-machine
+   12  ln -s /opt/docker-machine/docker-machine /bin/docker-machine
+   13  docker-machine v
+   14  docker-machine version
+   15  docker swarm join --token SWMTKN-1-2gcrlej4g625rgxlgqg0lws429t6jqhcbx8x1musrqdar5kqka-a2n1pcaugfdplqwps9uey0gdl 172.31.26.214:2377
+   16  service docker restart
+   17  docker swarm join --token SWMTKN-1-2gcrlej4g625rgxlgqg0lws429t6jqhcbx8x1musrqdar5kqka-a2n1pcaugfdplqwps9uey0gdl 172.31.26.214:2377
+   18  history
+[root@ip-172-31-29-153 ec2-user]#
+
+
+
+
+
+ docker swarm init --advertise-addr eth0
+172.31.18.165
+Swarm initialized: current node (tcv4yssavcf6gldtwpph59m7s) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-3rbyd736lqef4tui091ai0nftrj23y31px2mnjx1trn2510j43-4epvrrrylrfwky4fggukuvuse 172.31.26.214:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+
+[root@ip-172-31-26-214 /]#
+
+[root@ip-172-31-18-165 ec2-user]# docker swarm leave --force
+Node left the swarm.
+
+
+
+
+[root@ip-172-31-18-165 ec2-user]#  docker swarm init --advertise-addr 172.31.29.153:2377
+Swarm initialized: current node (nf9peprim03ciepxpbcgrqowu) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-19y2ck9u7gfwcyugz5nxiiwk121mow9pbno7sdsnhe3qibeygi-9udjeqvxk66glpswe49zr0utv 172.31.18.165:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+
+[root@ip-172-31-18-165 ec2-user]# docker info
+
+
+Error response from daemon: This node is already part of a swarm. Use "docker swarm leave" to leave this swarm and join another one.
+[root@ip-172-31-18-165 ~]# docker swarm leave --force
+Node left the swarm.
+[root@ip-172-31-18-165 ~]#  docker swarm join --token SWMTKN-1-4mfey46f5auy5g5bg0quihar55h68bnd5gzznoucljfj2y3hvm-32o33sc33jpscw5pog5kmkmaz 172.31.29.153:2377
+This node joined a swarm as a worker.
+[root@ip-172-31-18-165 ~]#
+
+docker swarm join --token SWMTKN-1-4mfey46f5auy5g5bg0quihar55h68bnd5gzznoucljfj2y3hvm-32o33sc33jpscw5pog5kmkmaz 172.31.29.153:2377 join-token manager
+
+docker swarm join join-token manager
+
+[root@ip-172-31-29-153 ec2-user]# docker swarm join-token worker
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-4mfey46f5auy5g5bg0quihar55h68bnd5gzznoucljfj2y3hvm-32o33sc33jpscw5pog5kmkmaz 172.31.29.153:2377
+
+[root@ip-172-31-29-153 ec2-user]# docker swarm join-token manager
+To add a manager to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-4mfey46f5auy5g5bg0quihar55h68bnd5gzznoucljfj2y3hvm-d6rw4hlysg95rz128mrop8sag 172.31.29.153:2377
+
+[root@ip-172-31-29-153 ec2-user]#
+
+
+
+[root@ip-172-31-29-153 ~]# docker-machine ls
+NAME   ACTIVE   DRIVER   STATE   URL   SWARM   DOCKER   ERRORS
+[root@ip-172-31-29-153 ~]# docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+c90xq0i30ozq0x231xjv174nx     ip-172-31-18-165    Ready               Active                                  18.06.1-ce
+uzdn1iav7qylpesz888yoqk66     ip-172-31-26-214    Ready               Active                                  18.06.1-ce
+xeclvp791iwivfkg3auheqlsa *   ip-172-31-29-153    Ready               Active              Leader              18.06.1-ce
+[root@ip-172-31-29-153 ~]#
+
+docker service create --replicas 3 -p 88:80 --name web1 nginx
+
+
+================================
+
+[root@ip-172-31-29-153 ec2-user]# docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+c90xq0i30ozq0x231xjv174nx     ip-172-31-18-165    Ready               Active                                  18.06.1-ce
+uzdn1iav7qylpesz888yoqk66     ip-172-31-26-214    Ready               Active                                  18.06.1-ce
+xeclvp791iwivfkg3auheqlsa *   ip-172-31-29-153    Ready               Active              Leader              18.06.1-ce
+[root@ip-172-31-29-153 ec2-user]# docker service create --replicas 3 -p 88:80 --name web1 nginx
+bv836wv4uiah4od31zajwk9i0
+overall progress: 3 out of 3 tasks
+1/3: running   [==================================================>]
+2/3: running   [==================================================>]
+3/3: running   [==================================================>]
+verify: Service converged
+[root@ip-172-31-29-153 ec2-user]# docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+bv836wv4uiah        serviceName         replicated          3/3                 nginx:latest        *:88->80/tcp
+[root@ip-172-31-29-153 ec2-user]# docker service ls serviceName
+"docker service ls" accepts no arguments.
+See 'docker service ls --help'.
+
+Usage:  docker service ls [OPTIONS]
+
+List services
+[root@ip-172-31-29-153 ec2-user]#  docker service ps serviceName
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE           ERROR               PORTS
+lbpxhiregfah        serviceName.1       nginx:latest        ip-172-31-18-165    Running             Running 3 minutes ago
+jyrqglsagd85        serviceName.2       nginx:latest        ip-172-31-26-214    Running             Running 3 minutes ago
+fuibu62nejjz        serviceName.3       nginx:latest        ip-172-31-29-153    Running             Running 3 minutes ago
+[root@ip-172-31-29-153 ec2-user]# docker service scale serviceName=4
+serviceName scaled to 4
+overall progress: 4 out of 4 tasks
+1/4: running   [==================================================>]
+2/4: running   [==================================================>]
+3/4: running   [==================================================>]
+4/4: running   [==================================================>]
+verify: Service converged
+[root@ip-172-31-29-153 ec2-user]# docker service ps serviceName
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS
+lbpxhiregfah        serviceName.1       nginx:latest        ip-172-31-18-165    Running             Running 8 minutes ago
+jyrqglsagd85        serviceName.2       nginx:latest        ip-172-31-26-214    Running             Running 8 minutes ago
+fuibu62nejjz        serviceName.3       nginx:latest        ip-172-31-29-153    Running             Running 8 minutes ago
+87fgyit7o700        serviceName.4       nginx:latest        ip-172-31-29-153    Running             Running 15 seconds ago
+[root@ip-172-31-29-153 ec2-user]# docker service scale serviceName=5
+serviceName scaled to 5
+overall progress: 5 out of 5 tasks
+1/5: running   [==================================================>]
+2/5: running   [==================================================>]
+3/5: running   [==================================================>]
+4/5: running   [==================================================>]
+5/5: running   [==================================================>]
+verify: Service converged
+[root@ip-172-31-29-153 ec2-user]# docker service ps serviceName
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS
+lbpxhiregfah        serviceName.1       nginx:latest        ip-172-31-18-165    Running             Running 8 minutes ago
+jyrqglsagd85        serviceName.2       nginx:latest        ip-172-31-26-214    Running             Running 8 minutes ago
+fuibu62nejjz        serviceName.3       nginx:latest        ip-172-31-29-153    Running             Running 8 minutes ago
+87fgyit7o700        serviceName.4       nginx:latest        ip-172-31-29-153    Running             Running 50 seconds ago
+ifryvsrf9sol        serviceName.5       nginx:latest        ip-172-31-18-165    Running             Running 11 seconds ago
+[root@ip-172-31-29-153 ec2-user]#
+
+
+[root@ip-172-31-29-153 ec2-user]# docker service scale serviceName=2
+serviceName scaled to 2
+overall progress: 2 out of 2 tasks
+1/2: running   [==================================================>]
+2/2: running   [==================================================>]
+verify: Service converged
+[root@ip-172-31-29-153 ec2-user]# docker service ps serviceName
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS
+lbpxhiregfah        serviceName.1       nginx:latest        ip-172-31-18-165    Running             Running 11 minutes ago
+jyrqglsagd85        serviceName.2       nginx:latest        ip-172-31-26-214    Running             Running 11 minutes ago
+[root@ip-172-31-29-153 ec2-user]#
+[root@ip-172-31-29-153 ec2-user]# docker node inspect ip-172-31-26-214
+[
+    {
+        "ID": "uzdn1iav7qylpesz888yoqk66",
+        "Version": {
+            "Index": 20
+ "Labels": {},
+            "Role": "worker",
+            "Availability": "active"
+ "Status": {
+            "State": "ready",
+            "Addr": "172.31.26.214"
+        }
+
+
+
+[root@ip-172-31-29-153 ec2-user]# docker service rm serviceName
+serviceName
+
+
+
+
+docker node demote <node name>
+docker node promote NODE
+  
+  
+  =================================******************************************================================================================
+  
+  Use a .dockerignore file
+
+The directory where you issue the docker build command is called the build context. Docker will send all of the files and directories in your build directory to the Docker daemon as part of the build context. If you have stuff in your directory that is not needed by your build, you’ll have an unnecessarily larger build context that results in a larger image size.
+
+You can remedy this situation by adding a .dockerignore file that works similarly to .gitignore. You can specify the list of folders and files that should be ignored in the build context.
+
+If you want to have a look at the size of your build context, just check out the first line of your docker build output. My alpine build output for example says: Sending build context to Docker daemon 2.048kB.
+
+
+
+docker ps ( to show all running containers)
+
+docker ps -a ( to show all containers(stopped and running)
+
+docker images
+
+docker exec -it 4a53d243816e bash ( To go inside a container)
+
+1.18.0
+
+curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+chmod +x /usr/bin/docker-compose
+
+curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+chmod +x /usr/bin/docker-compose
+cp /usr/local/bin/docker-compose /usr/bin/
+chmod +x /usr/bin/docker-compose
+
+[root@ip-172-31-29-153 bin]# docker-compose -v
+docker-compose version 1.8.0, build f3628c7
+[root@ip-172-31-29-153 bin]# docker-compose version
+docker-compose version 1.8.0, build f3628c7
+docker-py version: 1.9.0
+CPython version: 2.7.9
+OpenSSL version: OpenSSL 1.0.1e 11 Feb 2013
+[root@ip-172-31-29-153 bin]#
+
+ docker-compose config
+ docker-compose -f docker-compose.yml config
+
+docker build .				--build docker image
+docker-compose -d up		--
+
+[root@ip-172-31-29-153 webapp]# docker-compose ps
+   Name                Command             State                  Ports
+---------------------------------------------------------------------------------------
+apache_web   apachectl -D FOREGROUND       Up      22/tcp, 0.0.0.0:8282->80/tcp, 82/tcp
+mysql_db     docker-entrypoint.sh mysqld   Up      3306/tcp, 33060/tcp
+[root@ip-172-31-29-153 webapp]# curl http://localhost:8282
+<h2>This is from inside Docker File..</h2>
+[root@ip-172-31-29-153 webapp]#
+
+
+
+to deploy docker-compose in swarm use "docker stack deploy"
+ docker stack deploy --compose-file docker-compose.yml stackdemo
+ 
+ docker swarm init
+
+docker stack deploy -c docker-compose.yml getstartedlab
+  -c, --compose-file strings   Path to a Compose file, or "-" to read from stdin
+ 
+ 
+ 
+DOCKERFILE
+=======================================================================================================
+
+FROM
+The base image for building a new image. This command must be on top of the dockerfile.
+
+MAINTAINER
+Optional, it contains the name of the maintainer of the image.
+
+RUN
+Used to execute a command during the build process of the docker image.
+
+ADD
+Copy a file from the host machine to the new docker image. There is an option to use an URL for the file, docker will then download that file to the destination directory.
+
+ENV
+Define an environment variable.
+
+CMD
+Used for executing commands when we build a new container from the docker image.
+
+ENTRYPOINT
+Define the default command that will be executed when the container is running.
+
+WORKDIR
+This is directive for CMD command to be executed.
+
+USER
+Set the user or UID for the container created with the image.
+
+VOLUME
+Enable access/linked directory between the container and the host machine.
+=======================================================================================================
+
+
+my docker swarm(aws)
+
+Swarm: active
+ NodeID: j1dgditt3wmgwfq3ftq3f32jp
+ Is Manager: true
+ ClusterID: fg4zp774a11gjd1n2udfpjg2g
+ Managers: 2
+ Nodes: 3
+ Node Address: 172.31.29.153
+ Manager Addresses:
+  172.31.26.214:2377
+  172.31.29.153:2377
+Worker 172.31.18.165
+
+============================================================================================================
+EC2 Instance change hostname 
+
+To change the system hostname to a public DNS name
+
+Follow this procedure if you already have a public DNS name registered.
+
+        For Amazon Linux 2: Use the hostnamectl command to set your hostname to reflect the fully qualified domain name (such as webserver.mydomain.com).
+
+        [ec2-user ~]$ sudo hostnamectl set-hostname webserver.mydomain.com
+
+        For Amazon Linux AMI: On your instance, open the /etc/sysconfig/network configuration file in your favorite text editor and change the HOSTNAME entry to reflect the fully qualified domain name (such as webserver.mydomain.com).
+
+        HOSTNAME=webserver.mydomain.com
+
+    Reboot the instance to pick up the new hostname.
+
+    [ec2-user ~]$ sudo reboot
+
+    Alternatively, you can reboot using the Amazon EC2 console (on the Instances page, choose Actions, Instance State, Reboot).
+
+    Log into your instance and verify that the hostname has been updated. Your prompt should show the new hostname (up to the first ".") and the hostname command should show the fully-qualified domain name.
+
+    [ec2-user@webserver ~]$ hostname
+    webserver.mydomain.com
+
+============================================================================================================
+nginx
+
+http://ec2-52-66-79-71.ap-south-1.compute.amazonaws.com:88
+
+http://ec2-13-126-161-169.ap-south-1.compute.amazonaws.com:88
+
+http://ec2-13-233-114-71.ap-south-1.compute.amazonaws.com:88
+
+[root@manager2 ec2-user]# docker container prune --force
+Deleted Containers:
+c55c0f3392cb35f7bfdbd585cf9cbf9934505d0a69b5ea3d2d738fae868cefe7
+038d1e703fc7fd7d841b83a5a9ca129d2a8c13e9b727395799fe63ea1c441e23
+dc866170457f6650d6e0d8e92576f56452c0e352ce6e1ccd93dedd772acf7e5c
+48d483b61455355487bf83c2a9dbb227d1e5b60fd31ccd97d0477b20e3f39408
+
+Total reclaimed space: 1.931kB
+[root@manager2 ec2-user]# docker ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+22ad1313f307        nginx:latest        "nginx -g 'daemon of…"   3 minutes ago       Up 3 minutes        80/tcp              web1.1.t2zisgkd56m79uz6gn5jyvch2
+[root@manager2 ec2-user]#
+
+
+docker service create --replicas 3 -p 8282:8080 --name JenkinsMaster jenkins/jenkins
