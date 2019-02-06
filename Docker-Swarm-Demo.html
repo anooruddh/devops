@@ -1,0 +1,101 @@
+docker swarm init --advertise-addr 172.31.26.214:2377
+----------------------------------------------------------------------------------------------------------------------------------
+[root@manager1 ec2-user]# docker swarm join-token manager
+To add a manager to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-2ztjdmmo18ouzendeklt2lhyjd53zjjx8pg278ghoc6s6dx8oq-1euzwgqh9lfhgvr7u40nlvxig 172.31.26.214:2377
+
+[root@manager1 ec2-user]# docker swarm join-token worker
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-2ztjdmmo18ouzendeklt2lhyjd53zjjx8pg278ghoc6s6dx8oq-8e6sf9e1gmsfa17vqerd90fa3 172.31.26.214:2377
+
+[root@manager1 ec2-user]#
+
+----------------------------------------------------------------------------------------------------------------------------------
+[root@manager1 ec2-user]# docker node ls
+ID                            HOSTNAME               STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+lrwrxxa2niyel4yqvxyck1oot *   manager1.localdomain   Ready               Active              Leader              18.06.1-ce
+j1dgditt3wmgwfq3ftq3f32jp     manager2.localdomain   Ready               Active              Reachable           18.06.1-ce
+s26v4fd3idv6t4c96ltxexdwi     worker1.localdomain    Ready               Active                                  18.06.1-ce
+
+----------------------------------------------------------------------------------------------------------------------------------
+docker service create --replicas 1 -p 88:80 --name nginxweb1 nginx
+----------------------------------------------------------------------------------------------------------------------------------
+[root@manager1 ec2-user]# docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+rk0ildbk4o0w        nginxweb1           replicated          1/1                 nginx:latest        *:88->80/tcp
+[root@manager1 ec2-user]#
+----------------------------------------------------------------------------------------------------------------------------------
+[root@manager1 ec2-user]# docker service ps nginxweb1
+ID                  NAME                IMAGE               NODE                   DESIRED STATE       CURRENT STATE            ERROR               PORTS
+xbq3kqo04f1r        nginxweb1.1         nginx:latest        manager2.localdomain   Running             Running 18 minutes ago
+[root@manager1 ec2-user]#
+----------------------------------------------------------------------------------------------------------------------------------
+docker service scale nginxweb1=0
+----------------------------------------------------------------------------------------------------------------------------------
+[root@manager1 ec2-user]# docker service ps nginxweb1
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE       ERROR               PORTS
+[root@manager1 ec2-user]#
+----------------------------------------------------------------------------------------------------------------------------------
+[root@manager1 ec2-user]# docker service ps nginxweb1
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE       ERROR               PORTS
+[root@manager1 ec2-user]# docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+rk0ildbk4o0w        nginxweb1           replicated          0/0                 nginx:latest        *:88->80/tcp
+[root@manager1 ec2-user]# docker service ps nginxweb1
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE       ERROR               PORTS
+[root@manager1 ec2-user]# docker node ps manager1.localdomain
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE       ERROR               PORTS
+[root@manager1 ec2-user]# docker node ps manager2.localdomain
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE       ERROR               PORTS
+[root@manager1 ec2-user]# docker node ps worker1.localdomain
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE       ERROR               PORTS
+[root@manager1 ec2-user]#
+----------------------------------------------------------------------------------------------------------------------------------
+[root@manager1 ec2-user]# docker service ps nginxweb1
+ID                  NAME                IMAGE               NODE                   DESIRED STATE       CURRENT STATE            ERROR               PORTS
+5k8hq4h70jaj        nginxweb1.1         nginx:latest        manager2.localdomain   Running             Running 11 seconds ago
+[root@manager1 ec2-user]#
+----------------------------------------------------------------------------------------------------------------------------------
+
+docker node update --availability pause worker1.localdomain
+
+[root@manager1 ec2-user]# docker node update --availability pause worker1.localdomain
+worker1.localdomain
+[root@manager1 ec2-user]# docker service ps nginxweb1
+ID                  NAME                IMAGE               NODE                   DESIRED STATE       CURRENT STATE           ERROR               PORTS
+5k8hq4h70jaj        nginxweb1.1         nginx:latest        manager2.localdomain   Running             Running 4 minutes ago
+m75uduvb7szg        nginxweb1.2         nginx:latest        manager1.localdomain   Running             Running 3 minutes ago
+jpiw97x2ag53        nginxweb1.3         nginx:latest        worker1.localdomain    Running             Running 2 minutes ago
+[root@manager1 ec2-user]# docker node ls
+ID                            HOSTNAME               STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+lrwrxxa2niyel4yqvxyck1oot *   manager1.localdomain   Ready               Active              Leader              18.06.1-ce
+j1dgditt3wmgwfq3ftq3f32jp     manager2.localdomain   Ready               Active              Reachable           18.06.1-ce
+s26v4fd3idv6t4c96ltxexdwi     worker1.localdomain    Ready               Pause                                   18.06.1-ce
+
+----------------------------------------------------------------------------------------------------------------------------------
+[root@manager1 ec2-user]# docker node update --availability drain worker1.localdomain
+
+
+[root@manager1 ec2-user]# [root@manager1 ec2-user]# docker node update --availability drain worker1.localdomain
+[root@manager1 ec2-user]# docker node update --availability drain worker1.localdomain
+worker1.localdomain
+[root@manager1 ec2-user]# docker node ls
+ID                            HOSTNAME               STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+lrwrxxa2niyel4yqvxyck1oot *   manager1.localdomain   Ready               Active              Leader              18.06.1-ce
+j1dgditt3wmgwfq3ftq3f32jp     manager2.localdomain   Ready               Active              Reachable           18.06.1-ce
+s26v4fd3idv6t4c96ltxexdwi     worker1.localdomain    Ready               Drain                                   18.06.1-ce
+[root@manager1 ec2-user]# docker service ps nginxweb1
+ID                  NAME                IMAGE               NODE                   DESIRED STATE       CURRENT STATE             ERROR               PORTS
+5k8hq4h70jaj        nginxweb1.1         nginx:latest        manager2.localdomain   Running             Running 6 minutes ago
+m75uduvb7szg        nginxweb1.2         nginx:latest        manager1.localdomain   Running             Running 5 minutes ago
+lgh7mob35c3d        nginxweb1.3         nginx:latest        manager2.localdomain   Running             Running 12 seconds ago
+jpiw97x2ag53         \_ nginxweb1.3     nginx:latest        worker1.localdomain    Shutdown            Shutdown 13 seconds ago
+[root@manager1 ec2-user]#
+----------------------------------------------------------------------------------------------------------------------------------
+desired-state
+
+The desired-state filter can take the values running, shutdown, or accepted.
+
+docker stack ps -f "desired-state=Running" nginxweb1
