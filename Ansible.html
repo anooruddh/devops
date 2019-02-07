@@ -2841,3 +2841,19 @@ tasks:
 RUN ansible with tag
 ansible-playbook example.yml --tags "configuration,packages"		 will run both  tasks configuration,packages, if you want to run only one task specify that tag only mentioned under task
 =========================
+
+	Common core modules include:
+
+    command - Executes a command on a remote node
+    script - Runs a local script on a remote node after transferring it
+    shell - Execute commands in nodes
+    mysql_db - Add or remove MySQL databases from a remote host
+    mysql_user - Adds or removes a user from a MySQL database
+    postgresql_db - Add or remove PostgreSQL databases from a remote host
+    postgresql_user - Adds or removes a users (roles) from a PostgreSQL database
+    fetch - Fetches a file from remote nodes
+    template - Templates a file out to a remote server
+    yum - Manages packages with the yum package manager
+    apt - Manages apt-packages
+    git - Deploy software (or files) from git checkouts
+    service - Manage services
