@@ -2989,3 +2989,8 @@ $ ansible-playbook --tags=dependencies playbook.yml
 $ ansible-playbook --skip-tags=optional playbook.yml
 
 You can specify more than one tag by separating them with commas.	
+
+----------------------------------------
+	- name: install git
+  yum: name=git state=present
+when: ansible_os_family == 'RedHat'
