@@ -1,0 +1,483 @@
+DevOps is a set of practices that combines software development and IT operations. 
+It aims to shorten the systems development life cycle and provide continuous delivery with high software quality.
+
+Azure DevOps Services REST API
+
+Using Azure DevOps Services API, let you access Azure DevOps features including Work Items, Dashboard, creating and managing Build and Release, access test data, in fact, everything you perform through the portal
+
+
+Name of few services
+
+ACCOUNTS,BUILD,DASHBOARD,GIT,GRAPH,Notification,pipeline,POLICY,RELEASES,SECURITY,STATUS,TEST,TEST PLAN,TEST RESULT,WORK,WORKITEM TRACING
+
+The Azure DevOps Services Graph API allows you to manage users, groups, and group memberships.
+
+accessToken
+Personal access token. Use any value for the user name and the token as the password.
+
+Work Item Query Language (WIQL)
+
+To collect all information about a Work Item
+https://dev.azure.com/{organization}/{project}/_apis/wit/workitems?ids=47&$expand=relations&api-version=1.0
+
+
+Pipelines - List
+GET https://dev.azure.com/{organization}/{project}/_apis/pipelines?api-version=6.0-preview.1
+GET https://dev.azure.com/{organization}/{project}/_apis/pipelines?orderBy={orderBy}&$top={$top}&continuationToken={continuationToken}&api-version=6.0-preview.1
+
+Pipelines Get
+GET https://dev.azure.com/{organization}/{project}/_apis/pipelines/{pipelineId}?api-version=6.0-preview.1GET https://dev.azure.com/{organization}/{project}/_apis/pipelines/{pipelineId}?api-version=6.0-preview.1
+GET https://dev.azure.com/{organization}/{project}/_apis/pipelines/{pipelineId}?pipelineVersion={pipelineVersion}&api-version=6.0-preview.1
+
+Pipelines - Create
+POST https://dev.azure.com/{organization}/{project}/_apis/pipelines?api-version=6.0-preview.1
+
+
+Work Items - Get Work Item
+GET https://dev.azure.com/{organization}/{project}/_apis/wit/workitems/{id}?api-version=6.0
+GET https://dev.azure.com/{organization}/{project}/_apis/wit/workitems/{id}?fields={fields}&asOf={asOf}&$expand={$expand}&api-version=6.0
+
+Commits - Get
+GET https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repositoryId}/commits/{commitId}?api-version=6.0
+GET https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repositoryId}/commits/{commitId}?changeCount={changeCount}&api-version=6.0
+
+Items - Get
+GET https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repositoryId}/items?path={path}&api-version=6.0
+GET https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repositoryId}/items?path={path}&scopePath={scopePath}&recursionLevel={recursionLevel}&includeContentMetadata={includeContentMetadata}&latestProcessedChange={latestProcessedChange}&download={download}&$format={$format}&versionDescriptor.version={versionDescriptor.version}&versionDescriptor.versionOptions={versionDescriptor.versionOptions}&versionDescriptor.versionType={versionDescriptor.versionType}&includeContent={includeContent}&resolveLfs={resolveLfs}&sanitize={sanitize}&api-version=6.0
+
+GET https://dev.azure.com/fabrikam/_apis/git/repositories/278d5cd2-584d-4b63-824a-2ba458937249/items?scopePath=/MyWebSite/MyWebSite/Views/Home/_Home.cshtml&download=true&api-version=6.0
+
+Sample Response
+Status code:
+200
+JSON
+
+Copy
+{
+  "count": 1,
+  "value": [
+    {
+      "objectId": "61a86fdaa79e5c6f5fb6e4026508489feb6ed92c",
+      "gitObjectType": "blob",
+      "commitId": "23d0bc5b128a10056dc68afece360d8a0fabb014",
+      "path": "/MyWebSite/MyWebSite/Views/Home/_Home.cshtml",
+      "url": "https://dev.azure.com/fabrikam/_apis/git/repositories/278d5cd2-584d-4b63-824a-2ba458937249/items/MyWebSite/MyWebSite/Views/Home/_Home.cshtml?versionType=Branch&versionOptions=None"
+    }
+  ]
+}
+
+Attachments - Get
+GET https://dev.azure.com/{organization}/{project}/_apis/build/builds/{buildId}/{timelineId}/{recordId}/attachments/{type}/{name}?api-version=6.0-preview.2
+
+
+AZURE RM (ARM) template for VM creation
+
+Mandatory property for VM creation
+
+	"name": "string",
+	"type": "Microsoft.Compute/virtualMachines",
+	"apiVersion": "2019-03-01",
+	"location": "string",
+
+Need to create below resources
+>Microsoft.Storage/storageaccount.
+>Microsoft.Network/virtualnetworks
+>Microsoft.Network/publicipaddress
+>Microsoft.Network/networksecuritygroups
+>Microsoft.Network/networkinterface
+>Microsoft.Network/virtualmachine
+>Microsoft.web/serverfarm			app service plan
+>Microsoft.web/sites					web app
+
+ARM Consists of below properties
+schema
+parameters
+variables
+resources
+output
+variables
+
+ARM allows us to deploy the ARM template in the following modes:
+
+Incremental -  In incremental mode, Resource Manager leaves unchanged resources that exist in the resource group but aren't specified in the templat
+Complete  -  In complete mode, Resource Manager deletes resources that exist in the resource group but aren't specified in the template.
+
+Example result
+To illustrate the difference between incremental and complete modes, consider the following scenario.
+
+Resource Group contains:
+Resource A
+Resource B
+Resource C
+
+Template contains:
+Resource A
+Resource B
+Resource D
+
+When deployed in incremental mode, the resource group has:
+
+Resource A
+Resource B
+Resource C
+Resource D
+
+When deployed in complete mode, Resource C is deleted. The resource group has:
+
+Resource A
+Resource B
+Resource D
+==========================================================================================================================================================
+
+A Service Principal is an application within Azure Active Directory whose authentication tokens can be used as the client_id, client_secret, and tenant_id
+
+# Configure the Microsoft Azure Provider
+provider "azurerm" {
+  features {}
+
+  subscription_id = "00000000-0000-0000-0000-000000000000"
+  client_id       = "00000000-0000-0000-0000-000000000000"
+  client_secret   = var.client_secret
+  tenant_id       = "00000000-0000-0000-0000-000000000000"
+  region = "us-east-1"
+}
+
+TERRAFORM
+
+The azurerm_virtual_machine resource has been superseded by the azurerm_linux_virtual_machine and azurerm_windows_virtual_machine resources.
+
+variable "prefix" {
+  default = "tfvmex"
+}
+
+resource "azurerm_resource_group" "main" {
+  name     = "${var.prefix}-resources"
+  location = "West Europe"
+}
+
+resource "azurerm_virtual_network" "main" {
+  name                = "${var.prefix}-network"
+  address_space       = ["10.0.0.0/16"]
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+}
+
+resource "azurerm_subnet" "internal" {
+  name                 = "internal"
+  resource_group_name  = azurerm_resource_group.main.name
+  virtual_network_name = azurerm_virtual_network.main.name
+  address_prefixes     = ["10.0.2.0/24"]
+}
+
+resource "azurerm_network_interface" "main" {
+  name                = "${var.prefix}-nic"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+
+  ip_configuration {
+    name                          = "testconfiguration1"
+    subnet_id                     = azurerm_subnet.internal.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+resource "azurerm_virtual_machine" "main" {
+  name                  = "${var.prefix}-vm"
+  location              = azurerm_resource_group.main.location
+  resource_group_name   = azurerm_resource_group.main.name
+  network_interface_ids = [azurerm_network_interface.main.id]
+  vm_size               = "Standard_DS1_v2"
+
+  # Uncomment this line to delete the OS disk automatically when deleting the VM
+  # delete_os_disk_on_termination = true
+
+  # Uncomment this line to delete the data disks automatically when deleting the VM
+  # delete_data_disks_on_termination = true
+
+  storage_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "16.04-LTS"
+    version   = "latest"
+  }
+  storage_os_disk {
+    name              = "myosdisk1"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "Standard_LRS"
+  }
+  os_profile {
+    computer_name  = "hostname"
+    admin_username = "testadmin"
+    admin_password = "Password1234!"
+  }
+  os_profile_linux_config {
+    disable_password_authentication = false
+  }
+  tags = {
+    environment = "staging"
+  }
+}
+----------------------------------------------------------------------------------------------------------------------------------
+user_data
+The user_data only runs at instance launch time.
+
+Here is a sample of using user_data embedded into tf file:
+
+provider "aws" {
+	region = "us-east-1"
+}
+
+resource "aws_key_pair" "terraform-demo" {
+  key_name   = "terraform-demo"
+  public_key = "${file("terraform-demo.pub")}"
+}
+
+resource "aws_instance" "my-instance" {
+	ami = "ami-04169656fea786776"
+	instance_type = "t2.nano"
+	key_name = "${aws_key_pair.terraform-demo.key_name}"
+	user_data = << EOF
+		#! /bin/bash
+                sudo apt-get update
+		sudo apt-get install -y apache2
+		sudo systemctl start apache2
+		sudo systemctl enable apache2
+		echo "<h1>Deployed via Terraform</h1>" | sudo tee /var/www/html/index.html
+	EOF
+	tags = {
+		Name = "Terraform"	
+		Batch = "5AM"
+	}
+}
+
+But we prefer to use a file() function:
+
+provider "aws" {
+	region = "us-east-1"
+}
+
+resource "aws_key_pair" "terraform-demo" {
+  key_name   = "terraform-demo"
+  public_key = "${file("terraform-demo.pub")}"
+}
+
+resource "aws_instance" "my-instance" {
+	ami = "ami-04169656fea786776"
+	instance_type = "t2.nano"
+	key_name = "${aws_key_pair.terraform-demo.key_name}"
+	user_data = "${file("install_apache.sh")}"
+	tags = {
+		Name = "Terraform"	
+		Batch = "5AM"
+	}
+}
+
+The install_apache.sh looks like this:
+
+#! /bin/bash
+sudo apt-get update
+sudo apt-get install -y apache2
+sudo systemctl start apache2
+sudo systemctl enable apache2
+echo "<h1>Deployed via Terraform</h1>" | sudo tee /var/www/html/index.html
+
+Run:
+
+$ terraform apply
+...
+      user_data:                    "" => "3a3524042fa72f9d34c3784246432aaaba4e13e4" (forces new resource)
+...
+
+Now, our app has been deployed and we can check it from our browser:
+
+
+==========================================================================================================================================================
+SCRUM
+
+Difference between scrum and waterfall
+What is Sprint/Iteration - several incremental releases are called as sprint.
+Roles in SCRUM - PO,SM,TEAM (dev,test)
+User Stories - A user story is the smallest unit of work in an agile framework. A way of describing feature set. eg As user,I need,So That.
+Burndown - A burndown chart shows the amount of work that has been completed in an epic or sprint, and the total work remaining. 
+Burndown charts are used to predict your team's likelihood of completing their work in the time available
+3 Ceremonies - Sprint Planning, Daily Standups,Sprint Review,Retrospectives.
+
+
+
+
+
+
+==========================================================================================================================================================
+
+Azure App Service
+- Web App		For running web and api applications in Azure
+- Mobile App	For running the backend for mobile applications in Azure
+- API Apps (REST API)
+- Logic App ( workflow)
+- Function Apps	For running small blocks of code in Azure that can be triggered by outside sources, like a message on a queue
+As all these services were related, Microsoft added them into one big family of services, called Azure App Service
+
+App Service runs on an App Service Plan
+An App Service Plan is the logical abstraction that represents one or more VMs that your App Service runs on. 
+It is a representation of compute resources, like CPU, memory and disk space. 
+This is the unit that you pay for when you use App Service. You pay for the App Service Plan, not for the actual App Service apps that you run in it
+
+APP SERVICE PLAN Category - Pricing tier (Free, Shared, Basic, Standard, Premium, PremiumV2, PremiumV3, Isolated)
+
+F1 (Free): The most basic option, with shared infrastructure, 1 GB of memory available, and 60 minutes of compute per day. When using shared tiers, some features of App Services are unavailable (such as Always on, or your selected platform). F1 is perfect for quick-testing or deploying an application for a presentation or demonstration. You will not be charged for using this App Service Plan.
+D1 (Shared): Similar to F1, but this also allows for setting a custom domain for your App Service. What is more, you can run your application four times longer than when using the free tier. Still, this is shared infrastructure, so some features cannot be used. 
+B1: The first tier recommended for running production workloads. It guarantees dedicated A-series machines, and more memory and storage. It is also the first tier that you can scale—although only manually. The Basic tier comes with additional versions (B2 and B3), which provide more compute power.
+Standard (S1): The same A-series as B1. What we are getting here is autoscaling, staging slots, backups, and the possibility to use Traffic Manager (which will be described in coming chapters). This is the best tier for most production applications, as it supports blue-green deployment scenarios and can handle a bigger load (thanks to integration with Traffic Manager). If you need more compute power, you can choose either S2 or S3.
+Premium (P1v2): This is the new recommended option replacing P1, with new Dv2-series virtual machines underneath. It offers better performance and higher limits when it comes to scaling (a maximum of 20 instances, compared to 10 in Standard) and staging slots. You also have the option to choose P2 or P3.
+
+
+38927930410
+38927930410
+
+sbin0009062
+
+tu samajh mere ishari ko, ho tere naina
+
+======================================================================================================================================================
+
+Azure DevOps CI Pipeline for building docker image
+
+name : Docker-CI
+trigger:
+  branches:
+    include:
+      - master
+ 
+pool:
+  vmImage: 'ubuntu-latest'
+ 
+variables:
+  ImageName: 'wolfgangofner/microservicedemo:$(Build.BuildId)'
+ 
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:  
+  - job: Build
+    displayName: Build and push Docker image
+    steps:
+    - task: Docker@1
+      displayName: 'Build the Docker image'
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerRegistryEndpoint: 'Docker Hub'
+        command: 'Build an image'
+        dockerFile: '**/Dockerfile'
+        imageName: '$(ImageName)'
+        includeLatestTag: true
+        useDefaultContext: false
+        buildContext: '.'
+     
+    - task: Docker@1
+      displayName: 'Push the Docker image to Dockerhub'
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerRegistryEndpoint: 'Docker Hub'
+        command: 'Push an image'
+        imageName: '$(ImageName)'
+      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+---------------------------------------------------------------------------------------------
+  
+DevOps Pipeline in YAML
+
+trigger:
+ -master
+ pool:
+  - vmimage: 'ubuntu-latest'
+ variable:
+   imageName:"myDockerImage"
+ Stages
+	-stage: A
+		steps:
+		- task: DotNetCoreCLI@2
+		 displayName: Build
+		 inputs:
+		 command: build
+		 projects: '**/*.csproj'
+		 arguments: '--configuration Release'
+	
+	-stage: B
+	
+stages:
+ - stage: Build
+   jobs:
+   - job: Build
+  
+  
+- stage: Deploy
+   jobs:
+   - job: Deploy
+     pool:
+       vmImage: 'vs2017-win2016'
+     steps:
+	 
+Pipeline structure
+A pipeline is one or more stages that describe a CI/CD process. Stages are the major divisions in a pipeline. The stages "Build this app," "Run these tests," 
+and "Deploy to preproduction" are good examples.
+
+A stage is one or more jobs, which are units of work assignable to the same machine. You can arrange both stages and jobs into dependency graphs. 
+Examples include "Run this stage before that one" and "This job depends on the output of that job."
+
+A job is a linear series of steps. 
+
+Steps can be tasks, scripts, or references to external templates.
+
+This hierarchy is reflected in the structure of a YAML file like:
+
+Pipeline
+Stage A
+Job 1
+Step 1.1
+Step 1.2
+...
+Job 2
+Step 2.1
+Step 2.2
+...
+Stage B
+...
+
+
+-----------
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildJob
+    steps:
+    - script: echo Building!
+- stage: Test
+  jobs:
+  - job: TestOnWindows
+    steps:
+    - script: echo Testing on Windows!
+  - job: TestOnLinux
+    steps:
+    - script: echo Testing on Linux!
+- stage: Deploy
+  jobs:
+  - job: Deploy
+    steps:
+    - script: echo Deploying the code!
+	
+steps: [ script | bash | pwsh | powershell | checkout | task | templateReference ]
+stages: [ stage | templateReference ]
+jobs: [ job | templateReference ]
+-----------------------------------------------------------------------------------------------
+
+Azure Pipelines supports four kinds of templates:
+
+Stage
+Job
+Step
+Variable
+You can also use templates to control what is allowed in a pipeline and to define how parameters can be used.
+
+Parameter
+---------------------------------------------------------------------------------------------	
