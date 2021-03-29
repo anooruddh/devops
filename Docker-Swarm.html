@@ -258,3 +258,15 @@ serviceName
 
 docker node demote <node name>
 docker node promote NODE
+
+  
+Manage Nodes in a Swarm 
+To get visibility into the nodes on your swarm, list them using the docker node ls command on a manager node. 
+
+The listed nodes display an availability status that identifies whether the scheduler can assign tasks to the node. 
+
+A manager status value identifies whether the node participates in swarm management.
+A blank value indicates that the node is a worker node. 
+A Leader value identifies the primary manager node that makes all swarm management and orchestration decisions for the swarm. 
+A Reachable value identifies nodes that are manager nodes and are candidates to become leader nodes in the event that a leader node is unavailable.
+An Unavailable value signifies a manager node that cannot communicate with other managers. Such nodes should be replaced by promoting worker nodes or adding a new manager node. 
