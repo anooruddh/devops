@@ -270,3 +270,11 @@ A blank value indicates that the node is a worker node.
 A Leader value identifies the primary manager node that makes all swarm management and orchestration decisions for the swarm. 
 A Reachable value identifies nodes that are manager nodes and are candidates to become leader nodes in the event that a leader node is unavailable.
 An Unavailable value signifies a manager node that cannot communicate with other managers. Such nodes should be replaced by promoting worker nodes or adding a new manager node. 
+
+  
+What are the two types of Docker Swarm mode services?
+Docker Swarm has two types of services: replicated and global.
+
+Replicated services: Swarm mode replicated services functions by you specifying a number of replica tasks for the swarm manager to assign to available nodes.
+
+Global services: Global services function by using the swam manager to schedule one task to each available node that meets the services constraints and resource requirements.
