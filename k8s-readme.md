@@ -21,3 +21,20 @@ Just note: If you’re running Kubernetes on-prem, your cluster won’t have a c
 etcd is a distributed key-value store and the primary datastore of Kubernetes. It stores and replicates the Kubernetes cluster state.
 
 To run etcd, you first need to have a Kubernetes cluster and the command-line tool configured to communicate with said cluster.
+
+## Kubelet
+The kubelet functions as an agent within nodes and is responsible for the runnings of pod cycles within each node. Its functionality is watching for new or changed pod specifications from master nodes and ensuring that pods within the node that it resides in are healthy, and the state of pods matches the pod specification.
+
+## Kube-proxy
+Kube-proxy is a network proxy that runs on each node. It maintains network rules, which allow for network communication to Pods from network sessions inside or outside of a cluster. Kube-proxy is used to reach kubernetes services in addition to load balancing of services.
+
+## Kube-controller-manager
+The Kubernetes controller manager is a collection of controllers bundled within a single binary and run in a single process. The following controllers are present within this manager:
+
+### NODE CONTROLLER: Responsible for identifying changes in nodes within the cluster
+
+### REPLICATION CONTROLLER: Responsible for maintaining replications of objects in the cluster (such as replicasets)
+
+### ENDPOINT CONTROLLER: Responsible for provisioning of endpoints (such as service endpoints)
+
+Service account and token controllers: Responsible the management of service accounts within each namespace, as well as API access tokens
