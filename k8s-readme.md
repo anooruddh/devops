@@ -257,9 +257,9 @@ Since pods are ephemeral, a service enables a group of pods, which provide speci
 
     On the other hand, a service is responsible for exposing an interface to those pods, which enables network access from either within the cluster or between external processes and the service.
 
-#   types of Kubernetes services
+#   Types of Kubernetes services
   
-    - [x] ClusterIP. Exposes a service which is only accessible from within the cluster.
-    - [x] NodePort. Exposes a service via a static port on each node’s IP.
-    - [x] LoadBalancer. Exposes the service via the cloud provider’s load balancer.
-    - [x] ExternalName. Maps a service to a predefined externalName field by returning a value for the CNAME record.
+    ClusterIP. Exposes a service which is only accessible from within the cluster.
+    NodePort. Exposes a service via a static port on each node’s IP.
+    LoadBalancer. Exposes the service via the cloud provider’s load balancer.
+    ExternalName. Maps a service to a predefined externalName field by returning a value for the CNAME record.
