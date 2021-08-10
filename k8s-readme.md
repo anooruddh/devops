@@ -240,3 +240,19 @@ The kubectl top command returns current CPU and memory usage for a cluster’s p
 ### give a URL to external service in minikube
 
     minikube service mongo-express-service
+    
+# Deployment(s) in Kubernetes
+
+In Kubernetes, a deployment is a method of launching a pod with containerized applications and ensuring that the necessary number of replicas is always running on the cluster. 
+
+# Service(s) in Kubernetes
+
+A Kubernetes service is a logical abstraction for a deployed group of pods in a cluster (which all perform the same function).
+
+Since pods are ephemeral, a service enables a group of pods, which provide specific functions (web services, image processing, etc.) to be assigned a name and unique IP address (clusterIP). As long as the service is running that IP address, it will not change. Services also define policies for their acces
+
+# In Kubernetes, what is the difference between a service and a deployment?
+
+    In Kubernetes, a deployment is a method of launching a pod with containerized applications and ensuring that the necessary number of replicas is always running on the         cluster. 
+
+    On the other hand, a service is responsible for exposing an interface to those pods, which enables network access from either within the cluster or between external           processes and the service.
