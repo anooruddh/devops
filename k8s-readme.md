@@ -259,10 +259,10 @@ Since pods are ephemeral, a service enables a group of pods, which provide speci
 
 #   Types of Kubernetes services
   
-    **ClusterIP**. Exposes a service which is only accessible from within the cluster.
-    NodePort. Exposes a service via a static port on each node’s IP.
-    LoadBalancer. Exposes the service via the cloud provider’s load balancer.
-    ExternalName. Maps a service to a predefined externalName field by returning a value for the CNAME record.
+**ClusterIP**.  Exposes a service which is only accessible from within the cluster.
+**NodePort**.   Exposes a service via a static port on each node’s IP.
+**LoadBalancer**. Exposes the service via the cloud provider’s load balancer.
+**ExternalName**. Maps a service to a predefined externalName field by returning a value for the CNAME record.
 
 #   How do Kubernetes services work
 
