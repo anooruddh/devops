@@ -263,3 +263,32 @@ Since pods are ephemeral, a service enables a group of pods, which provide speci
     NodePort. Exposes a service via a static port on each node’s IP.
     LoadBalancer. Exposes the service via the cloud provider’s load balancer.
     ExternalName. Maps a service to a predefined externalName field by returning a value for the CNAME record.
+
+#   How do Kubernetes services work
+
+    Services simply point to pods using labels. Since services are not node-specific, a service can point to a pod regardless of where it runs in the cluster at any given moment in time. By exposing a service IP address as well as a DNS service name, the application can be reached by either method as long as the service exists.
+    
+#   Creating service using yml file
+    
+    Services are defined in YAML, as are all Kubernetes objects. Suppose you deployed pods running a back-end service to process data coming from a web front end. To expose a service named ‘service-backend’ on the deployment ‘deployment-backend’ you would use:
+    
+    apiVersion: v1
+    kind: Service
+    metadata:
+    name: service-backend
+    spec:
+    ports:
+    - port: 4000
+    protocol: TCP
+    targetPort: 333
+    selector:
+    run: deployment-backend
+    type: ClusterIP
+    
+    The service ‘service-backend’ will be created, and any pod in the cluster can access it on their port 333 via http://service-backend:4000, or at the cluster’s IP address using port 4000.
+
+
+    Kubernetes services can also be created using the ‘kubectl expose’ command, which does not require a YAML file. The same service can be created using the command:
+
+
+    kubectl expose deployment deployment-backend  - - port=333- - target-port=4000    - - name=service-backend
