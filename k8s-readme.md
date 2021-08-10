@@ -205,9 +205,9 @@ kubectl get pod
 
 kubectl get deployment
 
-## delete with config
+### delete with config
 
-kubectl delete -f nginx-deployment.yaml
+    kubectl delete -f nginx-deployment.yaml
 
 #Metrics
 
