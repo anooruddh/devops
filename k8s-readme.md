@@ -269,7 +269,7 @@ Since pods are ephemeral, a service enables a group of pods, which provide speci
 
 #   How do Kubernetes services work
 
-    Services simply point to pods using labels. Since services are not node-specific, a service can point to a pod regardless of where it runs in the cluster at any given moment in time. By exposing a service IP address as well as a DNS service name, the application can be reached by either method as long as the service exists.
+   Services simply point to pods using labels. Since services are not node-specific, a service can point to a pod regardless of where it runs in the cluster at any given moment in time. By exposing a service IP address as well as a DNS service name, the application can be reached by either method as long as the service exists.
     
 #   Creating service using yml file
     
