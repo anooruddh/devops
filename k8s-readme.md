@@ -293,8 +293,10 @@ Since pods are ephemeral, a service enables a group of pods, which provide speci
 
    Kubernetes services can also be created using the ‘kubectl expose’ command, which does not require a YAML file. The same service can be created using the command:
 
+#   Creating service using command
 
     kubectl expose deployment deployment-backend  - - port=333- - target-port=4000    - - name=service-backend
+   
 #   Access a Kubernetes service
    
    There are two ways to discover a Kubernetes service:
