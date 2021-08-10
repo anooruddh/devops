@@ -128,10 +128,15 @@ Service Discovery and load balancing: Kubernetes has a feature which assigns the
 ## KUBERNETES CLI-COMMANDS
 
 ## install hyperhit and minikube
+
 brew update
+
 brew install hyperkit
+
 brew install minikube
+
 kubectl
+
 minikube
 
 ## create minikube cluster
