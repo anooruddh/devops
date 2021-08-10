@@ -253,9 +253,9 @@ Since pods are ephemeral, a service enables a group of pods, which provide speci
 
 # In Kubernetes, what is the difference between a service and a deployment?
 
-    In Kubernetes, a deployment is a method of launching a pod with containerized applications and ensuring that the necessary number of replicas is always running on the  cluster. 
+   In Kubernetes, a deployment is a method of launching a pod with containerized applications and ensuring that the necessary number of replicas is always running on the  cluster. 
 
-    On the other hand, a service is responsible for exposing an interface to those pods, which enables network access from either within the cluster or between external processes and the service.
+   On the other hand, a service is responsible for exposing an interface to those pods, which enables network access from either within the cluster or between external processes and the service.
 
 #   Types of Kubernetes services
   
