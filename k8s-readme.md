@@ -31,10 +31,10 @@ Kube-proxy is a network proxy that runs on each node. It maintains network rules
 ## Kube-controller-manager
 The Kubernetes controller manager is a collection of controllers bundled within a single binary and run in a single process. The following controllers are present within this manager:
 
-> ### NODE CONTROLLER:            *Responsible for identifying changes in nodes within the cluste* 
+>  NODE CONTROLLER:            *Responsible for identifying changes in nodes within the cluste* 
 
-> ### REPLICATION CONTROLLER:     *Responsible for maintaining replications of objects in the cluster (such as replicasets)*
+>  REPLICATION CONTROLLER:     *Responsible for maintaining replications of objects in the cluster (such as replicasets)*
 
-> ### ENDPOINT CONTROLLER:        *Responsible for provisioning of endpoints (such as service endpoints)*
+>  ENDPOINT CONTROLLER:        *Responsible for provisioning of endpoints (such as service endpoints)*
 
 Service account and token controllers: Responsible the management of service accounts within each namespace, as well as API access tokens
