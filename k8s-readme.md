@@ -296,6 +296,6 @@ Since pods are ephemeral, a service enables a group of pods, which provide speci
    
    There are two ways to discover a Kubernetes service:
    
-    DNS (most common): The DNS method is the recommended method of discovering services. To use this method, a DNS server must first be installed on the cluster. The DNS server monitors the Kubernetes API, and when a new service is created its name becomes available for easy resolution for requesting applications. 
+   DNS (most common): The DNS method is the recommended method of discovering services. To use this method, a DNS server must first be installed on the cluster. The DNS server monitors the Kubernetes API, and when a new service is created its name becomes available for easy resolution for requesting applications. 
     
-    ENV variable: This method relies on the kubelet adding environment variables for each active service for every node a pod is running on.
+   ENV variable: This method relies on the kubelet adding environment variables for each active service for every node a pod is running on.
