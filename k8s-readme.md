@@ -102,3 +102,16 @@ The Kubernetes controller manager is a collection of controllers bundled within 
 >  ENDPOINT CONTROLLER:        *Responsible for provisioning of endpoints (such as service endpoints)*
 
 Service account and token controllers: Responsible the management of service accounts within each namespace, as well as API access tokens
+
+
+## Features which Kubernetes provides - 
+
+Service Discovery and load balancing: Kubernetes has a feature which assigns the containers with their own IP addresses and a unique DNS name, which can be used to balance the load on them.
+
+- [x] Planning & Placement: Placement of the containers on the node is a crucial feature on which makes the decision based on the resources it requires and other restrictions.
+Auto Scaling: Based on the CPU usage, the vertical scaling of applications is automatically triggered using the command line.
+Self Repair: This is a unique feature in the Kubernetes which will restart the container automatically when it fails. If the Node dies, then containers are replaced or re-planned on the other Nodes. You can stop the containers if they don't respond to the health checks.
+Storage Orchestration: This feature of Kubernetes enables the user to mount the network storage system as a local file system.
+Batch execution: Kubernetes manages both batch and CI workloads along with replacing containers that fail.
+Deployments and Automatic Rollbacks: During the configuration changes for the application hosted on the Kubernetes, progressively monitors the health to ensure that it does not terminate all the instances at once, it makes an automatic rollback only in the case of failure.
+Configuration Management and Secrets: All classifies information like keys and passwords are stored under module called Secrets in Kubernetes. These Secrets are used especially while configuring the application without having to reconstruct the image.
