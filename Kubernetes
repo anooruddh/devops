@@ -1,1 +1,8 @@
-Kubernetes Notes
+##Kubernetes Notes
+
+#Master Node Components
+1. API Server 2. Controller Manager 3. ETCD 4. Scheduler
+
+#Kubernetes Node Components
+1.  Docker  2.  Container Runtime 3.  Kubelet 4.  Kubernetes Proxy Service
+
