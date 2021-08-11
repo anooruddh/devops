@@ -299,9 +299,19 @@ By default, the command waits until all of the Pods in the deployment have been 
     Waiting for deployment "myapp" rollout to finish: 2 of 3 updated replicas are available…
     deployment "myapp" successfully rolled out
 
-#   Scripting automated rollback
 
+#   Kubernetes deployment strategies
 
+In Kubernetes there are a few different ways to release an application, it is necessary to choose the right strategy to make your infrastructure reliable during an application update.
+
+Choosing the right deployment procedure depends on the needs, we listed below some of the possible strategies to adopt:
+
+**recreate**: terminate the old version and release the new one
+**ramped**: release a new version on a rolling update fashion, one after the other
+**blue/green**: release a new version alongside the old version then switch traffic
+**canary**: release a new version to a subset of users, then proceed to a full rollout
+
+![Screenshot](deployment-decision-diagram.png)
 
 # Service(s) in Kubernetes
 
