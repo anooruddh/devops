@@ -328,7 +328,8 @@ Since pods are ephemeral, a service enables a group of pods, which provide speci
    On the other hand, a service is responsible for exposing an interface to those pods, which enables network access from either within the cluster or between external processes and the service.
 
 #   Types of Kubernetes services
-  
+
+ 
 **ClusterIP**.  Exposes a service which is only accessible from within the cluster.
 
 ![Screenshot](clusterip.jpg)
@@ -346,6 +347,26 @@ Since pods are ephemeral, a service enables a group of pods, which provide speci
 **Ingress**. This service allows the routing of HTTP(S) traffic according to defined rules like path-based routings. This can be associated with one or more service objects where these services are further associated with Pods. The ingress controller creates HTTP(S) load balancer Layer 7 load balancer which are configured automatically using the definition in the Ingress object.
 
 ![Screenshot](ingress.jpg)
+
+
+# What is a headless service?
+
+A headless service is a service with a service IP but instead of load-balancing it will return the IPs of our associated Pods. This allows us to interact directly with the Pods instead of a proxy. It's as simple as specifying None for .spec.clusterIP and can be utilized with or without selectors
+
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: my-headless-service
+    spec:
+      clusterIP: None # <--
+      selector:
+        app: test-app
+      ports:
+        - protocol: TCP
+          port: 80
+          targetPort: 3000 
+
+Headless-services allow us to reach each Pod directly, rather than the service acting as a load-balancer or prox
 
 #   How do Kubernetes services work
 
