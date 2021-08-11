@@ -406,7 +406,7 @@ Headless-services allow us to reach each Pod directly, rather than the service a
     
    **ENV variable**: This method relies on the kubelet adding environment variables for each active service for every node a pod is running on.
 
-## Pause Container
+#   Pause Container
 
 Pause Container holds the network namespace for the pod. Kubernetes creates pause containers to acquire the respective pod’s IP address and set up the network namespace for all other containers that join that pod.
 
