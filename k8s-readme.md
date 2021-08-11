@@ -405,3 +405,13 @@ Headless-services allow us to reach each Pod directly, rather than the service a
    **DNS (most common)**: The DNS method is the recommended method of discovering services. To use this method, a DNS server must first be installed on the cluster. The DNS server monitors the Kubernetes API, and when a new service is created its name becomes available for easy resolution for requesting applications. 
     
    **ENV variable**: This method relies on the kubelet adding environment variables for each active service for every node a pod is running on.
+
+## Pause Container
+
+Pause Container holds the network namespace for the pod. Kubernetes creates pause containers to acquire the respective pod’s IP address and set up the network namespace for all other containers that join that pod.
+
+ Pause container make sure that there is a network stack to map, and it doesn’t change. Pause containers are a pod implementation detail where one pause container is used for each pod and shouldn’t be shown when listing containers that are members of pods
+
+Pause containers hold the cgroups, reservations, and namespaces of a pod before its individual containers are created. The pause container’s image is always present, so the allocation of the pod’s resources is instantaneous.
+
+ By default, pause containers are hidden, but you can see them by running docker ps -a.
