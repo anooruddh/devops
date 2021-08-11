@@ -319,6 +319,19 @@ A Kubernetes service is a logical abstraction for a deployed group of pods in a 
 
 Since pods are ephemeral, a service enables a group of pods, which provide specific functions (web services, image processing, etc.) to be assigned a name and unique IP address (clusterIP). As long as the service is running that IP address, it will not change. Services also define policies for their acces
 
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: mongodb-service
+    spec:
+      selector:
+        app: mongodb
+      ports:
+        - protocol: TCP
+          port: 27017
+          targetPort: 27017
+
+
 # In Kubernetes, what is the difference between a service and a deployment?
 
 ![Screenshot](deployment-service.png)
