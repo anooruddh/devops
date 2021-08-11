@@ -270,6 +270,38 @@ Here’s an example deployment manifest in YAML format for running three instanc
             name: hello-world
             ports:
             - containerPort: 3000
+One of the key features of Deployments is how it manages application updates. By default, updating the Deployment manifest in Kubernetes causes the application to be updated in a rolling fashion. This way you’ll have the previous version of the deployment running while the new one is brought up. In the Deployment manifest, you can specify how many replicas to bring up and down at once during updates.
+
+For example, we can add a rolling update strategy to the spec section of the manifest where we bring one replica up at a time, and make sure there are no missing healthy replicas at any point during the upgrade.
+
+    spec:
+     strategy:
+       type: RollingUpdate
+       rollingUpdate:
+         maxUnavailable: 0
+         maxSurge: 1
+ 
+To automate the process, you might choose to deploy your app in your CI pipeline using kubectl.
+ 
+    kubectl apply -f deployment.yaml
+
+Kubectl apply does not verify that your application even starts.
+
+In order to properly check that the update proceeds as expected, we need assistance from another kubectl command.
+
+This is where kubectl’s rollout command becomes handy! We can use it to check how our deployment is doing.
+
+By default, the command waits until all of the Pods in the deployment have been started successfully. When the deployment succeeds, the command exits with return code zero to indicate success.
+
+    $ kubectl rollout status deployment myapp
+    Waiting for deployment "myapp" rollout to finish: 0 of 3 updated replicas are available…
+    Waiting for deployment "myapp" rollout to finish: 1 of 3 updated replicas are available…
+    Waiting for deployment "myapp" rollout to finish: 2 of 3 updated replicas are available…
+    deployment "myapp" successfully rolled out
+
+#   Scripting automated rollback
+
+
 
 # Service(s) in Kubernetes
 
@@ -287,11 +319,21 @@ Since pods are ephemeral, a service enables a group of pods, which provide speci
   
 **ClusterIP**.  Exposes a service which is only accessible from within the cluster.
 
+![Screenshot](clusterip.jpg)
+
 **NodePort**.   Exposes a service via a static port on each node’s IP.
+
+![Screenshot](nodeport.jpg)
 
 **LoadBalancer**. Exposes the service via the cloud provider’s load balancer.
 
+![Screenshot](loadbalancer.jpg)
+
 **ExternalName**. Maps a service to a predefined externalName field by returning a value for the CNAME record.
+
+**Ingress**. This service allows the routing of HTTP(S) traffic according to defined rules like path-based routings. This can be associated with one or more service objects where these services are further associated with Pods. The ingress controller creates HTTP(S) load balancer Layer 7 load balancer which are configured automatically using the definition in the Ingress object.
+
+![Screenshot](ingress.jpg)
 
 #   How do Kubernetes services work
 
