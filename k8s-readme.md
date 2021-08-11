@@ -245,6 +245,32 @@ The kubectl top command returns current CPU and memory usage for a cluster’s p
 
 In Kubernetes, a deployment is a method of launching a pod with containerized applications and ensuring that the necessary number of replicas is always running on the cluster. 
 
+In Kubernetes, most service-style applications use Deployments to run applications on Kubernetes. Using Deployments, you can describe how to run your application container as a Pod in Kubernetes and how many replicas of the application to run. Kubernetes will then take care of running as many replicas as specified.
+
+Here’s an example deployment manifest in YAML format for running three instances of a simple hello world web app:
+
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      labels:
+        app: myapp
+      name: myapp
+    spec:
+      replicas: 3
+      selector:
+        matchLabels:
+          app: myapp
+      template:
+        metadata:
+          labels:
+            app: myapp
+        spec:
+          containers:
+          - image: polarsquad/hello-world-app:master
+            name: hello-world
+            ports:
+            - containerPort: 3000
+
 # Service(s) in Kubernetes
 
 A Kubernetes service is a logical abstraction for a deployed group of pods in a cluster (which all perform the same function).
