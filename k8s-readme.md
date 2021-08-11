@@ -322,14 +322,16 @@ Since pods are ephemeral, a service enables a group of pods, which provide speci
     apiVersion: v1
     kind: Service
     metadata:
-      name: mongodb-service
+      name: mongo-express-service
     spec:
       selector:
-        app: mongodb
+        app: mongo-express
+      type: LoadBalancer  
       ports:
         - protocol: TCP
-          port: 27017
-          targetPort: 27017
+          port: 8081
+          targetPort: 8081
+          nodePort: 30000
 
 
 # In Kubernetes, what is the difference between a service and a deployment?
