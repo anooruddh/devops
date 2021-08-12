@@ -348,8 +348,11 @@ Command to run the deployment.yml file -
     nginx-deployment-75675f5897-qqcnn   1/1       Running   0          18s       app=nginx,pod-template-hash=3123191453
     
 **recreate**: terminate the old version and release the new one
+
 **ramped**: release a new version on a rolling update fashion, one after the other
+
 **blue/green**: release a new version alongside the old version then switch traffic
+
 **canary**: release a new version to a subset of users, then proceed to a full rollout
 
 ![Screenshot](deployment-decision-diagram.png)
