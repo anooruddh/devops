@@ -493,3 +493,77 @@ Pause containers hold the cgroups, reservations, and namespaces of a pod before 
         volumeattachments                              storage.k8s.io/v1                      false        VolumeAttachment
         netops@arg048vmlinuxdev:~$
 
+#   What are Init Containers?
+
+In Kubernetes, an init container is the one that starts and executes before other containers in the same Pod. It’s meant to perform initialization logic for the main application hosted on the Pod. For example, create the necessary user accounts, perform database migrations, create database schemas and so on.
+
+Each Init Container must complete successfully before the next one is started. So, Init Containers provide an easy way to block or delay the startup of app containers until some set of preconditions are met.
+
+Init Containers run before the main container runs. Normally init containers are used to ensure the server environment is ready for your application to start to run.
+
+#   Some of its properties are :
+
+It contains utilities or setup scripts not present in an app image ( making images light-weight)
+They always run to completion
+Init container executes sequentially and each of the init containers must succeed before the next can run.
+They support all the fields and features of app containers, including resource limits, volumes, and security settings.
+
+#   Init Containers Design Considerations
+
+- [x] They always get executed before other containers in the Pod. So, they shouldn’t contain complex logic that takes a long time to complete.
+- [x] Init containers are started and executed in sequence. An init container is not invoked unless its predecessor is completed successfully. Hence, if the startup task is very long, you may consider breaking it into a number of steps, each handled by an init container so that you know which steps fail.
+- [x] If any of the init containers fail, the whole Pod is restarted (unless you set restartPolicy to Never). Restarting the Pod means re-executing all the containers again including any init containers. 
+- [x] An init container is a good candidate for delaying the application initialization until one or more dependencies are available.
+- [x] Init containers cannot use health and readiness probes as application containers do. The reason is that they are meant to start and exit successfully, much like how Jobs and CronJobs behave.
+
+# Scenario-1 (Seeding a Database)
+
+In this scenario, we are serving a MySQL database. This database is used for testing an application. It doesn’t have to contain real data, but it must be seeded with enough data so that we can test the application's query speed. We use an init container to handle downloading the SQL dump file and restore it to the database, which is hosted in another container
+
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: mydb
+      labels:
+        app: db
+    spec:
+      initContainers:
+        - name: fetch
+          image: mwendler/wget
+          command: ["wget","--no-check-certificate","https://sample-videos.com/sql/Sample-SQL-File-1000rows.sql","-O","/docker-entrypoint-initdb.d/dump.sql"]
+          volumeMounts:
+            - mountPath: /docker-entrypoint-initdb.d
+              name: dump
+      containers:
+        - name: mysql
+          image: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "example"
+          volumeMounts:
+            - mountPath: /docker-entrypoint-initdb.d
+              name: dump
+      volumes:
+        - emptyDir: {}
+          name: dump
+
+#   Scenario-2 (Delaying The Application Launch Until The Dependencies Are Ready)
+
+Another common use case for init containers is when you need your application to wait until another service is full running (responding to requests)
+
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: myapp-pod
+      labels:
+        app: myapp
+    spec:
+      initContainers:
+      - name: init-myservice
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
+      containers:
+      - name: myapp-container
+        image: busybox:1.28
+        command: ['sh', '-c', 'echo The app is running! && sleep 3600']
+
