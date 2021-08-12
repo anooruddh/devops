@@ -567,3 +567,14 @@ Another common use case for init containers is when you need your application to
         image: busybox:1.28
         command: ['sh', '-c', 'echo The app is running! && sleep 3600']
 
+For completeness, this is the definition file for myservice:
+
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: myservice
+        spec:
+          ports:
+          - protocol: TCP
+            port: 80
+            targetPort: 9376
