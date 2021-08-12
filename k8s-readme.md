@@ -304,8 +304,49 @@ By default, the command waits until all of the Pods in the deployment have been 
 
 In Kubernetes there are a few different ways to release an application, it is necessary to choose the right strategy to make your infrastructure reliable during an application update.
 
-Choosing the right deployment procedure depends on the needs, we listed below some of the possible strategies to adopt:
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: nginx-deployment
+      labels:
+        app: nginx
+    spec:
+      replicas: 3
+      selector:
+        matchLabels:
+          app: nginx
+      template:
+        metadata:
+          labels:
+            app: nginx
+        spec:
+          containers:
+          - name: nginx
+            image: nginx:1.14.2
+            ports:
+            - containerPort: 80
 
+Command to run the deployment.yml file - 
+
+    kubectl apply -f deployment.yml
+    
+    kubectl get deployments
+    
+    NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+    nginx-deployment   3/3     3            3           18s
+    
+    kubectl get rs
+    
+    NAME                          DESIRED   CURRENT   READY   AGE
+    nginx-deployment-75675f5897   3         3         3       18s
+    
+    kubectl get pods --show-labels
+    
+    NAME                                READY     STATUS    RESTARTS   AGE       LABELS
+    nginx-deployment-75675f5897-7ci7o   1/1       Running   0          18s       app=nginx,pod-template-hash=3123191453
+    nginx-deployment-75675f5897-kzszj   1/1       Running   0          18s       app=nginx,pod-template-hash=3123191453
+    nginx-deployment-75675f5897-qqcnn   1/1       Running   0          18s       app=nginx,pod-template-hash=3123191453
+    
 **recreate**: terminate the old version and release the new one
 **ramped**: release a new version on a rolling update fashion, one after the other
 **blue/green**: release a new version alongside the old version then switch traffic
