@@ -172,15 +172,15 @@ minikube status
     NAME        READY   STATUS    RESTARTS   AGE     IP           NODE       NOMINATED NODE   READINESS GATES   LABELS
     first-pod   1/1     Running   0          2m50s   172.18.0.6   minikube   <none>           <none>            type=web
     $ 
-    $ k label pod first-pod env=dev
+    $ kubectl label pod first-pod env=dev
     pod/first-pod labeled
     $ kubectl get pod -o wide --show-labels
     NAME        READY   STATUS    RESTARTS   AGE     IP           NODE       NOMINATED NODE   READINESS GATES   LABELS
     first-pod   1/1     Running   0          3m29s   172.18.0.6   minikube   <none>           <none>            env=dev,type=web
     
-    Delete Label
+    **Delete Label**
     
-    $ k label pod first-pod env-
+    $ kubectl label pod first-pod env-
     pod/first-pod labeled
     $ kubectl get pod -o wide --show-labels
     NAME        READY   STATUS    RESTARTS   AGE     IP           NODE       NOMINATED NODE   READINESS GATES   LABELS
