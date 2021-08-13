@@ -393,7 +393,7 @@ Since pods are ephemeral, a service enables a group of pods, which provide speci
 
 ![Screenshot](clusterip.jpg)
 
-**NodePort**.   Exposes a service via a static port on each node’s IP.
+**NodePort**.   Exposes a service via a static port on each node’s IP. (NodePorts are in the 30000-32767 range by default, which means a NodePort is unlikely to match a service’s intended port (for example, 8080 may be exposed as 31020).
 
 ![Screenshot](nodeport.jpg)
 
