@@ -158,7 +158,35 @@ Service Discovery and load balancing: Kubernetes has a feature which assigns the
 minikube status
 
 ### kubectl commands
+    
+    kubectl get po -o wide --show-labels
+    NAME        READY   STATUS              RESTARTS   AGE   IP       NODE       NOMINATED NODE   READINESS GATES   LABELS
+    first-pod   0/1     ContainerCreating   0          3s    <none>   minikube   <none>           <none>            type=web
+     
+    kubectl explain pod --recursive | less
+    
+    kubectl get pod -o yaml | less
+    kubectl get pod -o json | less
 
+    $ kubectl get pod -o wide --show-labels
+    NAME        READY   STATUS    RESTARTS   AGE     IP           NODE       NOMINATED NODE   READINESS GATES   LABELS
+    first-pod   1/1     Running   0          2m50s   172.18.0.6   minikube   <none>           <none>            type=web
+    $ 
+    $ k label pod first-pod env=dev
+    pod/first-pod labeled
+    $ kubectl get pod -o wide --show-labels
+    NAME        READY   STATUS    RESTARTS   AGE     IP           NODE       NOMINATED NODE   READINESS GATES   LABELS
+    first-pod   1/1     Running   0          3m29s   172.18.0.6   minikube   <none>           <none>            env=dev,type=web
+    
+    Delete Label
+    
+    $ k label pod first-pod env-
+    pod/first-pod labeled
+    $ kubectl get pod -o wide --show-labels
+    NAME        READY   STATUS    RESTARTS   AGE     IP           NODE       NOMINATED NODE   READINESS GATES   LABELS
+    first-pod   1/1     Running   0          4m10s   172.18.0.6   minikube   <none>           <none>            type=web
+    
+    
     kubectl get nodes
 
     kubectl get pod
