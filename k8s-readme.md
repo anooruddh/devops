@@ -312,6 +312,40 @@ For example, we can add a rolling update strategy to the spec section of the man
 **maxSurge**: The number of pods that can be created above the desired amount of pods during an update
 **maxUnavailable**: The number of pods that can be unavailable during the update process
 
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: hello-dep
+          namespace: default
+        spec:
+          replicas: 2
+          strategy:
+          type: RollingUpdate
+          rollingUpdate:
+            maxSurge: 1
+            maxUnavailable: 25%
+          selector:
+            matchLabels:
+              app: hello-dep
+          template:
+            metadata:
+              labels:
+                app: hello-dep
+            spec:
+              containers:
+              - image: gcr.io/google-samples/hello-app:2.0
+                imagePullPolicy: Always
+                name: hello-dep
+                ports:
+                - containerPort: 8080
+                readinessProbe:
+                  httpGet:
+                     path: /
+                     port: 8080
+                     initialDelaySeconds: 5
+                     periodSeconds: 5
+                     successThreshold: 1
+
 To automate the process, you might choose to deploy your app in your CI pipeline using kubectl.
  
     kubectl apply -f deployment.yaml
