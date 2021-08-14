@@ -937,4 +937,25 @@ For completeness, this is the definition file for myservice:
     5         <none>
     6         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v2 --record=true
 
+# Rollback Deployment
+
+    $ k rollout history deployment.apps/dep-web
+    deployment.apps/dep-web 
+    REVISION  CHANGE-CAUSE
+    1         <none>
+    2         kubectl set image deployment.apps/dep-web nginx=wordpress --record=true
+    5         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v2 --record=true
+    6         kubectl set image deployment.apps/dep-web nginx=apache --record=true
+    7         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom --record=true
+    8         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v1 --record=true
+
+    $ k get deploy -o wide
+    NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                          SELECTOR
+    dep-web   10/10   10           10          34m   nginx        coolgourav147/nginx-custom:v1   type=web
+    $ k rollout undo deployment.apps/dep-web --to-revision=5
+    deployment.apps/dep-web rolled back
+    $ k get deploy -o wide
+    NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                          SELECTOR
+    dep-web   10/10   2            10          34m   nginx        coolgourav147/nginx-custom:v2   type=web
+    $ 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
