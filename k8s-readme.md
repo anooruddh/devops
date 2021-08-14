@@ -706,3 +706,243 @@ For completeness, this is the definition file for myservice:
           - protocol: TCP
             port: 80
             targetPort: 9376
+
+
+# Deployment & Rollback
+
+    kubectl set image deployment/frontend www=image:v2               # Rolling update "www" containers of "frontend" deployment, updating the image
+    kubectl rollout history deployment/frontend                      # Check the history of deployments including the revision 
+    kubectl rollout undo deployment/frontend                         # Rollback to the previous deployment
+    kubectl rollout undo deployment/frontend --to-revision=2         # Rollback to a specific revision
+    kubectl rollout status -w deployment/frontend                    # Watch rolling update status of "frontend" deployment until completion
+    kubectl rollout restart deployment/frontend                      # Rolling restart of the "frontend" deployment
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        $ cat d1.yml 
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: dep-web
+          labels:
+            type: web
+        spec:
+          minReadySeconds: 30
+          replicas: 10
+          selector:
+            matchLabels:
+              type: web
+          strategy:
+            type: RollingUpdate
+            rollingUpdate:
+              maxSurge: 2
+              maxUnavailable: 0
+          template:
+            metadata:
+              labels:
+                type: web
+            spec:
+              containers:
+                - name: nginx
+                  image: coolgourav147/nginx-custom
+                  ports:
+                    - containerPort: 80
+        $ k get deploy
+        No resources found in default namespace.
+        $ k apply -f d1.yml 
+        deployment.apps/dep-web created
+        $ ^C
+        $ k get deploy -w
+        NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+        dep-web   4/10    10           0           9s
+        dep-web   5/10    10           0           10s
+        dep-web   6/10    10           0           11s
+        dep-web   7/10    10           0           13s
+        dep-web   8/10    10           0           14s
+        dep-web   9/10    10           0           15s
+        dep-web   10/10   10           0           16s
+        ^C$ 
+        $ kubectl rollout history deployment.apps/dep-web
+        deployment.apps/dep-web 
+        REVISION  CHANGE-CAUSE
+        1         <none>
+
+        $ k get deploy -o wide --show-labels
+        NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                       SELECTOR   LABELS
+        dep-web   10/10   10           10          89s   nginx        coolgourav147/nginx-custom   type=web   type=web
+        $ 
+        $ kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v1
+        deployment.apps/dep-web image updated
+        $ k get deploy -o wide
+        NAME      READY   UP-TO-DATE   AVAILABLE   AGE    CONTAINERS   IMAGES                          SELECTOR
+        dep-web   12/10   2            10          2m8s   nginx        coolgourav147/nginx-custom:v1   type=web
+        $ k get deploy -w
+        NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+        dep-web   12/10   2            10          2m17s
+        dep-web   12/10   2            12          2m32s
+        dep-web   10/10   2            10          2m32s
+        dep-web   10/10   4            10          2m32s
+        dep-web   11/10   4            10          2m36s
+        dep-web   12/10   4            10          2m37s
+        ^C$ kubectl rollout history deployment.apps/dep-web
+        deployment.apps/dep-web 
+        REVISION  CHANGE-CAUSE
+        1         <none>
+        2         <none>
+
+        $ k get deploy -w
+        NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+        dep-web   12/10   6            10          3m20s
+        dep-web   12/10   6            12          3m41s
+        dep-web   10/10   6            10          3m41s
+        dep-web   10/10   8            10          3m42s
+        dep-web   11/10   8            10          3m45s
+        dep-web   12/10   8            10          3m46s
+        ^C$ k get deploy -o wide
+        NAME      READY   UP-TO-DATE   AVAILABLE   AGE    CONTAINERS   IMAGES                          SELECTOR
+        dep-web   12/10   8            10          4m9s   nginx        coolgourav147/nginx-custom:v1   type=web
+        $ k get deploy -o wide -w
+        NAME      READY   UP-TO-DATE   AVAILABLE   AGE     CONTAINERS   IMAGES                          SELECTOR
+        dep-web   12/10   8            10          4m16s   nginx        coolgourav147/nginx-custom:v1   type=web
+        dep-web   12/10   8            12          4m16s   nginx        coolgourav147/nginx-custom:v1   type=web
+        dep-web   10/10   8            10          4m16s   nginx        coolgourav147/nginx-custom:v1   type=web
+        dep-web   10/10   10           10          4m16s   nginx        coolgourav147/nginx-custom:v1   type=web
+        dep-web   11/10   10           10          4m19s   nginx        coolgourav147/nginx-custom:v1   type=web
+        dep-web   12/10   10           10          4m20s   nginx        coolgourav147/nginx-custom:v1   type=web
+        ^C$ 
+        $ kubectl rollout history deployment.apps/dep-web
+        deployment.apps/dep-web 
+        REVISION  CHANGE-CAUSE
+        1         <none>
+        2         <none>
+
+        $ kubectl get  deployment.apps/dep-web
+        NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+        dep-web   10/10   10           10          7m56s
+        $ kubectl get replicaset
+        NAME                 DESIRED   CURRENT   READY   AGE
+        dep-web-5f7b676786   10        10        10      6m23s
+        dep-web-64bf7df7b5   0         0         0       8m21s
+        $ 
+        $ 
+        $ kubectl get pod --selector type=web
+        NAME                       READY   STATUS    RESTARTS   AGE
+        dep-web-5f7b676786-75xvh   1/1     Running   0          5m8s
+        dep-web-5f7b676786-795kh   1/1     Running   0          6m51s
+        dep-web-5f7b676786-994nb   1/1     Running   0          4m33s
+        dep-web-5f7b676786-mkdmn   1/1     Running   0          6m17s
+        dep-web-5f7b676786-tk47b   1/1     Running   0          6m17s
+        dep-web-5f7b676786-tvrs7   1/1     Running   0          5m8s
+        dep-web-5f7b676786-v7gj2   1/1     Running   0          5m42s
+        dep-web-5f7b676786-vjfvv   1/1     Running   0          5m42s
+        dep-web-5f7b676786-x7xbt   1/1     Running   0          6m51s
+        dep-web-5f7b676786-xwhg5   1/1     Running   0          4m33s
+        $ kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v2 --record
+        deployment.apps/dep-web image updated
+        $ kubectl get  deployment.apps/dep-web
+        NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+        dep-web   12/10   2            10          11m
+        $ kubectl rollout history deployment.apps/dep-web
+        deployment.apps/dep-web 
+        REVISION  CHANGE-CAUSE
+        1         <none>
+        2         <none>
+        3         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v2 --record=true
+
+        $ kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v1 --record
+        deployment.apps/dep-web image updated
+        $ kubectl rollout history deployment.apps/dep-web
+        deployment.apps/dep-web 
+        REVISION  CHANGE-CAUSE
+        1         <none>
+        3         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v2 --record=true
+        4         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v1 --record=true
+
+        $ k get deploy -o wide 
+        NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                          SELECTOR
+        dep-web   10/10   10           10          12m   nginx        coolgourav147/nginx-custom:v1   type=web
+        $ kubectl rollout history deployment.apps/dep-web  --revision=3
+        deployment.apps/dep-web with revision #3
+        Pod Template:
+          Labels:       pod-template-hash=58857bdc59
+                type=web
+          Annotations:  kubernetes.io/change-cause: kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v2 --record=true
+          Containers:
+           nginx:
+            Image:      coolgourav147/nginx-custom:v2
+            Port:       80/TCP
+            Host Port:  0/TCP
+            Environment:        <none>
+            Mounts:     <none>
+          Volumes:      <none>
+
+        $ kubectl rollout history deployment.apps/dep-web  --revision=4
+        deployment.apps/dep-web with revision #4
+        Pod Template:
+          Labels:       pod-template-hash=5f7b676786
+                type=web
+          Annotations:  kubernetes.io/change-cause: kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v1 --record=true
+          Containers:
+           nginx:
+            Image:      coolgourav147/nginx-custom:v1
+            Port:       80/TCP
+            Host Port:  0/TCP
+            Environment:        <none>
+            Mounts:     <none>
+          Volumes:      <none>
+
+        $ kubectl rollout history deployment.apps/dep-web
+        deployment.apps/dep-web 
+        REVISION  CHANGE-CAUSE
+        1         <none>
+        3         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v2 --record=true
+        4         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v1 --record=true
+
+        $ kubectl rollout history deployment.apps/dep-web  --revision=4
+        deployment.apps/dep-web with revision #4
+        Pod Template:
+          Labels:       pod-template-hash=5f7b676786
+                type=web
+          Annotations:  kubernetes.io/change-cause: kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v1 --record=true
+          Containers:
+           nginx:
+            Image:      coolgourav147/nginx-custom:v1
+            Port:       80/TCP
+            Host Port:  0/TCP
+            Environment:        <none>
+            Mounts:     <none>
+          Volumes:      <none>
+
+        $ kubectl rollout undo deployment.apps/dep-web --to-revision=1
+        deployment.apps/dep-web rolled back
+        $ kubectl rollout history deployment.apps/dep-web
+        deployment.apps/dep-web 
+        REVISION  CHANGE-CAUSE
+        3         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v2 --record=true
+        4         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v1 --record=true
+        5         <none>
+
+
+        $ k get deploy -o wide
+        NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                       SELECTOR
+        dep-web   12/10   2            10          16m   nginx        coolgourav147/nginx-custom   type=web
+        $ kubectl rollout undo deployment.apps/dep-web --to-revision=3
+        deployment.apps/dep-web rolled back
+        $ k get deploy -o wide
+        NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                          SELECTOR
+        dep-web   10/10   2            10          16m   nginx        coolgourav147/nginx-custom:v2   type=web
+        $ kubectl rollout history deployment.apps/dep-web
+        deployment.apps/dep-web 
+        REVISION  CHANGE-CAUSE
+        4         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v1 --record=true
+        5         <none>
+        6         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v2 --record=true
+
+        $    46  k get all^C
+        $ kubectl rollout history deployment.apps/dep-web
+        deployment.apps/dep-web 
+        REVISION  CHANGE-CAUSE
+        4         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v1 --record=true
+        5         <none>
+        6         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v2 --record=true
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
