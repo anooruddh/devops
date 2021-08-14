@@ -308,7 +308,10 @@ For example, we can add a rolling update strategy to the spec section of the man
        rollingUpdate:
          maxUnavailable: 0
          maxSurge: 1
- 
+
+**maxSurge**: The number of pods that can be created above the desired amount of pods during an update
+**maxUnavailable**: The number of pods that can be unavailable during the update process
+
 To automate the process, you might choose to deploy your app in your CI pipeline using kubectl.
  
     kubectl apply -f deployment.yaml
