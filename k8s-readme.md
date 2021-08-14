@@ -310,6 +310,7 @@ For example, we can add a rolling update strategy to the spec section of the man
          maxSurge: 1
 
 **maxSurge**: The number of pods that can be created above the desired amount of pods during an update
+
 **maxUnavailable**: The number of pods that can be unavailable during the update process
 
         apiVersion: apps/v1
