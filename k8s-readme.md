@@ -957,5 +957,57 @@ For completeness, this is the definition file for myservice:
     $ k get deploy -o wide
     NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                          SELECTOR
     dep-web   10/10   2            10          34m   nginx        coolgourav147/nginx-custom:v2   type=web
+    
+    $ k rollout history deployment.apps/dep-web
+    deployment.apps/dep-web 
+    REVISION  CHANGE-CAUSE
+    1         <none>
+    2         kubectl set image deployment.apps/dep-web nginx=wordpress --record=true
+    6         kubectl set image deployment.apps/dep-web nginx=apache --record=true
+    7         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom --record=true
+    8         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v1 --record=true
+    9         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v2 --record=true
+
+    $ k rollout undo deployment.apps/dep-web --to-revision=7
+    deployment.apps/dep-web rolled back
+    $ k get deploy -w
+    NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+    dep-web   10/10   3            10          36m
+    dep-web   11/10   3            11          36m
+    dep-web   11/10   3            11          36m
+    dep-web   11/10   3            11          36m
+    dep-web   10/10   3            10          36m
+    dep-web   10/10   4            10          36m
+    dep-web   11/10   4            11          36m
+    dep-web   11/10   4            11          36m
+    dep-web   10/10   4            10          36m
+    dep-web   10/10   5            10          36m
+    dep-web   11/10   5            11          36m
+    dep-web   11/10   5            11          36m
+    dep-web   11/10   5            11          36m
+    dep-web   10/10   6            10          36m
+    dep-web   11/10   6            11          36m
+    dep-web   11/10   7            11          36m
+    dep-web   10/10   7            10          36m
+    dep-web   11/10   7            11          36m
+    dep-web   11/10   7            11          36m
+    dep-web   11/10   7            11          36m
+    dep-web   10/10   7            10          36m
+    dep-web   10/10   8            10          36m
+    dep-web   11/10   8            11          36m
+    dep-web   11/10   8            11          36m
+    dep-web   11/10   8            11          36m
+    dep-web   10/10   9            10          36m
+    dep-web   11/10   9            11          36m
+    dep-web   11/10   10           11          36m
+    dep-web   10/10   10           10          36m
+    dep-web   11/10   10           11          37m
+    dep-web   11/10   10           11          37m
+    dep-web   10/10   10           10          37m
+    dep-web   11/10   10           11          37m
+    dep-web   10/10   10           10          37m
+    ^C$ k get deploy -o wide
+    NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                       SELECTOR
+    dep-web   10/10   10           10          37m   nginx        coolgourav147/nginx-custom   type=web
     $ 
---------------------------------------------------------------------------------------------------------------------------------------------------------------
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------
