@@ -1010,4 +1010,63 @@ For completeness, this is the definition file for myservice:
     NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                       SELECTOR
     dep-web   10/10   10           10          37m   nginx        coolgourav147/nginx-custom   type=web
     $ 
+    
+# Naming Deployment ( annotations )    
+
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: dep-web
+      labels:
+        type: web
+      annotations:
+        kubernetes.io/change-cause: rollout coolgourav147/nginx-custom
+    spec:
+      minReadySeconds: 30
+      replicas: 10
+      selector:
+        matchLabels:
+          type: web
+      strategy: 
+        rollingUpdate:
+          maxSurge: 0
+          maxUnavailable: 1
+      template:
+        metadata:
+          labels:
+            type: web
+        spec:
+          containers:
+            - name: nginx
+              image: coolgourav147/nginx-custom
+              ports:
+                - containerPort: 80
+       
+ # k rollout history deployment.apps/dep-web
+        deployment.apps/dep-web 
+        REVISION  CHANGE-CAUSE
+        1         <none>
+        2         rollout coolgourav147/nginx-custom
+        
+        $ k apply -f d.yml
+        
+        $ k rollout history deployment.apps/dep-web
+        deployment.apps/dep-web 
+        
+        REVISION  CHANGE-CAUSE
+        1         <none>
+        2         rollout coolgourav147/nginx-custom
+        3         rollout coolgourav147/nginx-custom:v1
+
+# Rollback Deployment
+
+# k rollout undo deployment.apps/dep-web --to-revision=2
+
+    REVISION  CHANGE-CAUSE
+    1         <none>
+    3         rollout coolgourav147/nginx-custom:v1
+    4         rollout coolgourav147/nginx-custom:v2
+    5         rollout coolgourav147/nginx-custom
+    
+
     --------------------------------------------------------------------------------------------------------------------------------------------------------------
