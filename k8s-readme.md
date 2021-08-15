@@ -1010,7 +1010,15 @@ For completeness, this is the definition file for myservice:
     NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                       SELECTOR
     dep-web   10/10   10           10          37m   nginx        coolgourav147/nginx-custom   type=web
     $ 
-    
+
+# Annotations in kubernetes
+
+Annotations allow you to add non-identifying metadata to Kubernetes objects.  Annotations can hold any kind of information that is useful and can provide context to DevOps teams
+
+# Difference between label and annotation kubernetes
+
+Differentiate between Kubernetes labels vs annotations. ... Kubernetes labels allow you to identify, select and operate on Kubernetes objects. Annotations are non-identifying metadata and do none of these things. Annotations allow you to add non-identifying metadata to Kubernetes objects
+
 # Naming Deployment ( annotations )    
 
     apiVersion: apps/v1
