@@ -747,10 +747,10 @@ For completeness, this is the definition file for myservice:
               ports:
                 - containerPort: 80
     
- # $ k apply -f d1.yml 
+ # $ kubectl apply -f d1.yml 
     deployment.apps/dep-web created
     $ ^C
-    $ k get deploy -w
+    $ kubectl get deploy -w
     NAME      READY   UP-TO-DATE   AVAILABLE   AGE
     dep-web   4/10    10           0           9s
     dep-web   5/10    10           0           10s
@@ -765,16 +765,16 @@ For completeness, this is the definition file for myservice:
     REVISION  CHANGE-CAUSE
     1         <none>
 
- # $ k get deploy -o wide --show-labels
+ # $ kubectl get deploy -o wide --show-labels
     NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                       SELECTOR   LABELS
     dep-web   10/10   10           10          89s   nginx        coolgourav147/nginx-custom   type=web   type=web
     $ 
  # $ kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v1
     deployment.apps/dep-web image updated
- # $ k get deploy -o wide
+ # $ kubectl get deploy -o wide
     NAME      READY   UP-TO-DATE   AVAILABLE   AGE    CONTAINERS   IMAGES                          SELECTOR
     dep-web   12/10   2            10          2m8s   nginx        coolgourav147/nginx-custom:v1   type=web
- # $ k get deploy -w
+ # $ kubectl get deploy -w
     NAME      READY   UP-TO-DATE   AVAILABLE   AGE
     dep-web   12/10   2            10          2m17s
     dep-web   12/10   2            12          2m32s
@@ -788,7 +788,7 @@ For completeness, this is the definition file for myservice:
     1         <none>
     2         <none>
 
- # $ k get deploy -w
+ # $ kubectl get deploy -w
     NAME      READY   UP-TO-DATE   AVAILABLE   AGE
     dep-web   12/10   6            10          3m20s
     dep-web   12/10   6            12          3m41s
@@ -796,10 +796,10 @@ For completeness, this is the definition file for myservice:
     dep-web   10/10   8            10          3m42s
     dep-web   11/10   8            10          3m45s
     dep-web   12/10   8            10          3m46s
- # $ k get deploy -o wide
+ # $ kubectl get deploy -o wide
     NAME      READY   UP-TO-DATE   AVAILABLE   AGE    CONTAINERS   IMAGES                          SELECTOR
     dep-web   12/10   8            10          4m9s   nginx        coolgourav147/nginx-custom:v1   type=web
-    $ k get deploy -o wide -w
+    $ kubectl get deploy -o wide -w
     NAME      READY   UP-TO-DATE   AVAILABLE   AGE     CONTAINERS   IMAGES                          SELECTOR
     dep-web   12/10   8            10          4m16s   nginx        coolgourav147/nginx-custom:v1   type=web
     dep-web   12/10   8            12          4m16s   nginx        coolgourav147/nginx-custom:v1   type=web
@@ -856,7 +856,7 @@ For completeness, this is the definition file for myservice:
     3         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v2 --record=true
     4         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v1 --record=true
 
- # $ k get deploy -o wide 
+ # $ kubectl get deploy -o wide 
     NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                          SELECTOR
     dep-web   10/10   10           10          12m   nginx        coolgourav147/nginx-custom:v1   type=web
  # $ kubectl rollout history deployment.apps/dep-web  --revision=3
@@ -921,12 +921,12 @@ For completeness, this is the definition file for myservice:
     5         <none>
 
 
- # $ k get deploy -o wide
+ # $ kubectl get deploy -o wide
     NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                       SELECTOR
     dep-web   12/10   2            10          16m   nginx        coolgourav147/nginx-custom   type=web
  # $ kubectl rollout undo deployment.apps/dep-web --to-revision=3
     deployment.apps/dep-web rolled back
- # $ k get deploy -o wide
+ # $ kubectl get deploy -o wide
     NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                          SELECTOR
     dep-web   10/10   2            10          16m   nginx        coolgourav147/nginx-custom:v2   type=web
  
@@ -939,7 +939,7 @@ For completeness, this is the definition file for myservice:
 
 # Rollback Deployment
 
-    $ k rollout history deployment.apps/dep-web
+    $ kubectl rollout history deployment.apps/dep-web
     deployment.apps/dep-web 
     REVISION  CHANGE-CAUSE
     1         <none>
@@ -949,16 +949,16 @@ For completeness, this is the definition file for myservice:
     7         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom --record=true
     8         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v1 --record=true
 
-    $ k get deploy -o wide
+    $ kubectl get deploy -o wide
     NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                          SELECTOR
     dep-web   10/10   10           10          34m   nginx        coolgourav147/nginx-custom:v1   type=web
-    $ k rollout undo deployment.apps/dep-web --to-revision=5
+    $ kubectl rollout undo deployment.apps/dep-web --to-revision=5
     deployment.apps/dep-web rolled back
-    $ k get deploy -o wide
+    $ kubectl get deploy -o wide
     NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                          SELECTOR
     dep-web   10/10   2            10          34m   nginx        coolgourav147/nginx-custom:v2   type=web
     
-    $ k rollout history deployment.apps/dep-web
+    $ kubectl rollout history deployment.apps/dep-web
     deployment.apps/dep-web 
     REVISION  CHANGE-CAUSE
     1         <none>
@@ -968,9 +968,9 @@ For completeness, this is the definition file for myservice:
     8         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v1 --record=true
     9         kubectl set image deployment.apps/dep-web nginx=coolgourav147/nginx-custom:v2 --record=true
 
-    $ k rollout undo deployment.apps/dep-web --to-revision=7
+    $ kubectl rollout undo deployment.apps/dep-web --to-revision=7
     deployment.apps/dep-web rolled back
-    $ k get deploy -w
+    $ kubectl get deploy -w
     NAME      READY   UP-TO-DATE   AVAILABLE   AGE
     dep-web   10/10   3            10          36m
     dep-web   11/10   3            11          36m
@@ -1006,7 +1006,7 @@ For completeness, this is the definition file for myservice:
     dep-web   10/10   10           10          37m
     dep-web   11/10   10           11          37m
     dep-web   10/10   10           10          37m
-    ^C$ k get deploy -o wide
+    ^C$ kubectl get deploy -o wide
     NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                       SELECTOR
     dep-web   10/10   10           10          37m   nginx        coolgourav147/nginx-custom   type=web
     $ 
@@ -1042,15 +1042,15 @@ For completeness, this is the definition file for myservice:
               ports:
                 - containerPort: 80
        
- # k rollout history deployment.apps/dep-web
+ # kubectl rollout history deployment.apps/dep-web
         deployment.apps/dep-web 
         REVISION  CHANGE-CAUSE
         1         <none>
         2         rollout coolgourav147/nginx-custom
         
-        $ k apply -f d.yml
+        $ kubectl apply -f d.yml
         
-        $ k rollout history deployment.apps/dep-web
+        $ kubectl rollout history deployment.apps/dep-web
         deployment.apps/dep-web 
         
         REVISION  CHANGE-CAUSE
@@ -1060,7 +1060,7 @@ For completeness, this is the definition file for myservice:
 
 # Rollback Deployment
 
-# k rollout undo deployment.apps/dep-web --to-revision=2
+# kubectl rollout undo deployment.apps/dep-web --to-revision=2
 
     REVISION  CHANGE-CAUSE
     1         <none>
