@@ -1138,3 +1138,99 @@ If you want to just create some resource for troubleshooting, learning or intera
         
 
     --------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+# MY DEPOLOYMENT
+
+    $ cat deploy.yml 
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: dep-web
+      labels:
+        type: web
+      annotations:
+        kubernetes.io/change-cause: rollout nginx
+    spec:
+      minReadySeconds: 30
+      replicas: 1
+      selector:
+        matchLabels:
+          type: web
+      strategy: 
+        rollingUpdate:
+          maxSurge: 0
+          maxUnavailable: 1
+      template:
+        metadata:
+          labels:
+            type: web
+        spec:
+          containers:
+            - name: nginx
+              image: nginx
+              ports:
+                - containerPort: 80
+              # resources:
+              #   limits:
+              #     memory: 200Mi
+              #     cpu: 1
+              #   requests:
+              #     memory: 100Mi
+              #     cpu: 0.5
+    $ cat service.yml 
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: svc-web
+    spec:
+      type: ClusterIP
+      selector:
+        type: web
+      ports:
+        - name: container-web
+          port: 8080
+          targetPort: 80
+    $ 
+    $ 
+    $ kubectl get all
+    NAME                           READY   STATUS    RESTARTS   AGE
+    pod/dep-web-59f557c6bf-qsmzc   1/1     Running   0          112s
+
+    NAME                 TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+    service/kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP    3m21s
+    service/svc-web      ClusterIP   10.96.193.252   <none>        8080/TCP   112s
+
+    NAME                      READY   UP-TO-DATE   AVAILABLE   AGE
+    deployment.apps/dep-web   1/1     1            1           112s
+
+    NAME                                 DESIRED   CURRENT   READY   AGE
+    replicaset.apps/dep-web-59f557c6bf   1         1         1       112s
+    $ 
+    $ 
+    $ curl 10.96.193.252:8080
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <title>Welcome to nginx!</title>
+    <style>
+        body {
+            width: 35em;
+            margin: 0 auto;
+            font-family: Tahoma, Verdana, Arial, sans-serif;
+        }
+    </style>
+    </head>
+    <body>
+    <h1>Welcome to nginx!</h1>
+    <p>If you see this page, the nginx web server is successfully installed and
+    working. Further configuration is required.</p>
+
+    <p>For online documentation and support please refer to
+    <a href="http://nginx.org/">nginx.org</a>.<br/>
+    Commercial support is available at
+    <a href="http://nginx.com/">nginx.com</a>.</p>
+
+    <p><em>Thank you for using nginx.</em></p>
+    </body>
+    </html>
+    $ 
