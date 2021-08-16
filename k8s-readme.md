@@ -1375,3 +1375,14 @@ Providing an easy method of separating development, testing, and deployment of c
     Context "minikube" modified.
     $ kubectl delete ns ns-dev
     namespace "ns-dev" deleted
+
+# Inter-Namespace communication
+
+Namespaces are isolated from each other, but service in one namespace can still talk to a service in another namespace.
+
+For example, consider frontend and backend as services in different namespaces need to communicate with each other.
+
+In this case, you can use the built-in DNS service discovery provided by Kubernetes and just point your app by its FQDN (fully qualified domain name).
+
+Syntax for it :
+    <service-name>.<namespace>.svc.cluster.local
