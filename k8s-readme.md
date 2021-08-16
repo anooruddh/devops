@@ -1341,3 +1341,37 @@ If you want to just create some resource for troubleshooting, learning or intera
     </body>
     </html>
     $ 
+
+# What is a Kubernetes Namespace?
+
+Namespaces are a way to organize clusters into virtual sub-clusters — they can be helpful when different teams or projects share a Kubernetes cluster. Any number of namespaces are supported within a cluster, each logically separated from others but with the ability to communicate with each other. Namespaces cannot be nested within each other.
+
+Any resource that exists within Kubernetes exists either in the default namespace or a namespace that is created by the cluster operator. **Only nodes and persistent storage volumes exist outside of the namespace;** these low-level resources are always visible to every namespace in the clus
+
+# What is the “default” namespace in Kubernetes?
+
+Kubernetes comes with three namespaces out-of-the-box. They are:
+
+
+default: As its name implies, this is the namespace that is referenced by default for every Kubernetes command, and where every Kubernetes resource is located by default. Until new namespaces are created, the entire cluster resides in ‘default’.
+kube-system: Used for Kubernetes components and should be avoided.
+kube-public: Used for public resources. Not recommended for use by users.
+
+# Why use Kubernetes namespaces?
+
+There are many use cases for Kubernetes namespaces, including:
+
+Allowing teams or projects to exist in their own virtual clusters without fear of impacting each other’s work. 
+Enhancing role-based access controls (RBAC) by limiting users and processes to certain namespaces. 
+Enabling the dividing of a cluster’s resources between multiple teams and users via resource quotas.
+Providing an easy method of separating development, testing, and deployment of containerized applications enabling the entire lifecycle to take place on the same cluster.
+
+# How do you switch between Kubernetes namespaces?
+
+    $ kubectl config set-context --current --namespace=ns-dev
+    Context "minikube" modified.
+    
+    $ kubectl config set-context --current --namespace=ns-dev
+    Context "minikube" modified.
+    $ kubectl delete ns ns-dev
+    namespace "ns-dev" deleted
