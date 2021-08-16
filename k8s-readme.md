@@ -1139,7 +1139,7 @@ If you want to just create some resource for troubleshooting, learning or intera
 
     --------------------------------------------------------------------------------------------------------------------------------------------------------------
     
-# MY DEPOLOYMENT
+# MY DEPLOYMENT
 
     $ cat deploy.yml 
     apiVersion: apps/v1
