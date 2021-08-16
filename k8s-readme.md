@@ -1078,7 +1078,7 @@ Differentiate between Kubernetes labels vs annotations. ... Kubernetes labels al
     
 # Apply VS Create
 
-apply (declarative ) - makes incremental changes to an existing object
+**apply (declarative )** - makes incremental changes to an existing object
 kubectl apply works with directories and its sub directories containing object configuration yaml files.
 Multiple object configuration files from directories can be picked up. 
 
@@ -1090,7 +1090,7 @@ Multiple object configuration files from directories can be picked up.
 
     kubectl apply -f configs/
 
-create (imperative ) - creates a whole new object (previously non-existing / deleted)
+**create (imperative )** - creates a whole new object (previously non-existing / deleted)
 kubectl create can work with one object configuration file at a time
 
 ## These are imperative object config:
