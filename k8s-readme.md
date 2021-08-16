@@ -1234,3 +1234,110 @@ If you want to just create some resource for troubleshooting, learning or intera
     </body>
     </html>
     $ 
+
+    $ cat pod.yml 
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: pod-web
+      labels:
+        type: web
+    spec:
+      containers:
+        - name: container-cool
+          image: coolgourav147/nginx-custom
+          imagePullPolicy: Always
+    
+    $ curl 10.96.193.252:8080
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <title>Welcome to nginx!</title>
+    <style>
+        body {
+            width: 35em;
+            margin: 0 auto;
+            font-family: Tahoma, Verdana, Arial, sans-serif;
+        }
+    </style>
+    </head>
+    <body>
+    <h1>Welcome to nginx!</h1>
+    <p>If you see this page, the nginx web server is successfully installed and
+    working. Further configuration is required.</p>
+
+    <p>For online documentation and support please refer to
+    <a href="http://nginx.org/">nginx.org</a>.<br/>
+    Commercial support is available at
+    <a href="http://nginx.com/">nginx.com</a>.</p>
+
+    <p><em>Thank you for using nginx.</em></p>
+    </body>
+    </html>
+    
+    $ curl 10.96.193.252:8080
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+    .card {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      max-width: 300px;
+      margin: auto;
+      text-align: center;
+      font-family: arial;
+    }
+
+    .title {
+      color: grey;
+      font-size: 18px;
+    }
+
+    button {
+      border: none;
+      outline: 0;
+      display: inline-block;
+      padding: 8px;
+      color: white;
+      background-color: #000;
+      text-align: center;
+      cursor: pointer;
+      width: 100%;
+      font-size: 18px;
+    }
+
+    a {
+      text-decoration: none;
+      font-size: 22px;
+      color: black;
+    }
+
+    button:hover, a:hover {
+      opacity: 0.7;
+    }
+    </style>
+    <title>Gaurav Sharma</title>
+    </head>
+    <body>
+
+    <h2 style="text-align:center">User Profile Card-latest</h2>
+
+    <div class="card">
+      <img src="gaurav.jpg" alt="Gaurav" style="width:100%">
+      <h1>Gourav Sharma</h1>
+      <p class="title">Software Engineer</p>
+      <p>Rajasthan</p>
+      <div style="margin: 24px 0;">
+        <a href="https://www.linkedin.com/in/crgaurav/" target="_blank"><i class="fa fa-linkedin"></i></a>  
+        <a href="https://www.facebook.com/coolgaurav147" target="_blank"><i class="fa fa-facebook"></i></a>
+        <a href="https://www.youtube.com/gouravsharma" target="_blank"><i class="fa fa-youtube"></i></a> 
+        <a href="https://t.me/crgaurav" target="_blank"><i class="fa fa-telegram"></i></a>
+        <a href="skype:gaurav.sharma6421?chat" target="_blank"><i class="fa fa-skype"></i></a>
+      </div>
+      <p><button>Contact</button></p>
+    </div>
+
+    </body>
+    </html>
+    $ 
