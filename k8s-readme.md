@@ -1101,22 +1101,23 @@ kubectl create can work with one object configuration file at a time
 
     kubectl replace -f your-object-config.yaml
 
-
-┌─────────┬───────────────────────┬────────────────────────┐
-│ command │ object does not exist │ object already exists  │
-├─────────┼───────────────────────┼────────────────────────┤
-│ create  │ create new object     │          ERROR         │ 
-│         │                       │                        │
-│ apply   │ create new object     │ configure object       │
-│         │ (needs complete spec) │ (accepts partial spec) │
-│         │                       │                        │
-│ replace │         ERROR         │ delete object          │
-│         │                       │ create new object      │
-└─────────┴───────────────────────┴────────────────────────┘
-        kubectl create -f .\my-deployment.yml                                                                                                                                           deployment.apps "dep-web" created
-        kubectl create -f .\my-deployment.yml                                                                                                                                           Error from server (AlreadyExists): error when creating ".\\my-deployment.yml": deployments.apps "dep-web" already exists
-        kubectl apply -f .\my-deployment.yml                                                                                                                                           Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
+        kubectl create -f .\my-deployment.yml
+        
+        deployment.apps "dep-web" created
+        
+        kubectl create -f .\my-deployment.yml
+        
+        Error from server (AlreadyExists): error when creating ".\\my-deployment.yml": deployments.apps "dep-web" already exists
+        
+        kubectl apply -f .\my-deployment.yml 
+        
+        Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
+        
         deployment.apps "dep-web" configured
-        kubectl delete -f .\my-deployment.yml                                                                                                                                           deployment.apps "dep-web" deleted
+        
+        kubectl delete -f .\my-deployment.yml
+        
+        deployment.apps "dep-web" deleted
+        
 
     --------------------------------------------------------------------------------------------------------------------------------------------------------------
