@@ -1076,5 +1076,47 @@ Differentiate between Kubernetes labels vs annotations. ... Kubernetes labels al
     4         rollout coolgourav147/nginx-custom:v2
     5         rollout coolgourav147/nginx-custom
     
+# Apply VS Create
+
+apply (declarative ) - makes incremental changes to an existing object
+kubectl apply works with directories and its sub directories containing object configuration yaml files.
+Multiple object configuration files from directories can be picked up. 
+
+    kubectl apply -f directory/
+
+## These are declarative object config
+
+    kubectl diff -f configs/
+
+    kubectl apply -f configs/
+
+create (imperative ) - creates a whole new object (previously non-existing / deleted)
+kubectl create can work with one object configuration file at a time
+
+## These are imperative object config:
+
+    kubectl create -f your-object-config.yaml
+
+    kubectl delete -f your-object-config.yaml
+
+    kubectl replace -f your-object-config.yaml
+
+
+┌─────────┬───────────────────────┬────────────────────────┐
+│ command │ object does not exist │ object already exists  │
+├─────────┼───────────────────────┼────────────────────────┤
+│ create  │ create new object     │          ERROR         │ 
+│         │                       │                        │
+│ apply   │ create new object     │ configure object       │
+│         │ (needs complete spec) │ (accepts partial spec) │
+│         │                       │                        │
+│ replace │         ERROR         │ delete object          │
+│         │                       │ create new object      │
+└─────────┴───────────────────────┴────────────────────────┘
+        kubectl create -f .\my-deployment.yml                                                                                                                                           deployment.apps "dep-web" created
+        kubectl create -f .\my-deployment.yml                                                                                                                                           Error from server (AlreadyExists): error when creating ".\\my-deployment.yml": deployments.apps "dep-web" already exists
+        kubectl apply -f .\my-deployment.yml                                                                                                                                           Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
+        deployment.apps "dep-web" configured
+        kubectl delete -f .\my-deployment.yml                                                                                                                                           deployment.apps "dep-web" deleted
 
     --------------------------------------------------------------------------------------------------------------------------------------------------------------
