@@ -1385,4 +1385,5 @@ For example, consider frontend and backend as services in different namespaces n
 In this case, you can use the built-in DNS service discovery provided by Kubernetes and just point your app by its FQDN (fully qualified domain name).
 
 Syntax for it :
+
     <service-name>.<namespace>.svc.cluster.local
