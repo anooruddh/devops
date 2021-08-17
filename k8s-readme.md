@@ -1566,3 +1566,111 @@ Syntax for it :
     </body>
     </html>
     root@pod-web:/#     
+
+
+# Kubernetes Applying Namespace Resource Quota and Limits for Pods
+
+The resource quota is the total available resources for a particular namespace, while limit range is used to assign limits for containers(Pods) running inside the namespace.
+
+# Namespace ResourceQuotas
+
+After creating Namespaces, we can use the ResourceQuota object to limit down the total amount of resource used by the namespace. We can use ResourceQuota to set limits for different object types that can be created within a namespace along with setting quotas for resources like CPU and memory.
+
+A ResourceQuota for setting quota on resources looks like this:
+
+    apiVersion: v1
+    kind: ResourceQuota
+    metadata:
+      name: quota
+    spec:
+      hard:
+        limits.cpu: "2"
+        limits.memory: 2Gi
+        requests.cpu: ".5"
+        requests.memory: 1Gi
+        pods: "2"
+
+# Following are the resource quotas set:
+
+**limits.cpu** is the maximum CPU cores limit for all the containers(Pods) in the Namespace, i.e. the entire namespace.
+
+**limits.memory** is the maximum Memory limit for all containers(Pods) in the Namespace, i.e. the entire namespace.
+
+**requests.cpu** is the maximum CPU millicores allocated for all the containers(Pods) in the Namespace. As per the above YAML, we can have 5 containers with 600m requests, 10 containers with 300m requests, etc. The total requested CPU in the Namespace should be less than 3000m.
+
+**requests.memory** is the maximum Memory allocated for all the containers(Pods) in the Namespace. As per the above YAML, we can have 5 containers with 200MiB requests, 10 containers with 100MiB CPU requests, or 1 container with a 1000MiB or 1Gi request.
+
+**pods** is the maximum number of pods allowed in the namespace.
+
+# LimitRange for Containers(Pods)
+
+We can also create a LimitRange object in our Namespace which can be used to set limits on resources on containers(Pods) running within the namespace. This is used to provide default limit values for Pods which do not specify this value themeselves to equally distribute resources within a namespace.
+
+A LimitRange provides constraints that can:
+
+Apply minimum and maximum cpu resources usage limit per Pod or Container in a namespace.
+
+Apply minimum and maximum memory request limit per PersistentVolumeClaim in a namespace.
+
+Set a ratio between request and limit for a resource in a namespace.
+
+Set default request/limit for resources within a namespace and then automatically set the limits to Containers at runtime
+
+Here is a sample LimitRange YAML file:
+
+    apiVersion: v1
+    kind: LimitRange
+    metadata:
+      name: sample
+    spec:
+      limits:
+      - max:
+          cpu: 1000m
+          memory: 1Gi
+        min:
+          cpu: 10m
+          memory: 10Mi
+        default:
+          cpu: 600m
+          memory: 100Mi
+        defaultRequest:
+          cpu: 100m
+          memory: 50Mi
+        type: Container
+
+The above YAML file has 4 sections, max, min, default, and defaultRequest.
+
+The default section will set up the default limits for a container in a pod. Any container with no limits defined will get these values assigned as default.
+
+The defaultRequest section will set up the default requests for a container in a pod. Any container with no requests defined will get these values assigned as default.
+
+The max section will set up the maximum limits that a container in a Pod can set. The value specified in the default section cannot be higher than this value. Also, limits set on a container cannot be higher than this value. One important point to note here is that if max value is set and the default section is not set, then any containers that don't explicitly set these values themselves will get the max values assigned to it as the limit.
+
+The min section will set up the minimum Requests that a container in a Pod can set. The value specified in the defaultRequest section cannot be lower than this value. Similarly, requests set on a container cannot be lower than this value. One important point to note here is that if min value is set and the defaultRequest section is not set, then the min value becomes the defaultRequest value too.
+
+    kubectl describe ns ns-dev
+    Name:         ns-dev
+    Labels:       kubernetes.io/metadata.name=ns-dev
+    Annotations:  <none>
+    Status:       Active
+
+    Resource Quotas
+      Name:            quo-ns-dev
+      Resource         Used  Hard
+      --------         ---   ---
+      pods             1     2
+      Name:            quota
+      Resource         Used  Hard
+      --------         ---   ---
+      limits.cpu       0     2
+      limits.memory    0     2Gi
+      pods             1     2
+      requests.cpu     0     500m
+      requests.memory  0     1Gi
+
+    Resource Limits
+     Type       Resource  Min   Max  Default Request  Default Limit  Max Limit/Request Ratio
+     ----       --------  ---   ---  ---------------  -------------  -----------------------
+     Container  cpu       10m   1    100m             600m           -
+     Container  memory    10Mi  1Gi  50Mi             100Mi          -
+
