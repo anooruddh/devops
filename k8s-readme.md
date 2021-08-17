@@ -1384,6 +1384,174 @@ For example, consider frontend and backend as services in different namespaces n
 
 In this case, you can use the built-in DNS service discovery provided by Kubernetes and just point your app by its FQDN (fully qualified domain name).
 
+**curl svc-web.default.svc.cluster.local**
+
 Syntax for it :
 
     <service-name>.<namespace>.svc.cluster.local
+    
+    $ ls -lrt
+    total 16
+    drwxr-xr-x 2 root root 4096 Mar  1  2020 Desktop
+    -rw-r--r-- 1 root root   62 Aug 17 05:02 ns.yml
+    -rw-r--r-- 1 root root  192 Aug 17 05:02 pod.yml
+    -rw-r--r-- 1 root root  202 Aug 17 05:02 service.yml
+    $ 
+    $ k get all
+    NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+    service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   2m
+    $ k get po -o wide -show-labels
+    Unable to connect to the server: dial tcp: lookup how-labels on 8.8.8.8:53: no such host
+    $ k get po -o wide --show-labels
+    No resources found in default namespace.
+    $ 
+    $ k get svc -o wide --show-labels
+    NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE     SELECTOR   LABELS
+    kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   2m41s   <none>     component=apiserver,provider=kubernetes
+    $ 
+    $ cat ns.yml 
+    apiVersion: v1
+    kind: Namespace
+    metadata:
+      name: ns-dev
+    spec:
+    $ cat pod.yml 
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: pod-web
+      labels:
+        type: web
+    spec:
+      containers:
+        - name: container-cool
+          image: coolgourav147/nginx-custom
+          imagePullPolicy: Always
+    $ cat service.yml 
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: svc-web
+    spec:
+      type: NodePort
+
+      selector:
+        type: web
+      ports:
+        - name: container-web
+          port: 80
+          targetPort: 80
+          nodePort: 30032
+    $ 
+
+    $ k apply -f .
+    namespace/ns-dev configured
+    pod/pod-web unchanged
+    service/svc-web created
+    $ 
+    $ k get all
+    NAME          READY   STATUS    RESTARTS   AGE
+    pod/pod-web   1/1     Running   0          40s
+
+    NAME                 TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+    service/kubernetes   ClusterIP   10.96.0.1      <none>        443/TCP        7m2s
+    service/svc-web      NodePort    10.103.91.40   <none>        80:30032/TCP   16s
+    $ k get po -o wide --show-labels
+    NAME      READY   STATUS    RESTARTS   AGE   IP           NODE       NOMINATED NODE   READINESS GATES   LABELS
+    pod-web   1/1     Running   0          47s   172.18.0.6   minikube   <none>           <none>            type=web
+    $ k get svc -o wide --show-labels
+    NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE     SELECTOR   LABELS
+    kubernetes   ClusterIP   10.96.0.1      <none>        443/TCP        7m19s   <none>     component=apiserver,provider=kubernetes
+    svc-web      NodePort    10.103.91.40   <none>        80:30032/TCP   33s     type=web   <none>
+    $ 
+    $ k get ns
+    NAME                   STATUS   AGE
+    default                Active   7m22s
+    kube-node-lease        Active   7m24s
+    kube-public            Active   7m24s
+    kube-system            Active   7m24s
+    kubernetes-dashboard   Active   7m16s
+    ns-dev                 Active   60s
+    $ 
+    $ k get svc -n ns-dev
+    No resources found in ns-dev namespace.
+    $ k get pod -n ns-dev
+    No resources found in ns-dev namespace.
+    $ 
+    $ k apply -f pod.yml  -n ns-dev
+    pod/pod-web created
+    $ k get pod -n ns-dev
+    NAME      READY   STATUS    RESTARTS   AGE
+    pod-web   1/1     Running   0          3s
+    $ 
+    $ k exec -it pod-web -- bash -n ns-dev
+    bash: ns-dev: No such file or directory
+    command terminated with exit code 127
+    $ k exec -it pod-web -n ns-dev -- bash
+    root@pod-web:/# 
+    root@pod-web:/# curl svc-web.default.svc.cluster.local
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+    .card {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      max-width: 300px;
+      margin: auto;
+      text-align: center;
+      font-family: arial;
+    }
+
+    .title {
+      color: grey;
+      font-size: 18px;
+    }
+
+    button {
+      border: none;
+      outline: 0;
+      display: inline-block;
+      padding: 8px;
+      color: white;
+      background-color: #000;
+      text-align: center;
+      cursor: pointer;
+      width: 100%;
+      font-size: 18px;
+    }
+
+    a {
+      text-decoration: none;
+      font-size: 22px;
+      color: black;
+    }
+
+    button:hover, a:hover {
+      opacity: 0.7;
+    }
+    </style>
+    <title>Gaurav Sharma</title>
+    </head>
+    <body>
+
+    <h2 style="text-align:center">User Profile Card-latest</h2>
+
+    <div class="card">
+      <img src="gaurav.jpg" alt="Gaurav" style="width:100%">
+      <h1>Gourav Sharma</h1>
+      <p class="title">Software Engineer</p>
+      <p>Rajasthan</p>
+      <div style="margin: 24px 0;">
+        <a href="https://www.linkedin.com/in/crgaurav/" target="_blank"><i class="fa fa-linkedin"></i></a>  
+        <a href="https://www.facebook.com/coolgaurav147" target="_blank"><i class="fa fa-facebook"></i></a>
+        <a href="https://www.youtube.com/gouravsharma" target="_blank"><i class="fa fa-youtube"></i></a> 
+        <a href="https://t.me/crgaurav" target="_blank"><i class="fa fa-telegram"></i></a>
+        <a href="skype:gaurav.sharma6421?chat" target="_blank"><i class="fa fa-skype"></i></a>
+      </div>
+      <p><button>Contact</button></p>
+    </div>
+
+    </body>
+    </html>
+    root@pod-web:/#     
