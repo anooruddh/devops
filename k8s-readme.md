@@ -1590,7 +1590,7 @@ A ResourceQuota for setting quota on resources looks like this:
         requests.memory: 1Gi
         pods: "2"
 
-# Following are the resource quotas set:
+## Following are the resource quotas set:
 
 **limits.cpu** is the maximum CPU cores limit for all the containers(Pods) in the Namespace, i.e. the entire namespace.
 
