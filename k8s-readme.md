@@ -425,6 +425,17 @@ Command to run the deployment.yml file -
 
 ![Screenshot](deployment-decision-diagram.png)
 
+# Deployment Status
+
+ReplicaSet output shows the following fields:
+
+**NAME** lists the names of the ReplicaSets in the namespace.
+**DESIRED** displays the desired number of replicas of the application, which you define when you create the Deployment. This is the desired state.
+**CURRENT** displays how many replicas are currently running.
+**READY** displays how many replicas of the application are available to your users.
+**AGE** displays the amount of time that the application has been running.
+
+
 # Service(s) in Kubernetes
 
 A Kubernetes service is a logical abstraction for a deployed group of pods in a cluster (which all perform the same function).
