@@ -1674,3 +1674,27 @@ The min section will set up the minimum Requests that a container in a Pod can s
      Container  cpu       10m   1    100m             600m           -
      Container  memory    10Mi  1Gi  50Mi             100Mi          -
 
+
+# Readiness and Liveness Probes in Kubernetes
+
+Kubernetes automatically checks if a pod is healthy and also when it is ready to accept traffic. These checks are done using a readiness probe and liveness probe respectively.
+
+# Liveness Probe
+
+Kubernetes regularly checks whether a pod is still alive or not. To check that, Kubernetes sends a request to the URL and port configured in the liveness section of the deployment. If the request returns an HTTP code greater or equal to 200 but less than 400, the pod is considered healthy. In every other case, the pod is considered dead and will be restarted. A liveness probe looks as follows:
+
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: http
+
+# Readiness Probe
+
+The readiness probe works the same way as the liveness probe except that it is only executed to determine whether a pod is ready to receive traffic after startup. A readiness probe looks as follows:
+
+    readinessProbe:
+      httpGet:
+        path: /health
+        port: http
+        
+![Screenshot](pod-health-check.png)        
