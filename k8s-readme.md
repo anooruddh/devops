@@ -506,6 +506,11 @@ A headless service is a service with a service IP but instead of load-balancing 
 
 Headless-services allow us to reach each Pod directly, rather than the service acting as a load-balancer or prox
 
+# Use Cases of Headless Service-
+- [x] Create Stateful service
+- [x] Deploying RabbitMQ to Kubernetes requires a stateful set for RabbitMQ cluster nodes.
+- [x] Deployment of Relational databases
+
 #   How do Kubernetes services work
 
    Services simply point to pods using labels. Since services are not node-specific, a service can point to a pod regardless of where it runs in the cluster at any given moment in time. By exposing a service IP address as well as a DNS service name, the application can be reached by either method as long as the service exists.
