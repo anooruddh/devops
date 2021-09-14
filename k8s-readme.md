@@ -10,6 +10,10 @@ Docker is a containerization platform, and Kubernetes is a container orchestrato
 
 ![Screenshot](k8arch.jpg)
 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+![Screenshot](karch.png)
+
 # Kubernetes Notes
 
 ## Master Node Components
