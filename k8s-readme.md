@@ -69,6 +69,8 @@ Each compute node contains a network proxy called a kube-proxy that facilitates 
 
 The kube-proxy runs on each node to ensure that services are available to external parties and deal with individual host subnetting. It serves as a network proxy and service load balancer on its node, managing the network routing for UDP and TCP packets. In fact, the kube-proxy routes traffic for all service endpoints.
 
+### Kube-proxy runs in three modes: userspace, iptables, and ipvs. (Userspace is old, slow and not recommended.)
+
 ## Pods
 
 Until now, we have covered concepts that are internal and infrastructure-focused. In contrast, pods are central to Kubernetes because they are the key outward facing construct that developers interact with.
