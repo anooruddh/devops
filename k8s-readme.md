@@ -52,13 +52,16 @@ Each compute node runs and manages container life cycles using a container runti
 
 Each compute node includes a kubelet, an agent that communicates with the master or control plane to ensure the containers in a pod are running. When the control plane requires a specific action happen in a node, the kubelet receives the pod specifications through the API server and executes the action. It then ensures the associated containers are healthy and running.
 
-Kubelet is an agent process that runs of each worker node
+### Kubelet is an agent process that runs of each worker node
 
 Its job includes
 
 > Register a node as a worker node
+
 > Creats/Destroy/Runs the PODs on the worker nodes based on the POD specs received from API-Server
+
 > Reports the status of PODs and Nodes to the API-Server regularly
+
 
 ## Kube-proxy service
 
