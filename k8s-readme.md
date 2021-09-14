@@ -52,6 +52,14 @@ Each compute node runs and manages container life cycles using a container runti
 
 Each compute node includes a kubelet, an agent that communicates with the master or control plane to ensure the containers in a pod are running. When the control plane requires a specific action happen in a node, the kubelet receives the pod specifications through the API server and executes the action. It then ensures the associated containers are healthy and running.
 
+Kubelet is an agent process that runs of each worker node
+
+Its job includes
+
+> Register a node as a worker node
+> Creats/Destroy/Runs the PODs on the worker nodes based on the POD specs received from API-Server
+> Reports the status of PODs and Nodes to the API-Server regularly
+
 ## Kube-proxy service
 
 Each compute node contains a network proxy called a kube-proxy that facilitates Kubernetes networking services. The kube-proxy either forwards traffic itself or relies on the packet filtering layer of the operating system to handle network communications both outside and inside the cluster.
@@ -96,6 +104,15 @@ To run etcd, you first need to have a Kubernetes cluster and the command-line to
 
 ## Kubelet
 The kubelet functions as an agent within nodes and is responsible for the runnings of pod cycles within each node. Its functionality is watching for new or changed pod specifications from master nodes and ensuring that pods within the node that it resides in are healthy, and the state of pods matches the pod specification.
+
+Kubelet is an agent process that runs of each worker node
+
+Its job includes
+
+> Register a node as a worker node
+> Creats/Destroy/Runs the PODs on the worker nodes based on the POD specs received from API-Server
+> Reports the status of PODs and Nodes to the API-Server regularly
+
 
 ## Kube-proxy
 Kube-proxy is a network proxy that runs on each node. It maintains network rules, which allow for network communication to Pods from network sessions inside or outside of a cluster. Kube-proxy is used to reach kubernetes services in addition to load balancing of services.
