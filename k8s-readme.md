@@ -1785,7 +1785,7 @@ The node selector is one such mechanism or constraint which we can apply to our 
 
 ### Attach Labels To The Node You Want :
 
-   $ kubectl label node minikube size=large
+     $ kubectl label node minikube size=large
 
 ### Create a Pod definition and make use of nodeSelector 
 
@@ -1807,5 +1807,9 @@ The node selector is one such mechanism or constraint which we can apply to our 
 
 This type of logical expression type of selection cannot be achieved by nodeSelector, for this one has to use "Node Affinity"
 
+Node affinity is conceptually similar to nodeSelector – it allows you to constrain which nodes your pod is eligible to schedule on, based on labels on the node. There are currently two types of node affinity, called
 
+		requiredDuringSchedulingIgnoredDuringExecution
+		preferredDuringSchedulingIgnoredDuringExecution
 
+The new node affinity syntax supports the following operators: In,NotIn,Exists,DoesNotExist,Gt,Lt.
