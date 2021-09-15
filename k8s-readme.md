@@ -1729,3 +1729,83 @@ The readiness probe works the same way as the liveness probe except that it is o
         port: http
         
 ![Screenshot](pod-health-check.png)        
+
+
+# Node Affinity
+
+### What is Node Affinity?
+Node affinity is objectively used to perform the same task as nodeSelector where it allows you to constrain which nodes your pod is eligible to be scheduled on, based on labels on the node. But it differs in its ability to make this constraint become more expressive
+The affinity language in node affinity offers the protocols or matching rule based on logical OR/ AND operation, NOT operations, etc..
+
+Let’s write the Pod definition
+
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: node-affinity-demo
+     labels:
+       env: staging
+   spec:
+     containers:
+      - name: node-affinity-demo
+        image: nginx
+     affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: size
+              operator: In
+              values:
+              - large
+            -   small
+            
+In node selector, we used nodeSelector field under the Spec, but here in the pod definition, it is replaced by more complex terms as shown below
+
+   affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: size
+            operator: In
+            values:
+            - large
+            - small
+
+It has :
+key: which defines the parameter like size
+operator: here we place the operator: In, it can also have the values like NotIn, Exists. There are more operators which one need to refer to in the Kubernetes doc
+value: which defines values for the keys like, large, medium, medium and small, medium or large, only medium, not small, etc..
+It can hold multiple values like
+
+# Node selector 
+
+The node selector is one such mechanism or constraint which we can apply to our pod to ensure that it is placed into a particular type of Node. One has to specify the field "nodeSelector"
+
+### Attach Labels To The Node You Want :
+
+   $ kubectl label node minikube size=large
+
+### Create a Pod definition and make use of nodeSelector 
+
+   apiVersion: v1
+    kind: Pod
+    metadata:
+      name: nginx
+      labels:
+        env: staging
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+
+      nodeSelector:
+        size: large
+
+### Limitation - You can not run the pod on a node based on expression (size: large or medium / size: Not Small) 
+
+This type of logical expression type of selection cannot be achieved by nodeSelector, for this one has to use "Node Affinity"
+
+
+
