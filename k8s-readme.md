@@ -1813,3 +1813,37 @@ Node affinity is conceptually similar to nodeSelector – it allows you to const
 		preferredDuringSchedulingIgnoredDuringExecution
 
 The new node affinity syntax supports the following operators: In,NotIn,Exists,DoesNotExist,Gt,Lt.
+
+
+
+# Node taint
+
+In Kubernetes, node taints and tolerations function in a manner similar to node affinity rules, though they take the almost opposite approach. Affinity rules are set for Pods to attract them to specific nodes. A tainted node repels pods that do not have tolerations for those nodes set. Together, taints and tolerations make sure that pods are not scheduled onto inappropriate nodes.
+
+### Why Use Taints and Tolerations
+
+Kubernetes taints and tolerations allow you to create special nodes that are reserved for specific uses or only run specific processes (Pods) that match the node. You may wish to keep workloads off or your Kubernetes management nodes and tainting nodes so that no workload Pod would have matching tolerations would keep them from being scheduled to those nodes.  You may have nodes with specialized hardware for specific jobs (e.g GPUs) and tainting such nodes can reserve it so that the Pods that specifically need that resource type can be scheduled
+to those nodes when needed.
+
+### Applying Taints and Tolerations
+
+Taints are applied to a node using kubectl, for example:
+
+	kubectl taint nodes machineLearningNode1=computer-vision:NoSchedule
+
+### Node taints are key-value pairs associated with an effect. Here are the available effects:
+
+**NoSchedule**: Pods that do not tolerate this taint are not scheduled on the node; existing Pods are not evicted from the node.
+**PreferNoSchedule**: Kubernetes avoids scheduling Pods that do not tolerate this taint onto the node.
+**NoExecute**: Pod is evicted from the node if it is already running on the node, and is not scheduled onto the node if it is not yet running on the node.
+Note that some system Pods (for example, kube-proxy and fluent-bit) tolerate all NoExecute and NoSchedule taints, and will not be evicted.
+
+
+### Using Multiple Taints
+
+It is possible to apply more than one taint to a single node and more than one toleration to a single Pod. Multiple taints and tolerations are used by Kubernetes like a filter. Taint’s matching a Pod’s tolerations are ignored. The remaining taint effects are then applied to the Pod. Some of the effects include
+
+Kubernetes will not schedule the Pod if at least one non-tolerated taint has a NoSchedule effect.
+Kubernetes will try not to schedule the Pod on the node if at least one non-tolerated taint has a PreferNoSchedule effect.
+A NoExecute taint will cause Kubernetes to evict the Pod if it is currently running on the node or will not schedule the Pod the node.
+
