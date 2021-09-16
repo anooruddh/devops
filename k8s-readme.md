@@ -1825,20 +1825,132 @@ In Kubernetes, node taints and tolerations function in a manner similar to node 
 Kubernetes taints and tolerations allow you to create special nodes that are reserved for specific uses or only run specific processes (Pods) that match the node. You may wish to keep workloads off or your Kubernetes management nodes and tainting nodes so that no workload Pod would have matching tolerations would keep them from being scheduled to those nodes.  You may have nodes with specialized hardware for specific jobs (e.g GPUs) and tainting such nodes can reserve it so that the Pods that specifically need that resource type can be scheduled
 to those nodes when needed.
 
+### Why we need Taints and Tolerations?
+
+Taints and tolerations will ensure that a given Pod does not end up on the inappropriate node.
+
+If the taint is applied to a node, only those Pods that have tolerations for this taint can be scheduled onto that node.
+
+The taints and toleration are all about the relationship between the pod and node.
+Taints and Toleration will tell what pods can be placed on what nodes.
+
 ### Applying Taints and Tolerations
 
 Taints are applied to a node using kubectl, for example:
 
 	kubectl taint nodes machineLearningNode1=computer-vision:NoSchedule
 
-### Node taints are key-value pairs associated with an effect. Here are the available effects:
+### Node taints are key-value pairs associated with an effect. Here are the available effects/types:
 
-**NoSchedule**: Pods that do not tolerate this taint are not scheduled on the node; existing Pods are not evicted from the node.
-**PreferNoSchedule**: Kubernetes avoids scheduling Pods that do not tolerate this taint onto the node.
-**NoExecute**: Pod is evicted from the node if it is already running on the node, and is not scheduled onto the node if it is not yet running on the node.
+**NoSchedule**: Pods that do not tolerate this taint are not scheduled on the node; existing Pods are not evicted from the node.(PODs will not be scheduled on the node.)
+**PreferNoSchedule**: Kubernetes avoids scheduling Pods that do not tolerate this taint onto the node.(Kubernetes will try not to place the pod on the node, but it is not guaranteed.)
+**NoExecute**: Pod is evicted from the node if it is already running on the node, and is not scheduled onto the node if it is not yet running on the node.(New pods will not be placed on the node and the existing will be moved out if those could not tolerate the current taint rule.)
 Note that some system Pods (for example, kube-proxy and fluent-bit) tolerate all NoExecute and NoSchedule taints, and will not be evicted.
 
+### How to set a Taint on the node?
 
+	kubectl taint nodes [NODE_NAME] [KEY]=[VALUE]:[EFFECT]
+	
+Example — On Master Node:
+	root@ip-172–31–56–82:~# kubectl get nodes
+	NAME STATUS ROLES AGE VERSION
+	ip-172–31–51–231 Ready <none> 34d v1.17.2
+	ip-172–31–56–82 Ready master 34d v1.17.2
+	root@ip-172–31–56–82:~# kubectl taint node ip-172-31-51-231 app=uber:NoSchedule
+	node/ip-172-31-51-231 tainted
+
+How to verify the Taint?	
+	
+	kubectl describe node <node-name>| grep Taints:
+
+	root@ip-172-31-56-82:~# kubectl describe node ip-172-31-51-231 |grep Taints:
+	Taints:             app=uber:NoSchedule	
+	
+Launch the Nginx POD on the Tainted node and see what happens
+In the above section, we had set up Taint on the node “IP-172–31–51–231”. If you try to launch the Nginx POD now, then the POD will go into PENDING state.
+On the Master Node:
+Create an NGINX pod configuration file,
+	
+	# vim nginx.yaml
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  name: nginx
+	  labels:
+	    env: test
+	spec:
+	  containers:
+	  - name: nginx
+	    image: nginx
+	    imagePullPolicy: IfNotPresent
+
+Save and close the file, and run below command to create the pod,
+	
+	root@ip-172-31-56-82:~# kubectl get pods
+	NAME                       READY   STATUS    RESTARTS   AGE
+
+	nginx                      0/1     Pending   0          5s
+	
+	
+Here, the POD will be in PENDING state, because we have only one worker node, and we tainted the worker node as “NoSchedule” which means no POD can be launched into it unless it has matching toleration.
+
+	Events:
+	Type     Reason            Age        From               Message
+	----     ------            ----       ----               -------
+	Warning  FailedScheduling  <unknown>  default-scheduler  0/2 nodes are available: 2 node(s) had taints that the pod didn't tolerate.
+	
+If you see logs of the Nginx pod, it says nodes are NOT available, which means both the Master and Worker nodes are Tainted so the Nginx POD cannot be placed in either of them.
+Note: By default, Kubernetes Master node will be tainted with the “NoSchedule” effect.
+
+### How to set Toleration?
+
+So in order to launch the Nginx POD, let’s set the Toleration on Nginx POD like below	
+	
+	# vim nginx.yaml
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  name: nginx
+	  labels:
+	    env: test
+	spec:
+	  containers:
+	  - name: nginx
+	    image: nginx
+	  tolerations:
+	  - key: "app"
+	    operator: "Exists"
+	    effect: "NoSchedule"	
+
+A toleration “matches” a taint if the keys are the same and the effects are the same
+	
+### Verification:
+	
+Now check the POD status, it should be placed on the node “ip-172–31–51–231”
+	
+	root@ip-172-31-56-82:~# kubectl get pods -o wide
+	NAME                       READY   STATUS    RESTARTS   AGE     IP            NODE               NOMINATED NODE   READINESS GATES
+
+	nginx                      1/1     Running   0          3m44s   10.244.1.83   ip-172-31-51-231   <none>           <none>
+
+### How to remove Taint on the node?
+
+To remove the taint, you have to use the [KEY] and [EFFECT] ending with [-].
+In the above example, we have used KEY=app, VALUE=uber and EFFECT=NoSchedule, so use these values like below to remove the taint
+	kubectl taint nodes <node-name> [KEY]:[EFFECT]-
+	
+	root@ip-172–31–56–82:~# kubectl taint nodes ip-172-31-51-231 app:NoSchedule-
+	node/ip-172-31-51-231 untainted
+	root@ip-172-31-56-82:~# kubectl describe node ip-172-31-51-231 |grep Taints:
+	Taints:             <none>
+
+### Key Points to Remember:
+Taints are set on ‘Nodes’ and Toleration level is set on ‘Pods’.
+By default, pods are not tolerant of Taints.
+Taint and Toleration do not tell the POD to go to a particular node instead it tells the NODE to only accept pods with a certain tolerance. So in this case, suppose if a node does not have any taint, then it is possible that a pod that has toleration set will land on the untainted node. There is no guarantee that all pods which have toleration set will land on tainted nodes, it might also land on untainted nodes.
+If you want to restrict a POD to specific nodes(Only tainted), then it can be achieved by another concept called ’node affinity’.
+Assume node-1 exists and inside that pod-1 and pod-2 is running without any Taint and Toleration. Now if you add Taint to node-1 and set toleration to pod-1, then pod-1 will continue to run on node-1 but pod-2 might become intolerant and will be killed.
+	
 ### Using Multiple Taints
 
 It is possible to apply more than one taint to a single node and more than one toleration to a single Pod. Multiple taints and tolerations are used by Kubernetes like a filter. Taint’s matching a Pod’s tolerations are ignored. The remaining taint effects are then applied to the Pod. Some of the effects include
@@ -1847,7 +1959,7 @@ Kubernetes will not schedule the Pod if at least one non-tolerated taint has a N
 Kubernetes will try not to schedule the Pod on the node if at least one non-tolerated taint has a PreferNoSchedule effect.
 A NoExecute taint will cause Kubernetes to evict the Pod if it is currently running on the node or will not schedule the Pod the node.
 
-***Node affinity is a property of Pods that attracts them to a set of nodes (either as a preference or a hard requirement). Taints are the opposite -- they allow a node to repel a set of pods***
+***Node affinity is a property of Pods that attracts them to a set of nodes (either as a preference or a hard requirement). Taints are the opposite -- they allow a node to repel a set of pods*** Node affinity is a way to set rules based on which the scheduler can select the nodes for scheduling workload. Node affinity can be thought of as the opposite of taints. Taints repel a certain set of nodes whereas node affinity attracts a certain set of nodes.
 
 
 # JSONPath
