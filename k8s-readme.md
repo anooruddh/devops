@@ -614,7 +614,7 @@ Sidecar containers are the containers that should run along with the main contai
 
 Imagine that you have the pod with a single container working very well and you want to add some functionality to the current container without touching or changing, how can you add the additional functionality or extending the current functionality? This sidecar container pattern really helps exactly in that situation.
 
-![Screenshot](sidecar.jpg)
+![Screenshot](sidecar.JPG)
 
 Sidecar containers “help” the main container. Some examples include log or data change watchers, monitoring adapters, and so on. A log watcher, for example, can be built once by a different team and reused across different applications. Another example of a sidecar container is a file or data loader that generates data for the main container.
 
