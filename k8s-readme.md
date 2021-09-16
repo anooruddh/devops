@@ -1959,9 +1959,13 @@ In the above example, we have used KEY=app, VALUE=uber and EFFECT=NoSchedule, so
 ### Key Points to Remember:
 	
 Taints are set on ‘Nodes’ and Toleration level is set on ‘Pods’.
+
 By default, pods are not tolerant of Taints.
+
 Taint and Toleration do not tell the POD to go to a particular node instead it tells the NODE to only accept pods with a certain tolerance. So in this case, suppose if a node does not have any taint, then it is possible that a pod that has toleration set will land on the untainted node. There is no guarantee that all pods which have toleration set will land on tainted nodes, it might also land on untainted nodes.
+
 If you want to restrict a POD to specific nodes(Only tainted), then it can be achieved by another concept called ’node affinity’.
+
 Assume node-1 exists and inside that pod-1 and pod-2 is running without any Taint and Toleration. Now if you add Taint to node-1 and set toleration to pod-1, then pod-1 will continue to run on node-1 but pod-2 might become intolerant and will be killed.
 	
 ### Using Multiple Taints
