@@ -1843,7 +1843,9 @@ Taints are applied to a node using kubectl, for example:
 ### Node taints are key-value pairs associated with an effect. Here are the available effects/types:
 
 **NoSchedule**: Pods that do not tolerate this taint are not scheduled on the node; existing Pods are not evicted from the node.(PODs will not be scheduled on the node.)
+
 **PreferNoSchedule**: Kubernetes avoids scheduling Pods that do not tolerate this taint onto the node.(Kubernetes will try not to place the pod on the node, but it is not guaranteed.)
+
 **NoExecute**: Pod is evicted from the node if it is already running on the node, and is not scheduled onto the node if it is not yet running on the node.(New pods will not be placed on the node and the existing will be moved out if those could not tolerate the current taint rule.)
 Note that some system Pods (for example, kube-proxy and fluent-bit) tolerate all NoExecute and NoSchedule taints, and will not be evicted.
 
