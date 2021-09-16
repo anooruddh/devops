@@ -243,6 +243,11 @@ minikube status
 
     kubectl describe pod mongo-depl-{pod-name}
 
+### delete label
+
+	kubectl label service my-service app-			(To delete the label ‘app’ from service ‘my-service’)
+	kubectl label namespaces default namespace-		(To delete a label ‘namespace’ from namespace ‘default’)
+
 ### delete deplyoment
 
     kubectl delete deployment mongo-depl
