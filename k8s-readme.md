@@ -606,6 +606,88 @@ Yes, the pause container is part of each pod that is responsible to create share
 
 Pause is a secret container that runs on every pod in Kubernetes. This container’s primary job is to keep the namespace open in case all the other containers on the pod die.
 
+----------------------------------------------------------------------------------------------------------------------------
+
+# Sidecar containers
+
+Sidecar containers are the containers that should run along with the main container in the pod. This sidecar pattern extends and enhances the functionality of current containers without changing it
+
+Imagine that you have the pod with a single container working very well and you want to add some functionality to the current container without touching or changing, how can you add the additional functionality or extending the current functionality? This sidecar container pattern really helps exactly in that situation.
+
+![Screenshot](sidecar.jpg)
+
+Sidecar containers “help” the main container. Some examples include log or data change watchers, monitoring adapters, and so on. A log watcher, for example, can be built once by a different team and reused across different applications. Another example of a sidecar container is a file or data loader that generates data for the main container.
+
+Sample Code
+
+	# Example YAML configuration for the sidecar pattern.
+
+	# It defines a main application container which writes
+	# the current date to a log file every five seconds.
+
+	# The sidecar container is nginx serving that log file.
+	# (In practice, your sidecar is likely to be a log collection
+	# container that uploads to external storage.)
+
+	# To run:
+	#   kubectl apply -f pod.yaml
+
+	# Once the pod is running:
+	#   
+	#   (Connect to the sidecar pod)
+	#   kubectl exec pod-with-sidecar -c sidecar-container -it bash
+	#   
+	#   (Install curl on the sidecar)
+	#   apt-get update && apt-get install curl
+	#   
+	#   (Access the log file via the sidecar)
+	#   curl 'http://localhost:80/app.txt'
+
+	apiVersion: v1
+	kind: Pod
+	metadata:
+	  name: pod-with-sidecar
+	spec:
+	  # Create a volume called 'shared-logs' that the
+	  # app and sidecar share.
+	  volumes:
+	  - name: shared-logs 
+	    emptyDir: {}
+
+	  # In the sidecar pattern, there is a main application
+	  # container and a sidecar container.
+	  containers:
+
+	  # Main application container
+	  - name: app-container
+	    # Simple application: write the current date
+	    # to the log file every five seconds
+	    image: alpine # alpine is a simple Linux OS image
+	    command: ["/bin/sh"]
+	    args: ["-c", "while true; do date >> /var/log/app.txt; sleep 5;done"]
+
+	    # Mount the pod's shared log file into the app 
+	    # container. The app writes logs here.
+	    volumeMounts:
+	    - name: shared-logs
+	      mountPath: /var/log
+
+	  # Sidecar container
+	  - name: sidecar-container
+	    # Simple sidecar: display log files using nginx.
+	    # In reality, this sidecar would be a custom image
+	    # that uploads logs to a third-party or storage service.
+	    image: nginx:1.7.9
+	    ports:
+	      - containerPort: 80
+
+	    # Mount the pod's shared log file into the sidecar
+	    # container. In this case, nginx will serve the files
+	    # in this directory.
+	    volumeMounts:
+	    - name: shared-logs
+	      mountPath: /usr/share/nginx/html # nginx-specific mount path
+
 #   Short Names
         netops@arg048vmlinuxdev:~$ kubectl api-resources
         NAME                              SHORTNAMES   APIVERSION                             NAMESPACED   KIND
