@@ -1851,7 +1851,9 @@ Note that some system Pods (for example, kube-proxy and fluent-bit) tolerate all
 
 	kubectl taint nodes [NODE_NAME] [KEY]=[VALUE]:[EFFECT]
 	
+	
 Example — On Master Node:
+
 	root@ip-172–31–56–82:~# kubectl get nodes
 	NAME STATUS ROLES AGE VERSION
 	ip-172–31–51–231 Ready <none> 34d v1.17.2
@@ -1945,6 +1947,7 @@ In the above example, we have used KEY=app, VALUE=uber and EFFECT=NoSchedule, so
 	Taints:             <none>
 
 ### Key Points to Remember:
+	
 Taints are set on ‘Nodes’ and Toleration level is set on ‘Pods’.
 By default, pods are not tolerant of Taints.
 Taint and Toleration do not tell the POD to go to a particular node instead it tells the NODE to only accept pods with a certain tolerance. So in this case, suppose if a node does not have any taint, then it is possible that a pod that has toleration set will land on the untainted node. There is no guarantee that all pods which have toleration set will land on tainted nodes, it might also land on untainted nodes.
