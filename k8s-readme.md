@@ -1924,6 +1924,14 @@ So in order to launch the Nginx POD, let’s set the Toleration on Nginx POD lik
 	    operator: "Exists"
 	    effect: "NoSchedule"	
 
+Using Value
+
+	tolerations:
+	- key: "app"
+	  operator: "Equal"
+	  value: "uber"
+  	  effect: "NoSchedule"
+
 A toleration “matches” a taint if the keys are the same and the effects are the same
 	
 ### Verification:
