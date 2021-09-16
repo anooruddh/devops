@@ -1848,3 +1848,40 @@ Kubernetes will try not to schedule the Pod on the node if at least one non-tole
 A NoExecute taint will cause Kubernetes to evict the Pod if it is currently running on the node or will not schedule the Pod the node.
 
 ***Node affinity is a property of Pods that attracts them to a set of nodes (either as a preference or a hard requirement). Taints are the opposite -- they allow a node to repel a set of pods***
+
+
+# JSONPath
+
+Kubectl supports JSONPath template.
+
+JSONPath template is composed of JSONPath expressions enclosed by curly braces {}. Kubectl uses JSONPath expressions to filter on specific fields in the JSON object and format the output.
+
+Examples using kubectl and JSONPath expressions:
+
+	kubectl get pods -o json
+	kubectl get pods -o=jsonpath='{@}'
+	kubectl get pods -o=jsonpath='{.items[0]}'
+	kubectl get pods -o=jsonpath='{.items[0].metadata.name}'
+	kubectl get pods -o=jsonpath="{.items[*]['metadata.name', 'status.capacity']}"
+	kubectl get pods -o=jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.startTime}{"\n"}{end}'
+	
+Sample pod manifest
+
+	apiVersion: v1
+	 kind: Pod
+	 metadata:
+	   name: web-server
+	   labels:
+	     app: web
+	 spec:
+	   containers:
+	     - name: nginx-container
+	       image: nginx
+	       imagePullPolicy: Always
+
+Expression to extract the name of the pod using JSONpath
+
+	kubectl get pods -o=jsonpath='{.items[0].metadata.name}'
+	OUTPUT
+	web-server
+	
