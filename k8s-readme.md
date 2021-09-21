@@ -5,10 +5,11 @@ Docker is a containerization platform, and Kubernetes is a container orchestrato
 Colons can be used to align columns.
 
 | Kubernetes    | Docker        |
-| ------------- |:-------------:|
+| ------------- |-------------|
 | It requires a series of manual steps to setup Kubernetes Master and worker nodes components in a cluster of nodes      | Installing Docker is a matter of one-liner command on Linux Platform like Debian, Ubuntu, and CentOS. |
-| col 2 is      | centered      |
-| zebra stripes | are neat      |
+| Kubernetes can run on various platforms: from your laptop, to VMs on a cloud provider, to a rack of bare metal servers. For setting up a single node K8s cluster, one can use Minikube.      | To install a single-node Docker Swarm or Kubernetes cluster, one can deploy Docker for Mac & Docker for Windows.      |
+| Kubernetes support for Windows server is under beta phase. | Docker has official support for Windows 10 and Windows Server 2016 and 1709.     |
+| Kubernetes Client and Server packages need to be upgraded manually on all the systems. | It’s so easy to upgrade Docker Engine under Docker for Mac & Windows via just 1 click.|
 
 
 
