@@ -2,6 +2,16 @@
 
 Docker is a containerization platform, and Kubernetes is a container orchestrator for container platforms like Docker. 
 
+Colons can be used to align columns.
+
+| Kubernetes    | Docker        |
+| ------------- |:-------------:|
+| It requires a series of manual steps to setup Kubernetes Master and worker nodes components in a cluster of nodes      | Installing Docker is a matter of one-liner command on Linux Platform like Debian, Ubuntu, and CentOS. |
+| col 2 is      | centered      |
+| zebra stripes | are neat      |
+
+
+
 # Kubernetes architecture and its components
 
 ![Screenshot](kubernetes_cluster.png)
