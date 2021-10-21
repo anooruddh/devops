@@ -228,6 +228,12 @@ deleting tags
 
 >git revert <commitid>  {no commit needed}
 >git revert -n <commitid>, then commit is needed
+>git revert HEAD~5..HEAD~2	(If you want to revert a set of Git commits, you can add .. between two gitrevisions. The older commit should come first, followed by the newer commit.)
+
+Git Reset
+While Git revert uses forward change to undo commits, the operation of Git reset is just the opposite.
+
+Git reset is a way to move back in time to a particular commit, and to reset our active position to the chosen commit in a branch’s commit history.	
 
 
 =====================================
