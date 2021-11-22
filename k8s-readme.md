@@ -1497,7 +1497,9 @@ Kubernetes comes with three namespaces out-of-the-box. They are:
 
 
 default: As its name implies, this is the namespace that is referenced by default for every Kubernetes command, and where every Kubernetes resource is located by default. Until new namespaces are created, the entire cluster resides in ‘default’.
+
 kube-system: Used for Kubernetes components and should be avoided.
+
 kube-public: Used for public resources. Not recommended for use by users.
 
 # Why use Kubernetes namespaces?
