@@ -1223,13 +1223,16 @@ Multiple object configuration files from directories can be picked up.
     kubectl apply -f directory/
 
 ## kubectl apply: declarative management
+
+***In the declarative approach, we need to specify what to do but not how to do it.***
+
 kubectl apply is part of the declarative management approach, where changes that you may have applied to a live object (i.e. through scale) will be "maintained" even if you apply other changes to the object.
 
 In simpler words, apply - makes incremental changes to an existing object by defining what we need.
 
 If you want to version control the k8s object then it's better to use declarative way (kubectl apply) which helps to determine the accuracy of data in k8s objects.
 
-## NOTE: Both kubectl create and apply approaches accepts JSON and YAML file formats.
+## NOTE: Both kubectl create and apply approaches accepts JSON and YAML file formats. If you want to add a version control to your Kubernetes object, then it’s better to use kubectl apply , which helps determine the accuracy of data in Kubernetes objects.If you want to create a resource for troubleshooting, learning, or interactive experimentation, go with kubectl create.
 
 ## These are declarative object config
 
@@ -1242,9 +1245,11 @@ kubectl create can work with one object configuration file at a time
 
 ## kubectl create: Imperative management
 
+***In the imperative approach, we need to specify what and how to perform a task.***
+
 kubectl create is what we call imperative management. On this approach you tell the Kubernetes API what you want to create, replace or delete.
 
-In simpler words, create creates a whole new object (previously non-existing or deleted).
+In simpler words, create creates a whole new object (previously non-existing or deleted).If a resource already exists, it will raise an error.
 
 If you want to just create some resource for troubleshooting, learning or interactive experimentation purpose go with imperative approach (kubectl create).
 
