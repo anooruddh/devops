@@ -349,7 +349,7 @@ For example, we can add a rolling update strategy to the spec section of the man
          maxUnavailable: 0
          maxSurge: 1
 
-**maxSurge**: The number of pods that can be created above the desired amount of pods during an update
+**maxSurge**: The number of pods that can be created above the desired amount of pods during an update.Again this can be an absolute number or a percentage of the replicas                 count; the default is 25%
 
 **maxUnavailable**: The number of pods that can be unavailable during the update process
 
