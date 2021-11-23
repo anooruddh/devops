@@ -3001,3 +3001,56 @@ You can specify more than one tag by separating them with commas.
 	- name: install git
   yum: name=git state=present
 when: ansible_os_family == 'RedHat'
+
+	
+### Ansible facts
+
+Ansible facts are data gathered about target nodes (host nodes to be configured) and returned back to controller nodes. Ansible facts are stored in JSON format and are used to make important decisions about tasks based on their statistics. Facts are in an ansible_facts variable, which is managed by Ansible Engine
+
+### What exactly are Ansible facts and how are they used?	
+
+Ansible facts are the host-specific system data and properties to which you connect. A fact can be the IP address, BIOS information, a system's software information, and even hardware information. Ansible facts help the admin to manage the hosts based on their current condition rather than taking the actions directly without having any info about the system's health.
+
+Here is a scenario: You have to install Apache webserver on all your Linux hosts. You know that Red Hat Enterprise Linux (RHEL)-based hosts work with the Red Hat Package Manager (RPM) and yum/dnf. Other Linux distributions use their own package managers and so it would not be feasible to perform the same task on different systems without modification and reference to those differences. Package names also differ among distributions. For example, on RHEL systems, the Apache web server package is httpd, while in other distributions it's named apache2.
+
+Here's an Ansible playbook to demonstrate the issue:
+	- hosts: all
+	  tasks:
+	  - package:
+	      name: "httpd"
+	      state: present
+	    when ansible_facts["os_name"] == "RedHat"
+	  - package:
+	      name: "apache2"
+	      state: present
+	    when ansible_facts["os_name"] == "Ubuntu"
+
+Here, the script will collect information about the system using Ansible facts and then perform the operation accordingly. When installing on RHEL systems, it automatically skips the Ubuntu-based package and vice versa. Similarly, you can use the Ansible facts to perform an operation if the system has a minimal amount of resources available.
+
+In short, using Ansible facts, a system admin can make Ansible smarter by specifying parameters for when to perform tasks and when not to.
+
+### Accessing the facts
+
+Ansible facts use the setup module for gathering facts every time before running the playbooks.
+
+### Using the Ansible ad-hoc commands	
+	
+1. Access Ansible facts using ad-hoc commands
+
+The setup module fetches all the details from the remote hosts to our controller nodes and dumps them directly to our screen for the facts to be visible to users.
+	
+	ansible all -m setup
+
+2. Filtering out a specific value from Ansible facts
+	
+	ansible all -m setup -a "filter=ansible_cmdline"
+
+3. Using the Ansible playbook
+To access the variables from Ansible facts in the Ansible playbook, we need to use the actual name without using the ansible keyword.
+
+	ansible_facts["ansible_system"] ❌
+
+	ansible_facts["system"] ✔️
+	
+	
+	
