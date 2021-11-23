@@ -1,5 +1,8 @@
 Ansible
 
+What does Ansible all do?
+Ansible is an open source IT automation engine that automates provisioning, configuration management, application deployment, orchestration, and many other IT processes
+
 Every YAML file optionally starts with “---” and ends with “...”.
 
 login users
@@ -3070,5 +3073,22 @@ How does Ansible Register work?
 
 These are the variables in which the output of your task will be stored on the Ansible Control Server. In simple words, when you want to run a command on a remote computer and then store the output in a variable and use a piece of information from the output, later in your plays. This kind of usage is possible by registered variables. It is somehow like the system Facts which are discovered and fetched by setup module. Here whatever command you run its output will be saved in JSON format and then you use that information the same as you used facts.	
 
+Type the following lines in the generate_pass.yaml file:
+
+- hosts: ubuntu20
+  user: ansible
+  become: True
+  tasks:
+    - name: Ensure pwgen is installed
+      apt:
+         name: pwgen
+         state: present
+         update_cache: True
+    - name: Generate password
+      shell: pwgen -N 1 -s 30
+      register: mypass
+    - name: Print the generated password
+      debug:
+      msg: "The password is {{ mypass }}"	
 	
 	
