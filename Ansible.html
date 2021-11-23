@@ -2529,6 +2529,13 @@ http://ec2-13-233-109-212.ap-south-1.compute.amazonaws.com
          state: restarted
 [ansadm@ansible tmp]$
 
+Handlers
+
+Sometimes you want a task to run only when a change is made on a machine. For example, you may want to restart a service if a task updates the configuration of that service, but not if the configuration is unchanged. Ansible uses handlers to address this use case. Handlers are tasks that only run when notified
+
+By default, handlers run after all the tasks in a particular play have been completed. This approach is efficient, because the handler only runs once, regardless of how many tasks notify it. For example, if multiple tasks update a configuration file and notify a handler to restart Apache, Ansible only bounces Apache once to avoid unnecessary restarts.	
+	
+	
 ---------------------------------------------------------------------
 
 
