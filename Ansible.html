@@ -2867,7 +2867,7 @@ ansible-playbook example.yml --tags "configuration,packages"		 will run both  ta
 
 =======================================================================
 	
-	Use ansible-vault when you want to store sensitive information
+Use ansible-vault when you want to store sensitive information
 
 If one of your tasks requires sensitive information (let’s say the database user and password), it’s a good practice to keep this information encrypted, instead of storing it in plain text.
 
@@ -2889,13 +2889,16 @@ ansible-vault edit secrets.yml
 # Print the contents of the encrypted file
 ansible-vault edit secrets.yml
 
+Rekey an already encrypted file, using ansible-vault like below to rekey or reset the password or secret key of a file.
+ansible-vault rekey secrets.yml
+	
 If you import the vars_file secrets.yml in your playbook, Ansible will fail, as it will not know how to read the encrypted file. You’ll have to specify the command line argument --ask-vault-pass, which will make Ansible prompt you the password of the encrypted file.
 
 ansible-playbook playbook.yml -i hosts --ask-vault-password
 
 Another way is to store the password in a file (which should not be commited) and specify the path to the file using the --vault-password-file argument. If this file is marked as executable, Ansible will run it and use the output as the password.
 	
-	
+ansible all --list-hosts            ( This will list all the hosts written in /etc/ansible/hosts file, if this file is not encrypted using ansible-valut )	
 	================================
 	cat copy-file.yml
 ---
@@ -3002,12 +3005,13 @@ You can specify more than one tag by separating them with commas.
   yum: name=git state=present
 when: ansible_os_family == 'RedHat'
 
+=================================================================================================================================================================================
 	
-### Ansible facts
+Ansible facts
 
 Ansible facts are data gathered about target nodes (host nodes to be configured) and returned back to controller nodes. Ansible facts are stored in JSON format and are used to make important decisions about tasks based on their statistics. Facts are in an ansible_facts variable, which is managed by Ansible Engine
 
-### What exactly are Ansible facts and how are they used?	
+What exactly are Ansible facts and how are they used?	
 
 Ansible facts are the host-specific system data and properties to which you connect. A fact can be the IP address, BIOS information, a system's software information, and even hardware information. Ansible facts help the admin to manage the hosts based on their current condition rather than taking the actions directly without having any info about the system's health.
 
@@ -3029,11 +3033,11 @@ Here, the script will collect information about the system using Ansible facts a
 
 In short, using Ansible facts, a system admin can make Ansible smarter by specifying parameters for when to perform tasks and when not to.
 
-### Accessing the facts
+Accessing the facts
 
 Ansible facts use the setup module for gathering facts every time before running the playbooks.
 
-### Using the Ansible ad-hoc commands	
+Using the Ansible ad-hoc commands	
 	
 1. Access Ansible facts using ad-hoc commands
 
@@ -3052,5 +3056,19 @@ To access the variables from Ansible facts in the Ansible playbook, we need to u
 
 	ansible_facts["system"] ✔️
 	
+=================================================================================================================================================================================
+
+Introduction to Ansible Register
+
+Ansible register is a way to capture the output from task execution and store it in a variable. This is an important feature, as this output is different for each remote host, and the basis on that we can use conditions loops to do some other tasks. Also, each register value is valid throughout the playbook execution. So, we can make use of set_fact to manipulate the data and provide input to other tasks accordingly
+
+Ansible Register
+
+For any task output, which we register in a variable, it is stored in a pre-defined format in JSON. For different tasks we will get different output and it is stored in the way it is defined in ansible documentation
+	
+How does Ansible Register work?
+
+These are the variables in which the output of your task will be stored on the Ansible Control Server. In simple words, when you want to run a command on a remote computer and then store the output in a variable and use a piece of information from the output, later in your plays. This kind of usage is possible by registered variables. It is somehow like the system Facts which are discovered and fetched by setup module. Here whatever command you run its output will be saved in JSON format and then you use that information the same as you used facts.	
+
 	
 	
