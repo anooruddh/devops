@@ -3092,3 +3092,56 @@ Type the following lines in the generate_pass.yaml file:
       msg: "The password is {{ mypass }}"	
 	
 	
+INTERVIEW TOPICS
+	
+==========================================================================================================================================================================
+	
+ansible_facts
+gather_facts
+become: true
+become_user: root
+remote_user: root
+register
+debug
+notify
+handler
+ansible-vault ( encrypt,decrypt,view,edit,rekey)
+when (when ansible_facts["os_name"] == "RedHat")
+
+ansible-playbook example.yml --tags "configuration,packages"	
+
+stage: restarted,present,absent,installed,Latest
+
+--ask-vault-password		ansible-playbook playbook.yml -i hosts --ask-vault-password
+ansible all --list-hosts
+tasks can be run based on their tags
+ansible-playbook --tags=dependencies playbook.yml
+
+/etc/ansible
+/etc/ansible/ansible.config
+/etc/ansible/hosts
+
+cat /etc/ansible/hosts
+--------------------------------------------------------------------------------------------------------------------------
+[dbservers]
+ansible-dbserver.server
+
+[appservers]
+ansible-appserver.server
+--------------------------------------------------------------------------------------------------------------------------
+
+ANSIBLE.config
+--------------------------------------------------------------------------------------------------------------------------
+# SSH timeout
+#timeout = 10
+
+#remote_user = root
+#vault_password_file = /path/to/vault_password_file
+
+#retry_files_enabled = False
+#retry_files_save_path = ~/.ansible-retry
+
+#retries = 3
+#connect_timeout = 30
+
+--------------------------------------------------------------------------------------------------------------------------	
