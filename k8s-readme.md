@@ -1892,19 +1892,19 @@ The node selector is one such mechanism or constraint which we can apply to our 
 
 ### Create a Pod definition and make use of nodeSelector 
 
-   apiVersion: v1
-    kind: Pod
-    metadata:
-      name: nginx
-      labels:
-        env: staging
-    spec:
-      containers:
-      - name: nginx
-        image: nginx
+	   apiVersion: v1
+	    kind: Pod
+	    metadata:
+	      name: nginx
+	      labels:
+		env: staging
+	    spec:
+	      containers:
+	      - name: nginx
+		image: nginx
 
-      nodeSelector:
-        size: large
+	      nodeSelector:
+		size: large
 
 ### Limitation - You can not run the pod on a node based on expression (size: large or medium / size: Not Small) 
 
