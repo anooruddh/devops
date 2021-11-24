@@ -1842,39 +1842,39 @@ The affinity language in node affinity offers the protocols or matching rule bas
 
 Let’s write the Pod definition
 
-   apiVersion: v1
-   kind: Pod
-   metadata:
-     name: node-affinity-demo
-     labels:
-       env: staging
-   spec:
-     containers:
-      - name: node-affinity-demo
-        image: nginx
-     affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: size
-              operator: In
-              values:
-              - large
-            -   small
+	   apiVersion: v1
+	   kind: Pod
+	   metadata:
+	     name: node-affinity-demo
+	     labels:
+	       env: staging
+	   spec:
+	     containers:
+	      - name: node-affinity-demo
+		image: nginx
+	     affinity:
+	      nodeAffinity:
+		requiredDuringSchedulingIgnoredDuringExecution:
+		  nodeSelectorTerms:
+		  - matchExpressions:
+		    - key: size
+		      operator: In
+		      values:
+		      - large
+		    -   small
             
 In node selector, we used nodeSelector field under the Spec, but here in the pod definition, it is replaced by more complex terms as shown below
 
-   affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: size
-            operator: In
-            values:
-            - large
-            - small
+	   affinity:
+	    nodeAffinity:
+	      requiredDuringSchedulingIgnoredDuringExecution:
+		nodeSelectorTerms:
+		- matchExpressions:
+		  - key: size
+		    operator: In
+		    values:
+		    - large
+		    - small
 
 It has :
 key: which defines the parameter like size
