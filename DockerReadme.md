@@ -185,41 +185,41 @@ as well as:
 docker build - < Dockerfile
 
 =======================================================================================
-[root@ip-172-31-32-101 ec2-user]# cat Dockerfile
-FROM ubuntu
-MAINTAINER sendtoanoo@gmail.com
-CMD ["echo", "Hello from Dockerfile"]
+	[root@ip-172-31-32-101 ec2-user]# cat Dockerfile
+	FROM ubuntu
+	MAINTAINER sendtoanoo@gmail.com
+	CMD ["echo", "Hello from Dockerfile"]
 
 
-[root@ip-172-31-32-101 ec2-user]# sudo docker build -t="myUbuntuImage" .
-invalid argument "myUbuntuImage" for "-t, --tag" flag: invalid reference format: repository name must be lowercase
-See 'docker build --help'.
-[root@ip-172-31-32-101 ec2-user]# sudo docker build -t="myubuntuimage" .
-Sending build context to Docker daemon  580.3MB
-Step 1/3 : FROM ubuntu
- ---> 16508e5c265d
-Step 2/3 : MAINTAINER sendtoanoo@gmail.com
- ---> Running in bb19b840ab8b
-Removing intermediate container bb19b840ab8b
- ---> b4d6ead9ed18
-Step 3/3 : CMD ["echo", "Hello from Dockerfile"]
- ---> Running in 38d071e80372
-Removing intermediate container 38d071e80372
- ---> 469c838b5e76
-Successfully built 469c838b5e76
-Successfully tagged myubuntuimage:latest
-[root@ip-172-31-32-101 ec2-user]# docker ps -a
+	[root@ip-172-31-32-101 ec2-user]# sudo docker build -t="myUbuntuImage" .
+	invalid argument "myUbuntuImage" for "-t, --tag" flag: invalid reference format: repository name must be lowercase
+	See 'docker build --help'.
+	[root@ip-172-31-32-101 ec2-user]# sudo docker build -t="myubuntuimage" .
+	Sending build context to Docker daemon  580.3MB
+	Step 1/3 : FROM ubuntu
+	 ---> 16508e5c265d
+	Step 2/3 : MAINTAINER sendtoanoo@gmail.com
+	 ---> Running in bb19b840ab8b
+	Removing intermediate container bb19b840ab8b
+	 ---> b4d6ead9ed18
+	Step 3/3 : CMD ["echo", "Hello from Dockerfile"]
+	 ---> Running in 38d071e80372
+	Removing intermediate container 38d071e80372
+	 ---> 469c838b5e76
+	Successfully built 469c838b5e76
+	Successfully tagged myubuntuimage:latest
+	[root@ip-172-31-32-101 ec2-user]# docker ps -a
 
-[root@ip-172-31-32-101 ec2-user]# docker images
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-myubuntuimage       latest              469c838b5e76        40 seconds ago      84.1MB
-<none>              <none>              cb0ce27f743f        4 hours ago         643MB
-<none>              <none>              531059125c7d        4 hours ago         643MB
-ubuntu              latest              16508e5c265d        4 days ago          84.1MB
-centos              latest              5182e96772bf        2 weeks ago         200MB
-busybox             latest              e1ddd7948a1c        3 weeks ago         1.16MB
-hello-world         latest              2cb0d9787c4d        6 weeks ago         1.85kB
-java                8                   d23bdf5b1b1b        19 months ago       643MB
+	[root@ip-172-31-32-101 ec2-user]# docker images
+	REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+	myubuntuimage       latest              469c838b5e76        40 seconds ago      84.1MB
+	<none>              <none>              cb0ce27f743f        4 hours ago         643MB
+	<none>              <none>              531059125c7d        4 hours ago         643MB
+	ubuntu              latest              16508e5c265d        4 days ago          84.1MB
+	centos              latest              5182e96772bf        2 weeks ago         200MB
+	busybox             latest              e1ddd7948a1c        3 weeks ago         1.16MB
+	hello-world         latest              2cb0d9787c4d        6 weeks ago         1.85kB
+	java                8                   d23bdf5b1b1b        19 months ago       643MB
 
 
 =============================================================
@@ -308,17 +308,17 @@ docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
 
 4. Dockerfile Commands
 
-    ADD
-    CMD
-    ENTRYPOINT
-    ENV
-    EXPOSE
-    FROM
-    MAINTAINER
-    RUN
-    USER
-    VOLUME
-    WORKDIR
+	    ADD
+	    CMD
+	    ENTRYPOINT
+	    ENV
+	    EXPOSE
+	    FROM
+	    MAINTAINER
+	    RUN
+	    USER
+	    VOLUME
+	    WORKDIR
 
 	What is a Dockerfile?
 
@@ -493,18 +493,18 @@ f972d139738d: Pushed
 v1: digest: sha256:3bce787eca6028ab0a912d12cee93da9e79a6e07854fc3785cb642bdc003ee87 size: 948
 [root@ip-172-31-24-94 ag1]#
 
-[root@ip-172-31-24-94 ag1]# docker images
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-sendtoanoo/web1     v1                  e22879a4fcf4        6 minutes ago       332MB
-centos              latest              75835a67d134        4 days ago          200MB
-docker              latest              fd7e073eb60f        8 days ago          152MB
-hello-world         latest              4ab4c602aa5e        5 weeks ago         1.84kB
+	[root@ip-172-31-24-94 ag1]# docker images
+	REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+	sendtoanoo/web1     v1                  e22879a4fcf4        6 minutes ago       332MB
+	centos              latest              75835a67d134        4 days ago          200MB
+	docker              latest              fd7e073eb60f        8 days ago          152MB
+	hello-world         latest              4ab4c602aa5e        5 weeks ago         1.84kB
 
-[root@ip-172-31-24-94 ag1]# docker run -dit -p 1234:80 sendtoanoo/web1:v1
-b00998c116899e8f24676291a11363f3997ecc7241c01dc838d488ee1ec0ebcd
-[root@ip-172-31-24-94 ag1]# docker ps
-CONTAINER ID        IMAGE                COMMAND                  CREATED             STATUS              PORTS                  NAMES
-b00998c11689        sendtoanoo/web1:v1   "/usr/sbin/httpd -D …"   6 seconds ago       Up 5 seconds        0.0.0.0:1234->80/tcp   sad_booth
+	[root@ip-172-31-24-94 ag1]# docker run -dit -p 1234:80 sendtoanoo/web1:v1
+	b00998c116899e8f24676291a11363f3997ecc7241c01dc838d488ee1ec0ebcd
+	[root@ip-172-31-24-94 ag1]# docker ps
+	CONTAINER ID        IMAGE                COMMAND                  CREATED             STATUS              PORTS                  NAMES
+	b00998c11689        sendtoanoo/web1:v1   "/usr/sbin/httpd -D …"   6 seconds ago       Up 5 seconds        0.0.0.0:1234->80/tcp   sad_booth
 
 
 ==========================================================================================================================	
@@ -539,36 +539,34 @@ base=https://github.com/docker/machine/releases/download/v0.14.0 &&
   
   ======================================================================
   
-  
-  
   docker commands
   
-  docker --version
-  docker --help
-  docker run
-  docker build
-  docker push
-  docker pull
-  docker login
-  docker ps
-  docker images   docker run -it <image_name>
-  docker stop
-  docker start
-  docker service status
-  service docker status
-  docker kill
-  docker rm - remove containers
-  docker rmi - remve imgages
-  docker exec
-  docker import
-  docker commit
-  docker container
-  docker compose
-  docker swarm
-  docker service
-  docker rename <container_name> <container_name>
-  [root@ip-172-31-24-94 ec2-user]# docker run -it sendtoanoo/web1:v1 /bin/bash
-[root@9182d45f77f5 /]#
+	  docker --version
+	  docker --help
+	  docker run
+	  docker build
+	  docker push
+	  docker pull
+	  docker login
+	  docker ps
+	  docker images   docker run -it <image_name>
+	  docker stop
+	  docker start
+	  docker service status
+	  service docker status
+	  docker kill
+	  docker rm - remove containers
+	  docker rmi - remve imgages
+	  docker exec
+	  docker import
+	  docker commit
+	  docker container
+	  docker compose
+	  docker swarm
+	  docker service
+	  docker rename <container_name> <container_name>
+	  [root@ip-172-31-24-94 ec2-user]# docker run -it sendtoanoo/web1:v1 /bin/bash
+	[root@9182d45f77f5 /]#
 
   
   Why you should not use ADD
@@ -590,16 +588,16 @@ If ADD’s source is a URL, it will download and copy the file into the destinat
 
 For example, you should avoid doing things like:
 
-ADD http://example.com/big.tar.xz /usr/src/things/
-RUN tar -xJf /usr/src/things/big.tar.xz -C /usr/src/things
-RUN make -C /usr/src/things all
+	ADD http://example.com/big.tar.xz /usr/src/things/
+	RUN tar -xJf /usr/src/things/big.tar.xz -C /usr/src/things
+	RUN make -C /usr/src/things all
 
-And instead, do something like:
+	And instead, do something like:
 
-RUN mkdir -p /usr/src/things \
-    && curl -SL http://example.com/big.tar.xz \
-    | tar -xJC /usr/src/things \
-    && make -C /usr/src/things all
+	RUN mkdir -p /usr/src/things \
+	    && curl -SL http://example.com/big.tar.xz \
+	    | tar -xJC /usr/src/things \
+	    && make -C /usr/src/things all
 
 When you could use ADD
 
@@ -645,9 +643,6 @@ Other companies host paid online Docker registries for public use. Cloud provide
 	docker login acme-dockerv2-virtual.jfrog.io
 
 --------------------------------------------------------------------------------------------
-	
-	
-	
     Google Container Registry (GCR) authentication is based on Google’s Cloud Storage service permissions. It supports only private repositories and provides automated image builds via integration with Google Cloud Source Repositories, GitHub, and Bitbucket.
 
     Azure Container Registry (ACR) supports multi-region registries and authenticates with Active Directory. It supports only private repositories and does not provide automated image building.
@@ -661,33 +656,33 @@ Other companies host paid online Docker registries for public use. Cloud provide
 	
 	Here is the docker-compose.yml that powers the whole setup.
 
-version: "3"
-services:
-  web:
-    build: web
-    command: python app.py
-    ports:
-     - "5000:5000"
-    volumes:
-     - ./web:/code # modified here to take into account the new app path
-    links:
-     - redis
-    environment:
-     - DATADOG_HOST=datadog # used by the web app to initialize the Datadog library
-  redis:
-    image: redis
-  # agent section
-  datadog:
-    build: datadog
-    links:
-     - redis # ensures that redis is a host that the container can find
-     - web # ensures that the web app can send metrics
-    environment:
-     - DD_API_KEY=__your_datadog_api_key_here__
-    volumes:
-     - /var/run/docker.sock:/var/run/docker.sock
-     - /proc/:/host/proc/:ro
-     - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+	version: "3"
+	services:
+	  web:
+	    build: web
+	    command: python app.py
+	    ports:
+	     - "5000:5000"
+	    volumes:
+	     - ./web:/code # modified here to take into account the new app path
+	    links:
+	     - redis
+	    environment:
+	     - DATADOG_HOST=datadog # used by the web app to initialize the Datadog library
+	  redis:
+	    image: redis
+	  # agent section
+	  datadog:
+	    build: datadog
+	    links:
+	     - redis # ensures that redis is a host that the container can find
+	     - web # ensures that the web app can send metrics
+	    environment:
+	     - DD_API_KEY=__your_datadog_api_key_here__
+	    volumes:
+	     - /var/run/docker.sock:/var/run/docker.sock
+	     - /proc/:/host/proc/:ro
+	     - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
 
 
 Test
@@ -714,16 +709,16 @@ A Dockerfile is a simple text file that contains the commands a user could call 
 
 Example, Dockerfile
 
-FROM ubuntu:latest
-MAINTAINER john doe 
+	FROM ubuntu:latest
+	MAINTAINER john doe 
 
-RUN apt-get update
-RUN apt-get install -y python python-pip wget
-RUN pip install Flask
+	RUN apt-get update
+	RUN apt-get install -y python python-pip wget
+	RUN pip install Flask
 
-ADD hello.py /home/hello.py
+	ADD hello.py /home/hello.py
 
-WORKDIR /home
+	WORKDIR /home
 --------------------------------------------------------------------------------------------------------------
 Docker Compose
 
@@ -735,21 +730,21 @@ Docker Compose
 
 Example, docker-compose.yml
 
-version: '3'
-services:
-  web:
-    build: .
-    ports:
-    - "5000:5000"
-    volumes:
-    - .:/code
-    - logvolume01:/var/log
-    links:
-    - redis
-  redis:
-    image: redis
-volumes:
-  logvolume01: {}
+	version: '3'
+	services:
+	  web:
+	    build: .
+	    ports:
+	    - "5000:5000"
+	    volumes:
+	    - .:/code
+	    - logvolume01:/var/log
+	    links:
+	    - redis
+	  redis:
+	    image: redis
+	volumes:
+	  logvolume01: {}	
 
 ===============\
 Difference between COPY and ADD
@@ -772,33 +767,33 @@ If you’re copying in local files to your Docker image, always use COPY because
 
 
 ================
-[root@ansible docker_java]# docker build -t="sendtoanoo/anoo-hello:v1" .
-Sending build context to Docker daemon  2.048kB
-Step 1/3 : FROM ubuntu:latest
- ---> 1d9c17228a9e
-Step 2/3 : MAINTAINER anooruddh gajbhiye sendtoanoo@gmail.com
- ---> Running in 22f8bd9b3c09
-Removing intermediate container 22f8bd9b3c09
- ---> 199bbdd6f3da
-Step 3/3 : CMD ["echo", "Hi Anooruddh Gajbhiye"]
- ---> Running in 94fb28236d1e
-Removing intermediate container 94fb28236d1e
- ---> 4709107341ec
-Successfully built 4709107341ec
-Successfully tagged sendtoanoo/anoo-hello:v1
-[root@ansible docker_java]# docker push sendtoanoo/anoo-hello:v1
-The push refers to repository [docker.io/sendtoanoo/anoo-hello]
-2c77720cf318: Pushed
-1f6b6c7dc482: Pushed
-c8dbbe73b68c: Pushed
-2fb7bfc6145d: Pushed
-v1: digest: sha256:88197b5f77af1bb3f44dae15746fa49871f8c48bb3402bb7ebc9ead12e0f4dfe size: 1150
-[root@ansible docker_java]#
+	[root@ansible docker_java]# docker build -t="sendtoanoo/anoo-hello:v1" .
+	Sending build context to Docker daemon  2.048kB
+	Step 1/3 : FROM ubuntu:latest
+	 ---> 1d9c17228a9e
+	Step 2/3 : MAINTAINER anooruddh gajbhiye sendtoanoo@gmail.com
+	 ---> Running in 22f8bd9b3c09
+	Removing intermediate container 22f8bd9b3c09
+	 ---> 199bbdd6f3da
+	Step 3/3 : CMD ["echo", "Hi Anooruddh Gajbhiye"]
+	 ---> Running in 94fb28236d1e
+	Removing intermediate container 94fb28236d1e
+	 ---> 4709107341ec
+	Successfully built 4709107341ec
+	Successfully tagged sendtoanoo/anoo-hello:v1
+	[root@ansible docker_java]# docker push sendtoanoo/anoo-hello:v1
+	The push refers to repository [docker.io/sendtoanoo/anoo-hello]
+	2c77720cf318: Pushed
+	1f6b6c7dc482: Pushed
+	c8dbbe73b68c: Pushed
+	2fb7bfc6145d: Pushed
+	v1: digest: sha256:88197b5f77af1bb3f44dae15746fa49871f8c48bb3402bb7ebc9ead12e0f4dfe size: 1150
+	[root@ansible docker_java]#
 
 ===========================================
 
-docker volume create --name jenkins_data
-docker run --name jenkins -d -v jenkins_data:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins:latest
+	docker volume create --name jenkins_data
+	docker run --name jenkins -d -v jenkins_data:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins:latest
  
  
  
@@ -858,20 +853,20 @@ Install the Docker CLI External link icon. For Windows 8, or OS X Yosemite 10.10
 
 Download (pull) the image to your local machine. Replace <source_image> with the repository of the image and <tag> with the tag of the image that you want to use, for example, latest.
 
-docker pull <source_image>:<tag>
+	docker pull <source_image>:<tag>
 Example, where <source_image> is hello-world and <tag> is latest:
 
-docker pull hello-world:latest
+	docker pull hello-world:latest
 
 Tag the image. Replace <source_image> with the repository and <tag> with the tag of your local image that you pulled earlier. Replace <region> with the name of your region. Replace <my_namespace> with the namespace that you created in Set up a namespace. Define the repository and tag of the image that you want to use in your namespace by replacing <new_image_repo> and <new_tag>.
 
-docker tag <source_image>:<tag> registry.<region>.bluemix.net/<my_namespace>/<new_image_repo>:<new_tag>
+	docker tag <source_image>:<tag> registry.<region>.bluemix.net/<my_namespace>/<new_image_repo>:<new_tag>
 
 Example, where <source_image> is hello-world, <tag> is latest, <region> is eu-gb, <my_namespace> is namespace1, <new_image_repo> is hw_repo, and <new_tag> is 1:
 
 docker tag hello-world:latest registry.eu-gb.bluemix.net/namespace1/hw_repo:1
 
-Push Docker images to your namespace
+	Push Docker images to your namespace
 
 Run the ibmcloud cr login command to log your local Docker daemon into IBM Cloud Container Registry.
 
@@ -879,11 +874,11 @@ ibmcloud cr login
 
 Upload (push) the image to your namespace. Replace <my_namespace> with the namespace that you created in Set up a namespace, and <image_repo> and <tag> with the repository and the tag of the image that you chose when you tagged the image.
 
-docker push registry.<region>.bluemix.net/<my_namespace>/<image_repo>:<tag>
+	docker push registry.<region>.bluemix.net/<my_namespace>/<image_repo>:<tag>
 
 Example, where <region> is eu-gb, <my_namespace> is namespace1, <image_repo> is hw_repo, and <tag> is 1:
 
-docker push registry.eu-gb.bluemix.net/namespace1/hw_repo:1
+	docker push registry.eu-gb.bluemix.net/namespace1/hw_repo:1
 
 Verify that the image was pushed successfully by running the following command.
 
@@ -891,16 +886,16 @@ ibmcloud cr image-list
 
 ===============================
 
-docker push <login server>/<repository name>/aci-helloworld:v1
+	docker push <login server>/<repository name>/aci-helloworld:v1
 
-The push refers to repository [specificregistryname.azurecr.io/myrepo/aci-helloworld]
-31ba1ebd9cf5: Pushed
-cd07853fe8be: Pushed
-73f25249687f: Pushed
-d8fbd47558a8: Pushed
-44ab46125c35: Pushed
-5bef08742407: Pushed
-v1: digest: sha256:565dba8ce20ca1a311c2d9485089d7ddc935dd50140510050345a1b0ea4ffa6e size: 1576
+	The push refers to repository [specificregistryname.azurecr.io/myrepo/aci-helloworld]
+	31ba1ebd9cf5: Pushed
+	cd07853fe8be: Pushed
+	73f25249687f: Pushed
+	d8fbd47558a8: Pushed
+	44ab46125c35: Pushed
+	5bef08742407: Pushed
+	v1: digest: sha256:565dba8ce20ca1a311c2d9485089d7ddc935dd50140510050345a1b0ea4ffa6e size: 1576
 
 
 ======================
@@ -909,26 +904,26 @@ Initialize a swarm with autolocking enabled
 
 When you initialize a new swarm, you can use the --autolock flag to enable autolocking of swarm manager nodes when Docker restarts.
 
-$ docker swarm init --autolock
+	$ docker swarm init --autolock
 
 Swarm initialized: current node (k1q27tfyx9rncpixhk69sa61v) is now a manager.
 
 To add a worker to this swarm, run the following command:
 
-    docker swarm join \
-    --token SWMTKN-1-0j52ln6hxjpxk2wgk917abcnxywj3xed0y8vi1e5m9t3uttrtu-7bnxvvlz2mrcpfonjuztmtts9 \
-    172.31.46.109:2377
+	    docker swarm join \
+	    --token SWMTKN-1-0j52ln6hxjpxk2wgk917abcnxywj3xed0y8vi1e5m9t3uttrtu-7bnxvvlz2mrcpfonjuztmtts9 \
+	    172.31.46.109:2377
 
 To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
 
 To unlock a swarm manager after it restarts, run the `docker swarm unlock`
 command and provide the following key:
 
-    SWMKEY-1-WuYH/IX284+lRcXuoVf38viIDK3HJEKY13MIHX+tTt8
+    	SWMKEY-1-WuYH/IX284+lRcXuoVf38viIDK3HJEKY13MIHX+tTt8
 
 	$ sudo service docker restart
 
-$ docker service ls
+	$ docker service ls
 
 Error response from daemon: Swarm is encrypted and needs to be unlocked before it can be used. Use "docker swarm unlock" to unlock it.
 
@@ -936,7 +931,7 @@ Enable or disable autolock on an existing swarm
 
 To enable autolock on an existing swarm, set the autolock flag to true.
 
-$ docker swarm update --autolock=true
+	$ docker swarm update --autolock=true
 
 Swarm updated.
 To unlock a swarm manager after it restarts, run the `docker swarm unlock`
@@ -961,15 +956,13 @@ But sometimes, for some reason, such as our App needs a special setup or we want
 Enable docker feature for CF
 
 We can turn on docker support with the following cf command
-
 1
-	
-  cf enable-feature-flag diego_docker
 
+  cf enable-feature-flag diego_docker
 We can also turn it off by
 
 1
-	
+
   cf disable-feature-flag diego_docker
 
 
@@ -1010,28 +1003,19 @@ To push an image:
 You are now ready to use Kubernetes to deploy the hello-world application.
 
 -----------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
 # Remove java 7
-sudo yum remove -y java
+	sudo yum remove -y java
 
 # Install basic packages
-sudo yum install -y git
+	sudo yum install -y git
 
 # Download and install java 8
-wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.tar.gz"
-tar -xzvf jdk-8u131-linux-x64.tar.gz
-rm -rf jdk-8u131-linux-x64.tar.gz
+	wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.tar.gz"
+	tar -xzvf jdk-8u131-linux-x64.tar.gz
+	rm -rf jdk-8u131-linux-x64.tar.gz
 
 # Configure JAVA_HOME
-sudo vim ~/.bashrc
+	sudo vim ~/.bashrc
 
 alias cls='clear'
 
@@ -1043,7 +1027,7 @@ source ~/.bashrc
 java -version
 
 
-### MULTISTAGE DOCUMENT IMAGE BUILD
+### MULTISTAGE DOCKER IMAGE BUILD
 
 Multistage builds make use of one Dockerfile with multiple FROM instructions. Each of these FROM instructions is a new build stage that can COPY artifacts from the previous stages. By going and copying the build artifact from the build stage, you eliminate all the intermediate steps such as downloading of code, installing dependencies, and testing. All these steps create additional layers, and you want to eliminate them from the final image.
 
