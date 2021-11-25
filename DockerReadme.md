@@ -1065,3 +1065,23 @@ Sample Dockerfile
 		EXPOSE 3000
 		COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 		COPY --from=build /app/build /usr/share/nginx/html
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+		FROM golang:latest as builder
+		RUN mkdir -p /go/src/github.com/ruanbekker
+		WORKDIR /go/src/github.com/ruanbekker
+		RUN useradd -u 10001 app
+		COPY . .
+		ENV GO111MODULE=auto
+		RUN go get
+		RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+
+		FROM scratch
+		COPY --from=builder /go/src/github.com/ruanbekker/main /main
+		COPY --from=builder /etc/passwd /etc/passwd
+		USER app
+		CMD ["/main"]
+
+This Dockerfile has two FROM commands, with each one constituting a distinct build stage. These distinct commands are numbered internally, stage 0 and stage 1 respectively. However, stage 0 is given a friendly alias of build. This stage builds the application and stores it in the directory specified by the WORKDIR command. The resultant image is over 420 MB in size.
+
+The second stage starts by pulling the official Nginx image from Docker Hub. It then copies the updated virtual server configuration to replace the default Nginx configuration. Then the COPY –from command is used to copy only the production-related application code from the image built by the previous stage. The final image is approximately 127 MB.	
