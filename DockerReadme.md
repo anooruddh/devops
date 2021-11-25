@@ -1045,20 +1045,23 @@ java -version
 
 ### MULTISTAGE DOCUMENT IMAGE BUILD
 
+Multistage builds make use of one Dockerfile with multiple FROM instructions. Each of these FROM instructions is a new build stage that can COPY artifacts from the previous stages. By going and copying the build artifact from the build stage, you eliminate all the intermediate steps such as downloading of code, installing dependencies, and testing. All these steps create additional layers, and you want to eliminate them from the final image.
+
+The build stage is named by appending AS name-of-build to the FROM instruction. The name of the build stage can be used in a subsequent FROM and COPY command by providing a convenient way to identify the source layer for files brought into the image build. The final image is produced from the last stage executed in the Dockerfile.
+
+
 Sample Dockerfile
 
-		# Stage 1 - the build process
-		FROM node:13.13.0-alpine as build-deps
+		# STAGE 1
+		FROM node:12.13.0-alpine as build
 		WORKDIR /app
-
-		COPY package.json ./
-		RUN npm install --silent
-		RUN npm install react-scripts@3.4.1 -g --silent
-		COPY . ./
+		COPY package*.json ./
+		RUN npm install
+		COPY . .
 		RUN npm run build
 
-		# Stage 2 - the deploy process
+	        # STAGE 2
 		FROM nginx
-		COPY --from=build-deps /app/build /usr/share/nginx/html
-		EXPOSE 80
-		CMD ["nginx", "-g", "daemon off;"]
+		EXPOSE 3000
+		COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+		COPY --from=build /app/build /usr/share/nginx/html
