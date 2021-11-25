@@ -3001,3 +3001,147 @@ You can specify more than one tag by separating them with commas.
 	- name: install git
   yum: name=git state=present
 when: ansible_os_family == 'RedHat'
+
+INTERVIEW CONTENT
+====================================================================================================================================================================
+	
+few modules - ping,user,service,shell,debug,command,copy,yumc,uri,twilio,telnet,snmp,setup(gather facts of remote server)
+
+ansible_facts
+gather_facts
+become: true
+become_user: root
+remote_user: root
+register
+debug
+notify
+handler
+ansible-vault ( encrypt,decrypt,view,edit,rekey)
+when (when ansible_facts["os_name"] == "RedHat")
+
+ansible-playbook example.yml --tags "configuration,packages"	
+
+ansible appservers -m setup -i ansible_hosts -a 'filter=ansible_distribution,ansible_distribution_version,ansible_memfree_mb,ansible_memtotal_mb,ansible_processor_cores*,ansible_architecture'
+
+
+stage: restarted,present,absent,installed,Latest
+
+--ask-vault-password		ansible-playbook playbook.yml -i hosts --ask-vault-password
+ansible all --list-hosts
+tasks can be run based on their tags
+ansible-playbook --tags=dependencies playbook.yml
+
+/etc/ansible
+/etc/ansible/ansible.config
+/etc/ansible/hosts
+
+cat /etc/ansible/hosts
+--------------------------------------------------------------------------------------------------------------------------
+[dbservers]
+ansible-dbserver.server
+
+[appservers]
+ansible-appserver.server
+--------------------------------------------------------------------------------------------------------------------------
+
+ANSIBLE.config
+--------------------------------------------------------------------------------------------------------------------------
+# SSH timeout
+#timeout = 10
+
+#remote_user = root
+#vault_password_file = /path/to/vault_password_file
+
+#retry_files_enabled = False
+#retry_files_save_path = ~/.ansible-retry
+
+#retries = 3
+#connect_timeout = 30
+
+--------------------------------------------------------------------------------------------------------------------------
+
+
+
+Azure Devops
+	Azure Repo
+	Azure Board
+	Azure Pipeline
+	Azure Test Plan
+	Azure Artifacts
+Azure DevOps includes:
+
+Azure Pipelines: CI/CD that works with any language, platform, and cloud. Connect to GitHub or any Git repository and deploy continuously. Azure Pipelines is also now available in the GitHub Marketplace.
+Azure Boards: Powerful work tracking with Kanban boards, backlogs, team dashboards, and custom reporting.
+Azure Artifacts: Maven, npm, and NuGet package feeds from public and private sources.
+Azure Repos: Unlimited cloud-hosted private Git repos for your project. Collaborative pull requests, advanced file management, and more.
+Azure Test Plans: All in one planned and exploratory testing solution.	
+
+
+
+Standard loops
+
+- name: Add several users
+  ansible.builtin.user:
+    name: "{{ item }}"
+    state: present
+    groups: "wheel"
+  loop:
+     - testuser1
+     - testuser2
+
+
+with_list
+with_items
+with_indexed_items
+with_flattened
+with_together
+with_dict
+with_sequence
+with_subelements
+with_nested/with_cartesian
+with_random_choice
+
+============================================================================================================================
+
+Kubernetest
+
+to delete label user - after lable name k label service lblsvc-
+
+kubectl create is imperative management ( we need to specify what and how to perform a task), whereas apply is declarative approach( we only specify what to perform)
+apply perform create or update, However Create, It creates resources from the file prov
+ided. It shows an error if the resource has already been created.
+
+apply works on all files under a directory and its subdirectory ( yml files), however create works a single file within a folder.
+
+Deployment - recreate,rolling update,blue-green,canary
+
+What is an Ingress?
+In Kubernetes, an Ingress is an object that allows access to your Kubernetes services from outside the Kubernetes cluster. You configure access by creating a collection of rules that define which inbound connections reach which services.
+
+Ingress. This service allows the routing of HTTP(S) traffic according to defined rules like path-based routings. This can be associated with one or more service objects where these services are further associated with Pods. The ingress controller creates HTTP(S) load balancer Layer 7 load balancer which are configured automatically using the definition in the Ingress object.
+
+
+Deployment vs Service	- Deployment makes pods available, Where service makes pods accessible
+
+Services - ClusterIP, Node Port, Load Balancer
+
+
+Terraform
+
+azurerm_subnet
+azurerm_virtual_network
+azurerm_public_ip
+azuread_application
+azuread_service_principal
+azurerm_application_gateway
+azurerm_network_profile
+azurerm_network_security_group
+azurerm_subnet_network_security_group_association
+azurerm_network_security_rule
+azurerm_subnet_network_security_group_association
+azurerm_key_vault_secret
+azurerm_container_group
+
+
+
+{{terraform.workspace}}	
