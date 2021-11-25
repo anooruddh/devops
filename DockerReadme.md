@@ -1043,7 +1043,7 @@ source ~/.bashrc
 java -version
 
 
-MULTISTAGE DOCUMENT IMAGE BUILD
+### MULTISTAGE DOCUMENT IMAGE BUILD
 
 Sample Dockerfile
 
