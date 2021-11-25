@@ -686,7 +686,7 @@ Other companies host paid online Docker registries for public use. Cloud provide
 
 
 Test
-docker-compose up  ( docker-compose -f docker-compose.json or yml)	 
+	docker-compose up  ( docker-compose -f docker-compose.json or yml)	 
 
 
 
@@ -746,7 +746,8 @@ Example, docker-compose.yml
 	volumes:
 	  logvolume01: {}	
 
-===============\
+===============
+
 Difference between COPY and ADD
 
 
@@ -766,61 +767,60 @@ A valid use case for ADD is when you want to extract a local tar file into a spe
 If you’re copying in local files to your Docker image, always use COPY because it’s more explicit.
 
 
-================
-	[root@ansible docker_java]# docker build -t="sendtoanoo/anoo-hello:v1" .
-	Sending build context to Docker daemon  2.048kB
-	Step 1/3 : FROM ubuntu:latest
-	 ---> 1d9c17228a9e
-	Step 2/3 : MAINTAINER anooruddh gajbhiye sendtoanoo@gmail.com
-	 ---> Running in 22f8bd9b3c09
-	Removing intermediate container 22f8bd9b3c09
-	 ---> 199bbdd6f3da
-	Step 3/3 : CMD ["echo", "Hi Anooruddh Gajbhiye"]
-	 ---> Running in 94fb28236d1e
-	Removing intermediate container 94fb28236d1e
-	 ---> 4709107341ec
-	Successfully built 4709107341ec
-	Successfully tagged sendtoanoo/anoo-hello:v1
-	[root@ansible docker_java]# docker push sendtoanoo/anoo-hello:v1
-	The push refers to repository [docker.io/sendtoanoo/anoo-hello]
-	2c77720cf318: Pushed
-	1f6b6c7dc482: Pushed
-	c8dbbe73b68c: Pushed
-	2fb7bfc6145d: Pushed
-	v1: digest: sha256:88197b5f77af1bb3f44dae15746fa49871f8c48bb3402bb7ebc9ead12e0f4dfe size: 1150
-	[root@ansible docker_java]#
+		[root@ansible docker_java]# docker build -t="sendtoanoo/anoo-hello:v1" .
+		Sending build context to Docker daemon  2.048kB
+		Step 1/3 : FROM ubuntu:latest
+		 ---> 1d9c17228a9e
+		Step 2/3 : MAINTAINER anooruddh gajbhiye sendtoanoo@gmail.com
+		 ---> Running in 22f8bd9b3c09
+		Removing intermediate container 22f8bd9b3c09
+		 ---> 199bbdd6f3da
+		Step 3/3 : CMD ["echo", "Hi Anooruddh Gajbhiye"]
+		 ---> Running in 94fb28236d1e
+		Removing intermediate container 94fb28236d1e
+		 ---> 4709107341ec
+		Successfully built 4709107341ec
+		Successfully tagged sendtoanoo/anoo-hello:v1
+		[root@ansible docker_java]# docker push sendtoanoo/anoo-hello:v1
+		The push refers to repository [docker.io/sendtoanoo/anoo-hello]
+		2c77720cf318: Pushed
+		1f6b6c7dc482: Pushed
+		c8dbbe73b68c: Pushed
+		2fb7bfc6145d: Pushed
+		v1: digest: sha256:88197b5f77af1bb3f44dae15746fa49871f8c48bb3402bb7ebc9ead12e0f4dfe size: 1150
+		[root@ansible docker_java]#
 
 ===========================================
 
-	docker volume create --name jenkins_data
-	docker run --name jenkins -d -v jenkins_data:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins:latest
+		docker volume create --name jenkins_data
+		docker run --name jenkins -d -v jenkins_data:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins:latest
  
  
  
-Ubuntu image directory structure within a container
-root@152410a09186:/# ls -lrt
-total 64
-drwxr-xr-x  2 root root 4096 Apr 24  2018 home
-drwxr-xr-x  2 root root 4096 Apr 24  2018 boot
-drwxr-xr-x  1 root root 4096 Dec  4 17:11 usr
-drwxr-xr-x  2 root root 4096 Dec  4 17:11 srv
-drwxr-xr-x  2 root root 4096 Dec  4 17:11 opt
-drwxr-xr-x  2 root root 4096 Dec  4 17:11 mnt
-drwxr-xr-x  2 root root 4096 Dec  4 17:11 media
-drwxr-xr-x  8 root root 4096 Dec  4 17:11 lib
-drwxr-xr-x  2 root root 4096 Dec  4 17:11 lib64
-drwx------  2 root root 4096 Dec  4 17:12 root
-drwxr-xr-x  1 root root 4096 Dec  4 17:12 var
-drwxr-xr-x  2 root root 4096 Dec  4 17:12 bin
-drwxrwxrwt  2 root root 4096 Dec  4 17:12 tmp
-drwxr-xr-x  1 root root 4096 Dec 28 23:22 sbin
-drwxr-xr-x  1 root root 4096 Dec 28 23:22 run
-dr-xr-xr-x 13 root root    0 Jan 15 05:32 sys
-drwxr-xr-x  1 root root 4096 Jan 15 07:50 etc
-dr-xr-xr-x 96 root root    0 Jan 15 07:50 proc
-drwxr-xr-x  5 root root  360 Jan 15 07:50 dev
-root@152410a09186:/# pwd
-/
+		Ubuntu image directory structure within a container
+		root@152410a09186:/# ls -lrt
+		total 64
+		drwxr-xr-x  2 root root 4096 Apr 24  2018 home
+		drwxr-xr-x  2 root root 4096 Apr 24  2018 boot
+		drwxr-xr-x  1 root root 4096 Dec  4 17:11 usr
+		drwxr-xr-x  2 root root 4096 Dec  4 17:11 srv
+		drwxr-xr-x  2 root root 4096 Dec  4 17:11 opt
+		drwxr-xr-x  2 root root 4096 Dec  4 17:11 mnt
+		drwxr-xr-x  2 root root 4096 Dec  4 17:11 media
+		drwxr-xr-x  8 root root 4096 Dec  4 17:11 lib
+		drwxr-xr-x  2 root root 4096 Dec  4 17:11 lib64
+		drwx------  2 root root 4096 Dec  4 17:12 root
+		drwxr-xr-x  1 root root 4096 Dec  4 17:12 var
+		drwxr-xr-x  2 root root 4096 Dec  4 17:12 bin
+		drwxrwxrwt  2 root root 4096 Dec  4 17:12 tmp
+		drwxr-xr-x  1 root root 4096 Dec 28 23:22 sbin
+		drwxr-xr-x  1 root root 4096 Dec 28 23:22 run
+		dr-xr-xr-x 13 root root    0 Jan 15 05:32 sys
+		drwxr-xr-x  1 root root 4096 Jan 15 07:50 etc
+		dr-xr-xr-x 96 root root    0 Jan 15 07:50 proc
+		drwxr-xr-x  5 root root  360 Jan 15 07:50 dev
+		root@152410a09186:/# pwd
+		/
 
 
 =================================
@@ -839,13 +839,13 @@ Install the IBM Cloud Container Registry CLI
 Set up a namespace
 
 Log in to IBM Cloud.
-ibmcloud login
+		ibmcloud login
 
 Add a namespace to create your own image repository. Replace <my_namespace> with your preferred namespace.
-ibmcloud cr namespace-add <my_namespace>
+		ibmcloud cr namespace-add <my_namespace>
 
 To ensure that your namespace is created, run the ibmcloud cr namespace-list command.
-ibmcloud cr namespace-list
+		ibmcloud cr namespace-list
 
 Pull images from another registry to your local machine
 
@@ -870,7 +870,7 @@ docker tag hello-world:latest registry.eu-gb.bluemix.net/namespace1/hw_repo:1
 
 Run the ibmcloud cr login command to log your local Docker daemon into IBM Cloud Container Registry.
 
-ibmcloud cr login
+	ibmcloud cr login
 
 Upload (push) the image to your namespace. Replace <my_namespace> with the namespace that you created in Set up a namespace, and <image_repo> and <tag> with the repository and the tag of the image that you chose when you tagged the image.
 
@@ -882,7 +882,7 @@ Example, where <region> is eu-gb, <my_namespace> is namespace1, <image_repo> is 
 
 Verify that the image was pushed successfully by running the following command.
 
-ibmcloud cr image-list
+	ibmcloud cr image-list
 
 ===============================
 
