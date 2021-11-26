@@ -1069,3 +1069,14 @@ Sample Dockerfile
 This Dockerfile has two FROM commands, with each one constituting a distinct build stage. These distinct commands are numbered internally, stage 0 and stage 1 respectively. However, stage 0 is given a friendly alias of build. This stage builds the application and stores it in the directory specified by the WORKDIR command. The resultant image is over 420 MB in size.
 
 The second stage starts by pulling the official Nginx image from Docker Hub. It then copies the updated virtual server configuration to replace the default Nginx configuration. Then the COPY –from command is used to copy only the production-related application code from the image built by the previous stage. The final image is approximately 127 MB.	
+	
+	FROM maven as maven
+	RUN mkdir /usr/src/mymaven
+	WORKDIR /usr/src/mymaven
+	COPY . .
+	RUN mvn install -DskipTests
+
+	FROM tomcat 
+	WORKDIR webapps 
+	COPY --from=maven /usr/src/mymaven/target/java-tomcat-maven-example.war .
+	RUN rm -rf ROOT && mv java-tomcat-maven-example.war ROOT.war	
