@@ -2117,3 +2117,14 @@ Expression to extract the name of the pod using JSONpath
 	OUTPUT
 	web-server
 	
+
+### Best Secure Your Kubernetes Deployment
+	1. Enable Kubernetes Role-Based Access Control (RBAC)
+	2. Use Third-Party Authentication for API Server
+	3. Protect etcd with TLS, Firewall and Encryption
+	4. Isolate Kubernetes Nodes
+	5. Monitor Network Traffic to Limit Communications
+	6. Use Process Whitelisting
+	7. Turn on Audit Logging
+	8. Keep Kubernetes Version Up to Date
+	9. Lock Down Kubelet
