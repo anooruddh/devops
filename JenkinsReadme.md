@@ -76,7 +76,7 @@
     
 ### Jenkins Pipeline Concepts
 
-***Term	Description
+** Term	Description
 
 Pipeline	The pipeline is a set of instructions given in the form of code for continuous delivery and consists of instructions needed for the entire build process. With pipeline, you can build, test, and deliver the application.
 
