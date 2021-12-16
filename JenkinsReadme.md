@@ -102,7 +102,8 @@ For example, the default lifecycle comprises of the following phases (for a comp
 ## Maven: How do I rename the war file for the project?
 use the finalName tag to define/change the name of the war file in the web module that produces the war. See the below example.
 
-   <build>
-     <finalName>MyWebApp</finalName>
+       <build>
+         <finalName>MyWebApp</finalName>
+       </build>
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-   </build>
