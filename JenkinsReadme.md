@@ -99,6 +99,8 @@ For example, the default lifecycle comprises of the following phases (for a comp
        install - install the package into the local repository, for use as a dependency in other projects locally
        deploy - done in the build environment, copies the final package to the remote repository for sharing with other developers and projects.
 
+For a basic Java project, we just need the Simplest POM, that defines a groupId, artifactId, and version, the three required coordinates for every project
+
 ## Maven: How do I rename the war file for the project?
 use the finalName tag to define/change the name of the war file in the web module that produces the war. See the below example.
 
