@@ -73,6 +73,18 @@
             }
         }
     }
+    
+### Jenkins Pipeline Concepts
+
+***Term	Description
+
+Pipeline	The pipeline is a set of instructions given in the form of code for continuous delivery and consists of instructions needed for the entire build process. With pipeline, you can build, test, and deliver the application.
+
+Node	The machine on which Jenkins runs is called a node. A node block is mainly used in scripted pipeline syntax.
+
+Stage	A stage block contains a series of steps in a pipeline. That is, the build, test, and deploy processes all come together in a stage. Generally, a stage block is used to visualize the Jenkins pipeline process.
+
+Step	A step is nothing but a single task that executes a specific process at a defined time. A pipeline involves a series of steps.    
 
 ### A Build Lifecycle is Made Up of Phases
 Each of these build lifecycles is defined by a different list of build phases, wherein a build phase represents a stage in the lifecycle.
