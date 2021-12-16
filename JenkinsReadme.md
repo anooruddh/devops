@@ -3,11 +3,17 @@
 ** Artifactory Plugins **
 
  rtBuildAppend: Build append
+ 
  rtBuildInfo: Create build info
+ 
  rtBuildTrigger: Trigger Artifactory build
+ 
  rtCollectIssues: Collect issues
+ 
  rtDeleteProps: Delete properties
+ 
  rtDockerPush: run Artifactory docker push
+ 
  rtDownload: Download artifacts
  
        pipeline {
