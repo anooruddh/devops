@@ -638,6 +638,54 @@ Limit to multiple hosts
 
 ansible-playbook playbooks/PLAYBOOK_NAME.yml --limit "host1,host2"
 
+### Working with Ansible Register Variables	
+	
+Ansible registers are used when you want to capture the output of a task to a variable. You can then use the value of these registers for different scenarios like a conditional statement, logging etc.
+
+The variables will contain the value returned by the task. The common return values are documented in Ansible docs. Some of the modules like shell, command etc. have module specific return values.	
+
+Each registered variables will be valid on the remote host where the task was run for the rest of the playbook execution.
+	
+		- hosts: all
+		  tasks:
+		  - name: Ansible register variable basic example
+		    shell: "find *.txt"
+		    args:
+		      chdir: "/Users/mdtutorials2/Documents/Ansible"
+		    register: find_output
+
+		  - debug:
+		      var: find_output
+
+		output
+		======
+
+		ok: [localhost] => {
+		    "find_output": {
+			"changed": true, 
+			"cmd": "find *.txt", 
+			"delta": "0:00:00.008597", 
+			"end": "2017-09-30 15:07:15.940235", 
+			"rc": 0, 
+			"start": "2017-09-30 15:07:15.931638", 
+			"stderr": "", 
+			"stderr_lines": [], 
+			"stdout": "check.txt\ncheck2.txt", 
+			"stdout_lines": [
+			    "check.txt", 
+			    "check2.txt"
+			]
+		    }
+		}
+
+You can select the individual parameter from the above output by appending the name with the return value. For example, if you need only the file names then you can use find_output.stdout.
+	
+		- debug:
+		    var: find_output.stdout
+
+		output
+		======
+		"find_output.stdout": "check.txt\ncheck2.txt"
 ===============================================================================================
 ANSIBLE ALL MODULES
 
