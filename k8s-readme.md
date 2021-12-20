@@ -2128,3 +2128,11 @@ Expression to extract the name of the pod using JSONpath
 	7. Turn on Audit Logging
 	8. Keep Kubernetes Version Up to Date
 	9. Lock Down Kubelet
+
+### Locking down your container's Linux kernels
+Locking it down with AppArmor or SELinux. 	
+	
+	Security-Enhanced Linux (SELinux) is a security architecture for Linux® systems that allows administrators to have more control over who can access the system. It was originally developed by the United States National Security Agency (NSA) as a series of patches to the Linux kernel using Linux Security Modules (LSM).
+	SELinux defines access controls for the applications, processes, and files on a system. It uses security policies, which are a set of rules that tell SELinux what can or can’t be accessed, to enforce the access allowed by a policy. 
+	If SELinux has been disabled in your environment, you can enable SElinux by editing /etc/selinux/config and setting SELINUX=permissive. Since SELinux was not currently enabled
+	
