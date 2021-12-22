@@ -2711,14 +2711,14 @@ scp -i GoluAwsKeyPair.pem ec2-user@ec2-13-233-231-216.ap-south-1.compute.amazona
 ansible-galaxy init --force --offline vivekrole 
 =======================================================
 site.yml
----
-- hosts: wordpress_hosts
-  roles:
-    - nginx
-    - php
-    - mysql
-    - wordpress
-	
+	---
+	- hosts: wordpress_hosts
+	  roles:
+	    - nginx
+	    - php
+	    - mysql
+	    - wordpress
+
 ansible-playbook site.yml
 
 https://www.digitalocean.com/community/search?q=ansible
@@ -2726,13 +2726,13 @@ https://www.digitalocean.com/community/search?q=ansible
 
 To add user
 
-$ ansible webservers -m user -a 'name=user1 password=user1' --become
+	$ ansible webservers -m user -a 'name=user1 password=user1' --become
 To delete user
 
-$ ansible webservers -m user -a 'name=user1 state=absent' --become
+	$ ansible webservers -m user -a 'name=user1 state=absent' --become
 Example 1: Create a file
 
-$ ansible webservers -m file -a 'dest=/home/ansible/niranjan.txt state=touch mode=600 owner=ansible group=ansible'
+	$ ansible webservers -m file -a 'dest=/home/ansible/niranjan.txt state=touch mode=600 owner=ansible group=ansible'
 Example 2: Create a directory
 
 To create a directory using the file module, you need to set two parameters.
@@ -2740,24 +2740,24 @@ To create a directory using the file module, you need to set two parameters.
     Path(alias – name, dest) – This is the absolute path of the directory to be created.
     State – You should enter the value as ‘directory.’ By default, the value is ‘file’.
 
-$ ansible webservers -m file -a "dest=/home/ansible/vndir state=directory mode=755"
+	$ ansible webservers -m file -a "dest=/home/ansible/vndir state=directory mode=755"
 
 Example 3: Delete a file
 
-$ ansible webservers -m file -a "dest=/home/ansible/niranjan.txt state=absent"
+	$ ansible webservers -m file -a "dest=/home/ansible/niranjan.txt state=absent"
 
 
 Example 4: Delete a directory
 
 You can delete a directory by setting the state parameter value to absent. The directory and all its contents will be deleted.
 
-$ ansible webservers -m file -a "dest=/home/ansible/vndir state=absent"
+	$ ansible webservers -m file -a "dest=/home/ansible/vndir state=absent"
 
 #6) Copy Module
 
 It is used for copying files to multiple target machines.
 
-$ ansible webservers -m copy -a "src=sample.txt dest=/home/ansible/sample.txt
+	$ ansible webservers -m copy -a "src=sample.txt dest=/home/ansible/sample.txt
 
 #7) Managing Software Packages
 
@@ -2765,20 +2765,20 @@ If you need to install software packages through ‘yum’ or ‘apt’ you can 
 
 Example 1: Install GIT
 
-$ ansible webservers –m yum -a “name=git state=present” --become
+	$ ansible webservers –m yum -a “name=git state=present” --become
 
 In this command, state=present will check if the package is installed or not and if not installed it will install the latest version.
 
 Example 2: Check if the package is installed & update it to the latest version.
 
-$ ansible webservers -m yum -a “name=git state=latest”
+	$ ansible webservers -m yum -a “name=git state=latest”
 Example 3: Install Apache Webserver
 
-$ ansible webservers -m yum -a "name=httpd state=present" –become
+	$ ansible webservers -m yum -a "name=httpd state=present" –become
 
 Example 4: Check if Maven is installed or not.
 
-$ ansible webservers -m yum -a "name=maven state=absent" –become
+	$ ansible webservers -m yum -a "name=maven state=absent" –become
 
 #8) Managing Services Module
 
@@ -2786,29 +2786,29 @@ To manage services with ansible, we use a module ‘service’.
 
 Starting a service
 
-$ ansible webservers -m service -a “name=httpd state=started” --become
+	$ ansible webservers -m service -a “name=httpd state=started” --become
 
 Stopping a service
 
-$ ansible webservers -m service -a “name=httpd state=stopped” --become
+	$ ansible webservers -m service -a “name=httpd state=stopped” --become
 
 Restarting a service
 
-$ ansible webservers -m service -a “name=httpd state=restarted --become
+	$ ansible webservers -m service -a “name=httpd state=restarted --become
 
 =========================================================================
 
 ANSIBLE VAULT
 
 [ec2-user@ansible ansible]$ cat hello-world.yml
----
-- name: This is a hello world program for ansible
-  hosts: all
-  tasks:
-  - name: Create a temp file and write hello world in it
-    copy:
-      content: "hello world\n"
-      dest: /tmp/HelloWorld.txt
+	---
+	- name: This is a hello world program for ansible
+	  hosts: all
+	  tasks:
+	  - name: Create a temp file and write hello world in it
+	    copy:
+	      content: "hello world\n"
+	      dest: /tmp/HelloWorld.txt
 [ec2-user@ansible ansible]$ ls -lrt
 total 64
 -rw-r--r-- 1 ansadm ansadm 19557 Nov 24 18:13 ansible.cfg
@@ -2829,14 +2829,14 @@ Decryption successful
 [ec2-user@ansible ansible]$ cat demo-hello-world.yml
 cat: demo-hello-world.yml: Permission denied
 [ec2-user@ansible ansible]$ sudo cat demo-hello-world.yml
----
-- name: Anooruddh - This is a hello world program for ansible
-  hosts: all
-  tasks:
-  - name: Create a temp file and write hello world in it
-    copy:
-      content: "hello world\n"
-      dest: /tmp/HelloWorld.txt
+	---
+	- name: Anooruddh - This is a hello world program for ansible
+	  hosts: all
+	  tasks:
+	  - name: Create a temp file and write hello world in it
+	    copy:
+	      content: "hello world\n"
+	      dest: /tmp/HelloWorld.txt
 [ec2-user@ansible ansible]$ ansible-vault encrypt demo-hello-world.yml
 New Vault password:
 Confirm New Vault password:
@@ -2879,18 +2879,18 @@ TAGS
 
 vim example.yml
 
-tasks:
+	tasks:
 
-    - yum: name={{ item }} state=installed
-      with_items:
-         - httpd
-         - memcached
-      tags:
-         - packages
+	    - yum: name={{ item }} state=installed
+	      with_items:
+		 - httpd
+		 - memcached
+	      tags:
+		 - packages
 
-    - template: src=templates/src.j2 dest=/etc/foo.conf
-      tags:
-         - configuration
+	    - template: src=templates/src.j2 dest=/etc/foo.conf
+	      tags:
+		 - configuration
 
 
 RUN ansible with tag
@@ -2922,43 +2922,43 @@ If one of your tasks requires sensitive information (let’s say the database us
 Ansible ships with a command line tool called ansible-vault, that allows you to create and manage encrypted files. This way you can commit the encrypted file to your source control and only users with the decryption password will be able to read it.
 
 # Encrypt an existing file. You'll need to create an encryption password.
-ansible-vault encrypt secrets.yml
+	ansible-vault encrypt secrets.yml
 
 # Creates a new, encrypted file. You'll need to create an encryption password.
-ansible-vault create secrets.yml
+	ansible-vault create secrets.yml
 
 # Decrypt a file. You'll have to enter password used for encryption.
 # Use it with caution! Don't leave your files unecrypted.
-ansible-vault decrypt secrets.yml
+	ansible-vault decrypt secrets.yml
 
 # Edit an encrypted file (uses vim by default, can be overriden by the environment variable $EDITOR)
-ansible-vault edit secrets.yml
+	ansible-vault edit secrets.yml
 
 # Print the contents of the encrypted file
-ansible-vault edit secrets.yml
+	ansible-vault edit secrets.yml
 
 If you import the vars_file secrets.yml in your playbook, Ansible will fail, as it will not know how to read the encrypted file. You’ll have to specify the command line argument --ask-vault-pass, which will make Ansible prompt you the password of the encrypted file.
 
-ansible-playbook playbook.yml -i hosts --ask-vault-password
+	ansible-playbook playbook.yml -i hosts --ask-vault-password
 
 Another way is to store the password in a file (which should not be commited) and specify the path to the file using the --vault-password-file argument. If this file is marked as executable, Ansible will run it and use the output as the password.
 	
 	
 	================================
 	cat copy-file.yml
----
- - hosts: localhost
-   tasks:
-   - name: Copy file to temp
-     copy: src=/etc/ansible/demo.txt dest=/tmp
-   - name: Make directory inside temp
-     file: state=directory name=/tmp/ag2
+	---
+	 - hosts: localhost
+	   tasks:
+	   - name: Copy file to temp
+	     copy: src=/etc/ansible/demo.txt dest=/tmp
+	   - name: Make directory inside temp
+	     file: state=directory name=/tmp/ag2
 ------------------------------------------------------------------
 	you can use the run_once parameter to tell Ansible to run the command only one time:
 
-- name: run the database migrations
-  command: bundle exec rake db:migrate
-  run_once: true
+	- name: run the database migrations
+	  command: bundle exec rake db:migrate
+	  run_once: true
 -----------------------------------------------------------------
 	
 Handlers are special types of tasks
@@ -2969,20 +2969,20 @@ Handlers that were notified will be executed one time at the end of the playbook
 
 Here is an example of how restart two services when the contents of a file change, but only if the file changes (extracted from Ansible docs):
 
-- name: template configuration file
-  template: src=template.j2 dest=/etc/foo.conf
-  notify:
-     - restart memcached
-     - restart apache
+	- name: template configuration file
+	  template: src=template.j2 dest=/etc/foo.conf
+	  notify:
+	     - restart memcached
+	     - restart apache
 
 The handlers should be declared somewhere else in your playbook:
 
-handlers:
-    - name: restart memcached
-      # The service module was used, but you could use whatever module you wanted
-      service: name=memcached state=restarted
-    - name: restart apache
-      service: name=apache state=restarted
+	handlers:
+	    - name: restart memcached
+	      # The service module was used, but you could use whatever module you wanted
+	      service: name=memcached state=restarted
+	    - name: restart apache
+	      service: name=apache state=restarted
 ---------------------------------------------------------------------
 check what tasks yaml file is going to perform
 
@@ -3022,26 +3022,26 @@ Tasks can be run based on their tags
 
 You can add one or more tags to a task or a play. To do so, simply mark what you want to tag with the tags attribute:
 # playbook.yml
-- hosts: servername
-  tags:
-    - server
-  tasks:
-    - name: Download optional files
-      tags:
-        - download
-        - optional
-    - name: Install dependencies
-      tags:
-        - dependencies
+	- hosts: servername
+	  tags:
+	    - server
+	  tasks:
+	    - name: Download optional files
+	      tags:
+		- download
+		- optional
+	    - name: Install dependencies
+	      tags:
+		- dependencies
 
 -----
 	Later on you can decide which tags to run or skip using the flags --tags <tagname> (or simply -t) and --skip-tags <tagnames>:
 
 # will run only tasks with the tag 'dependencies'
-$ ansible-playbook --tags=dependencies playbook.yml
+	$ ansible-playbook --tags=dependencies playbook.yml
 
 # will run all tasks except the ones that contain the tag 'optional'
-$ ansible-playbook --skip-tags=optional playbook.yml
+	$ ansible-playbook --skip-tags=optional playbook.yml
 
 You can specify more than one tag by separating them with commas.	
 
