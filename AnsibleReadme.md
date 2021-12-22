@@ -335,22 +335,22 @@ $ ansible-playbook playbook.yml -u USER
 
 ======================================
 
----
-- hosts: appservers
-  user: ansadm
-  become: yes
-  become_method: sudo
-  tasks:
-   - name: 1.Install Latest Version of HTTP/Apache RPMs
-     yum: name=httpd state=present
-   - name: 2.Start httpd service
-     command: name=httpd state=started enabled=yes
-   - name: 3.Copy the standard index.html file
-     copy: src=/tmp/index.html dest=/var/www/html/index.html mode=0664
-   - name: 4.Add apache iptable rule
-     command: /sbin/iptables -I INPUT 1 -p tcp --dport http -j ACCEPT -m comment --comment "Apache on Port 80"
-   - name: Save iptable rule
-     command: iptable-save
+	---
+	- hosts: appservers
+	  user: ansadm
+	  become: yes
+	  become_method: sudo
+	  tasks:
+	   - name: 1.Install Latest Version of HTTP/Apache RPMs
+	     yum: name=httpd state=present
+	   - name: 2.Start httpd service
+	     command: name=httpd state=started enabled=yes
+	   - name: 3.Copy the standard index.html file
+	     copy: src=/tmp/index.html dest=/var/www/html/index.html mode=0664
+	   - name: 4.Add apache iptable rule
+	     command: /sbin/iptables -I INPUT 1 -p tcp --dport http -j ACCEPT -m comment --comment "Apache on Port 80"
+	   - name: Save iptable rule
+	     command: iptable-save
 	 
 =====================================
 [ansadm@ansible ec2-user]$ ansible --help
@@ -359,102 +359,102 @@ Usage: ansible <host-pattern> [options]
 Define and run a single task 'playbook' against a set of hosts
 
 Options:
-  -a MODULE_ARGS, --args=MODULE_ARGS
-                        module arguments
-  --ask-vault-pass      ask for vault password
-  -B SECONDS, --background=SECONDS
-                        run asynchronously, failing after X seconds
-                        (default=N/A)
-  -C, --check           don't make any changes; instead, try to predict some
-                        of the changes that may occur
-  -D, --diff            when changing (small) files and templates, show the
-                        differences in those files; works great with --check
-  -e EXTRA_VARS, --extra-vars=EXTRA_VARS
-                        set additional variables as key=value or YAML/JSON, if
-                        filename prepend with @
-  -f FORKS, --forks=FORKS
-                        specify number of parallel processes to use
-                        (default=5)
-  -h, --help            show this help message and exit
-  -i INVENTORY, --inventory=INVENTORY, --inventory-file=INVENTORY
-                        specify inventory host path or comma separated host
-                        list. --inventory-file is deprecated
-  -l SUBSET, --limit=SUBSET
-                        further limit selected hosts to an additional pattern
-  --list-hosts          outputs a list of matching hosts; does not execute
-                        anything else
-  -m MODULE_NAME, --module-name=MODULE_NAME
-                        module name to execute (default=command)
-  -M MODULE_PATH, --module-path=MODULE_PATH
-                        prepend colon-separated path(s) to module library
-                        (default=[u'/home/ansadm/.ansible/plugins/modules',
-                        u'/usr/share/ansible/plugins/modules'])
-  -o, --one-line        condense output
-  --playbook-dir=BASEDIR
-                        Since this tool does not use playbooks, use this as a
-                        subsitute playbook directory.This sets the relative
-                        path for many features including roles/ group_vars/
-                        etc.
-  -P POLL_INTERVAL, --poll=POLL_INTERVAL
-                        set the poll interval if using -B (default=15)
-  --syntax-check        perform a syntax check on the playbook, but do not
-                        execute it
-  -t TREE, --tree=TREE  log output to this directory
-  --vault-id=VAULT_IDS  the vault identity to use
-  --vault-password-file=VAULT_PASSWORD_FILES
-                        vault password file
-  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
-                        connection debugging)
-  --version             show program's version number and exit
+	  -a MODULE_ARGS, --args=MODULE_ARGS
+				module arguments
+	  --ask-vault-pass      ask for vault password
+	  -B SECONDS, --background=SECONDS
+				run asynchronously, failing after X seconds
+				(default=N/A)
+	  -C, --check           don't make any changes; instead, try to predict some
+				of the changes that may occur
+	  -D, --diff            when changing (small) files and templates, show the
+				differences in those files; works great with --check
+	  -e EXTRA_VARS, --extra-vars=EXTRA_VARS
+				set additional variables as key=value or YAML/JSON, if
+				filename prepend with @
+	  -f FORKS, --forks=FORKS
+				specify number of parallel processes to use
+				(default=5)
+	  -h, --help            show this help message and exit
+	  -i INVENTORY, --inventory=INVENTORY, --inventory-file=INVENTORY
+				specify inventory host path or comma separated host
+				list. --inventory-file is deprecated
+	  -l SUBSET, --limit=SUBSET
+				further limit selected hosts to an additional pattern
+	  --list-hosts          outputs a list of matching hosts; does not execute
+				anything else
+	  -m MODULE_NAME, --module-name=MODULE_NAME
+				module name to execute (default=command)
+	  -M MODULE_PATH, --module-path=MODULE_PATH
+				prepend colon-separated path(s) to module library
+				(default=[u'/home/ansadm/.ansible/plugins/modules',
+				u'/usr/share/ansible/plugins/modules'])
+	  -o, --one-line        condense output
+	  --playbook-dir=BASEDIR
+				Since this tool does not use playbooks, use this as a
+				subsitute playbook directory.This sets the relative
+				path for many features including roles/ group_vars/
+				etc.
+	  -P POLL_INTERVAL, --poll=POLL_INTERVAL
+				set the poll interval if using -B (default=15)
+	  --syntax-check        perform a syntax check on the playbook, but do not
+				execute it
+	  -t TREE, --tree=TREE  log output to this directory
+	  --vault-id=VAULT_IDS  the vault identity to use
+	  --vault-password-file=VAULT_PASSWORD_FILES
+				vault password file
+	  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+				connection debugging)
+	  --version             show program's version number and exit
 
   Connection Options:
     control as whom and how to connect to hosts
 
-    -k, --ask-pass      ask for connection password
-    --private-key=PRIVATE_KEY_FILE, --key-file=PRIVATE_KEY_FILE
-                        use this file to authenticate the connection
-    -u REMOTE_USER, --user=REMOTE_USER
-                        connect as this user (default=None)
-    -c CONNECTION, --connection=CONNECTION
-                        connection type to use (default=smart)
-    -T TIMEOUT, --timeout=TIMEOUT
-                        override the connection timeout in seconds
-                        (default=10)
-    --ssh-common-args=SSH_COMMON_ARGS
-                        specify common arguments to pass to sftp/scp/ssh (e.g.
-                        ProxyCommand)
-    --sftp-extra-args=SFTP_EXTRA_ARGS
-                        specify extra arguments to pass to sftp only (e.g. -f,
-                        -l)
-    --scp-extra-args=SCP_EXTRA_ARGS
-                        specify extra arguments to pass to scp only (e.g. -l)
-    --ssh-extra-args=SSH_EXTRA_ARGS
-                        specify extra arguments to pass to ssh only (e.g. -R)
+	    -k, --ask-pass      ask for connection password
+	    --private-key=PRIVATE_KEY_FILE, --key-file=PRIVATE_KEY_FILE
+				use this file to authenticate the connection
+	    -u REMOTE_USER, --user=REMOTE_USER
+				connect as this user (default=None)
+	    -c CONNECTION, --connection=CONNECTION
+				connection type to use (default=smart)
+	    -T TIMEOUT, --timeout=TIMEOUT
+				override the connection timeout in seconds
+				(default=10)
+	    --ssh-common-args=SSH_COMMON_ARGS
+				specify common arguments to pass to sftp/scp/ssh (e.g.
+				ProxyCommand)
+	    --sftp-extra-args=SFTP_EXTRA_ARGS
+				specify extra arguments to pass to sftp only (e.g. -f,
+				-l)
+	    --scp-extra-args=SCP_EXTRA_ARGS
+				specify extra arguments to pass to scp only (e.g. -l)
+	    --ssh-extra-args=SSH_EXTRA_ARGS
+				specify extra arguments to pass to ssh only (e.g. -R)
 
   Privilege Escalation Options:
     control how and which user you become as on target hosts
 
-    -s, --sudo          run operations with sudo (nopasswd) (deprecated, use
-                        become)
-    -U SUDO_USER, --sudo-user=SUDO_USER
-                        desired sudo user (default=root) (deprecated, use
-                        become)
-    -S, --su            run operations with su (deprecated, use become)
-    -R SU_USER, --su-user=SU_USER
-                        run operations with su as this user (default=None)
-                        (deprecated, use become)
-    -b, --become        run operations with become (does not imply password
-                        prompting)
-    --become-method=BECOME_METHOD
-                        privilege escalation method to use (default=sudo),
-                        valid choices: [ sudo | su | pbrun | pfexec | doas |
-                        dzdo | ksu | runas | pmrun | enable | machinectl ]
-    --become-user=BECOME_USER
-                        run operations as this user (default=root)
-    --ask-sudo-pass     ask for sudo password (deprecated, use become)
-    --ask-su-pass       ask for su password (deprecated, use become)
-    -K, --ask-become-pass
-                        ask for privilege escalation password
+	    -s, --sudo          run operations with sudo (nopasswd) (deprecated, use
+				become)
+	    -U SUDO_USER, --sudo-user=SUDO_USER
+				desired sudo user (default=root) (deprecated, use
+				become)
+	    -S, --su            run operations with su (deprecated, use become)
+	    -R SU_USER, --su-user=SU_USER
+				run operations with su as this user (default=None)
+				(deprecated, use become)
+	    -b, --become        run operations with become (does not imply password
+				prompting)
+	    --become-method=BECOME_METHOD
+				privilege escalation method to use (default=sudo),
+				valid choices: [ sudo | su | pbrun | pfexec | doas |
+				dzdo | ksu | runas | pmrun | enable | machinectl ]
+	    --become-user=BECOME_USER
+				run operations as this user (default=root)
+	    --ask-sudo-pass     ask for sudo password (deprecated, use become)
+	    --ask-su-pass       ask for su password (deprecated, use become)
+	    -K, --ask-become-pass
+				ask for privilege escalation password
 
 Some modules do not make sense in Ad-Hoc (include, meta, etc)
 [ansadm@ansible ec2-user]$
@@ -487,7 +487,8 @@ The easiest way to do this is with the mkpasswd command:
 
 mkpasswd --method=sha-512
 
-This will prompt you for the plaintext password and will give you a hashed password string you can paste into the task definition. For password secret, I get hash $6$F4NWXRFtSdCi8$DsB5vvMJYusQhSbvGXrYDXL6Xj37MUuqFCd4dGXdKd6NyxT3lpdELN07/Kpo7EjjWnm9zusFg/LLFv6oc.ynu/
+This will prompt you for the plaintext password and will give you a hashed password string you can paste into the task definition. For password secret, I get hash 
+	$6$F4NWXRFtSdCi8$DsB5vvMJYusQhSbvGXrYDXL6Xj37MUuqFCd4dGXdKd6NyxT3lpdELN07/Kpo7EjjWnm9zusFg/LLFv6oc.ynu/
 --------------------------------------------------------------------------------------------------------------------------
 ---
  - name: Create a login user
@@ -505,12 +506,12 @@ https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html
 
 listing users and group in linux
 
-awk -F: '{ print $1}' /etc/passwd
-awk -F: '{ print $1}' /etc/group
-echo "groups:" ; for i in $(id -Gn);do echo "  - $i" ;done
+	awk -F: '{ print $1}' /etc/passwd
+	awk -F: '{ print $1}' /etc/group
+	echo "groups:" ; for i in $(id -Gn);do echo "  - $i" ;done
 
 
- awk -F":" '{print "Login:" $1 "\tName:" $5 "\tHome:" $6}' /etc/passwd
+	 awk -F":" '{print "Login:" $1 "\tName:" $5 "\tHome:" $6}' /etc/passwd
  
  
 Login:ansadm    Name:   Home:/home/ansadm
@@ -523,28 +524,28 @@ Login:ansanoo   Name:   Home:/home/ansanoo
 
 playbook: createuser.yml
 [ansadm@ansible tmp]$ cat createuser.yml
----
-- hosts: dbservers
-  remote_user: root
-  tasks:
-    - name: test connection
-      ping:
-      remote_user: yourname
+	---
+	- hosts: dbservers
+	  remote_user: root
+	  tasks:
+	    - name: test connection
+	      ping:
+	      remote_user: yourname
 [ansadm@ansible tmp]$
 
 ================================================================
 
 playbook: createuser.yml
 [ansadm@ansible tmp]$ cat createuser.yml
----
-- hosts: dbservers
-  become: yes
-  become_user: root
-  become_method: sudo
-  tasks:
-    - name: create user account
-      ping:
-      remote_user: root
+	---
+	- hosts: dbservers
+	  become: yes
+	  become_user: root
+	  become_method: sudo
+	  tasks:
+	    - name: create user account
+	      ping:
+	      remote_user: root
 [ansadm@ansible tmp]$
 
 ==========
@@ -552,21 +553,21 @@ playbook: createuser.yml
 working ansible playbook
 
 [ansadm@ansible tmp]$ cat a.yml
----
-- hosts: dbservers
-  become: yes
-  become_method: sudo
-  tasks:
-    - name: Creating 'ansanoo' user on dbservers.
-      user:
-        name: ansanoo
-        password: 'sdsdeRsFF2ym'
-        group: ansadm
-        system: no
-        createhome: yes
-        home: /home/ansanoo
-        state: present
-        shell: /bin/bash
+	---
+	- hosts: dbservers
+	  become: yes
+	  become_method: sudo
+	  tasks:
+	    - name: Creating 'ansanoo' user on dbservers.
+	      user:
+		name: ansanoo
+		password: 'sdsdeRsFF2ym'
+		group: ansadm
+		system: no
+		createhome: yes
+		home: /home/ansanoo
+		state: present
+		shell: /bin/bash
 
 [ansadm@ansible tmp]$
 [ansadm@ansible tmp]$ ansible-playbook a.yml
@@ -595,31 +596,31 @@ while installing httpd, you can copy and index.html file from local to server at
 playbook: InstallApache.yml
 [ansadm@ansible tmp]$ ansible-playbook InstallApache.yml --syntax-checkca^C
 [ansadm@ansible tmp]$ cat InstallApache.yml
----
-- hosts: dbservers
-  gather_facts: yes
-  remote_user: root
-  become: yes
-  become_method: sudo
-  vars:
-    http_port: 80
-    max_clients: 200
-  tasks:
-    - name: Install Apache on DB Servers.
-      yum:
-        name: httpd
-        state: latest
-      notify:
-      - restart apache
-    - name: Ensure apache is running.
-      service:
-        name: httpd
-        state: started
-  handlers:
-    - name: Restart Apache.
-      service:
-         name: httpd
-         state: restarted
+	---
+	- hosts: dbservers
+	  gather_facts: yes
+	  remote_user: root
+	  become: yes
+	  become_method: sudo
+	  vars:
+	    http_port: 80
+	    max_clients: 200
+	  tasks:
+	    - name: Install Apache on DB Servers.
+	      yum:
+		name: httpd
+		state: latest
+	      notify:
+	      - restart apache
+	    - name: Ensure apache is running.
+	      service:
+		name: httpd
+		state: started
+	  handlers:
+	    - name: Restart Apache.
+	      service:
+		 name: httpd
+		 state: restarted
 
 [ansadm@ansible tmp]$ ansible-playbook InstallApache.yml --syntax-check
 
@@ -2550,31 +2551,31 @@ ANSIBLE ALL MODULES
 http://ec2-13-233-109-212.ap-south-1.compute.amazonaws.com
 [ansadm@ansible tmp]$ cat InstallApache.yml
 ---
-- hosts: all
-  gather_facts: yes
-  #remote_user: root
-  become: yes
-  become_method: sudo
-  become_user: root
-  vars:
-    http_port: 80
-    max_clients: 200
-  tasks:
-    - name: Install Apache on DB Servers.
-      yum:
-        name: httpd
-        state: latest
-      notify:
-      - restart apache
-    - name: Ensure apache is running.
-      service:
-        name: httpd
-        state: started
-  handlers:
-    - name: restart apache.
-      service:
-         name: httpd
-         state: restarted
+	- hosts: all
+	  gather_facts: yes
+	  #remote_user: root
+	  become: yes
+	  become_method: sudo
+	  become_user: root
+	  vars:
+	    http_port: 80
+	    max_clients: 200
+	  tasks:
+	    - name: Install Apache on DB Servers.
+	      yum:
+		name: httpd
+		state: latest
+	      notify:
+	      - restart apache
+	    - name: Ensure apache is running.
+	      service:
+		name: httpd
+		state: started
+	  handlers:
+	    - name: restart apache.
+	      service:
+		 name: httpd
+		 state: restarted
 [ansadm@ansible tmp]$
 
 Handlers
