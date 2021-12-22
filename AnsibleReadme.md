@@ -90,10 +90,15 @@ ssh -i id_rsa ansadm@172.31.30.107		(from /home/ansadm/.ssh)
 ------------------------------------------------
 
 [root@ip-172-31-19-54 ec2-user]# ansible --version
+
 ansible 2.6.8
+
   config file = /etc/ansible/ansible.cfg
+  
   configured module search path = [u'/root/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  
   ansible python module location = /usr/lib/python2.6/site-packages/ansible
+  
   executable location = /usr/bin/ansible
   python version = 2.6.9 (unknown, Nov  2 2017, 19:21:21) [GCC 4.8.5 20150623 (Red Hat 4.8.5-11)]
 [root@ip-172-31-19-54 ec2-user]# which ansible
@@ -152,23 +157,36 @@ ansadm ALL=NOPASSWD: ALL
 
 ===========
 [root@ansible ec2-user]# hostname
+
 ansible.controller.server
+
 [root@ansible ec2-user]# useradd -d /home/ansadm  -m ansadm
+
 [root@ansible ec2-user]# passwd ansadm
+
 Changing password for user ansadm.
+
 New password:
+
 BAD PASSWORD: The password is shorter than 8 characters
+
 Retype new password:
+
 passwd: all authentication tokens updated successfully.
+
 [root@ansible ec2-user]#
 =====================
 
 
 ------------
 [ansadm@ansible .ssh]$ ansible all -m ping
+
 The authenticity of host 'ansible-dbserver.server (172.31.30.107)' can't be established.
+
 ECDSA key fingerprint is SHA256:vNFqISbSJoefHXbofuLuXJfwRubFSZxD5hqOEVbFczw.
+
 ECDSA key fingerprint is MD5:17:6f:9b:92:48:56:85:7c:94:ca:09:79:4f:14:f2:2d.
+
 Are you sure you want to continue connecting (yes/no)? ansible-appserver.server | SUCCESS => {
     "changed": false,
     "ping": "pong"
@@ -180,14 +198,20 @@ ansible-dbserver.server | UNREACHABLE! => {
     "unreachable": true
 }
 [ansadm@ansible .ssh]$ ansible all -m ping
+
 The authenticity of host 'ansible-dbserver.server (172.31.30.107)' can't be established.
+
 ECDSA key fingerprint is SHA256:vNFqISbSJoefHXbofuLuXJfwRubFSZxD5hqOEVbFczw.
+
 ECDSA key fingerprint is MD5:17:6f:9b:92:48:56:85:7c:94:ca:09:79:4f:14:f2:2d.
+
 Are you sure you want to continue connecting (yes/no)? ansible-appserver.server | SUCCESS => {
     "changed": false,
     "ping": "pong"
 }
+
 yes
+
 ansible-dbserver.server | SUCCESS => {
     "changed": false,
     "ping": "pong"
@@ -229,6 +253,7 @@ ansible-dbserver.server | SUCCESS => {"changed": false, "ping": "pong"}
 check os name and disk space on all servers
 
 [ansadm@ansible .ssh]$ ansible all -m shell -a  "uname -a;df -k"
+
 ansible-appserver.server | SUCCESS | rc=0 >>
 Linux ansible-appserver.server 4.14.77-70.59.amzn1.x86_64 #1 SMP Mon Nov 12 22:02:45 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
 Filesystem     1K-blocks    Used Available Use% Mounted on
