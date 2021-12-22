@@ -515,17 +515,17 @@ mkpasswd --method=sha-512
 This will prompt you for the plaintext password and will give you a hashed password string you can paste into the task definition. For password secret, I get hash 
 	$6$F4NWXRFtSdCi8$DsB5vvMJYusQhSbvGXrYDXL6Xj37MUuqFCd4dGXdKd6NyxT3lpdELN07/Kpo7EjjWnm9zusFg/LLFv6oc.ynu/
 --------------------------------------------------------------------------------------------------------------------------
----
- - name: Create a login user
-     user:
-      name: fideloper
-      password: '$6$F4NWXRFtSdCi8$DsB5vvMJYusQhSbvGXrYDXL6Xj37MUuqFCd4dGXdKd6NyxT3lpdELN07/Kpo7EjjWnm9zusFg/LLFv6oc.ynu/'
-      groups: docker, sudo   # Empty by default.
-      state: present
-      shell: /bin/bash       # Defaults to /bin/bash
-      system: no             # Defaults to no
-      createhome: yes        # Defaults to yes
-      home: /home/fideloper  # Defaults to /home/<username>
+	---
+	 - name: Create a login user
+	     user:
+	      name: fideloper
+	      password: '$6$F4NWXRFtSdCi8$DsB5vvMJYusQhSbvGXrYDXL6Xj37MUuqFCd4dGXdKd6NyxT3lpdELN07/Kpo7EjjWnm9zusFg/LLFv6oc.ynu/'
+	      groups: docker, sudo   # Empty by default.
+	      state: present
+	      shell: /bin/bash       # Defaults to /bin/bash
+	      system: no             # Defaults to no
+	      createhome: yes        # Defaults to yes
+	      home: /home/fideloper  # Defaults to /home/<username>
 ======================================================================================================================================================
 https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html
 
@@ -2925,19 +2925,19 @@ ansible-playbook example.yml --tags "configuration,packages"		 will run both  ta
 
 	Common core modules include:
 
-    command - Executes a command on a remote node
-    script - Runs a local script on a remote node after transferring it
-    shell - Execute commands in nodes
-    mysql_db - Add or remove MySQL databases from a remote host
-    mysql_user - Adds or removes a user from a MySQL database
-    postgresql_db - Add or remove PostgreSQL databases from a remote host
-    postgresql_user - Adds or removes a users (roles) from a PostgreSQL database
-    fetch - Fetches a file from remote nodes
-    template - Templates a file out to a remote server
-    yum - Manages packages with the yum package manager
-    apt - Manages apt-packages
-    git - Deploy software (or files) from git checkouts
-    service - Manage services
+	    command - Executes a command on a remote node
+	    script - Runs a local script on a remote node after transferring it
+	    shell - Execute commands in nodes
+	    mysql_db - Add or remove MySQL databases from a remote host
+	    mysql_user - Adds or removes a user from a MySQL database
+	    postgresql_db - Add or remove PostgreSQL databases from a remote host
+	    postgresql_user - Adds or removes a users (roles) from a PostgreSQL database
+	    fetch - Fetches a file from remote nodes
+	    template - Templates a file out to a remote server
+	    yum - Manages packages with the yum package manager
+	    apt - Manages apt-packages
+	    git - Deploy software (or files) from git checkouts
+	    service - Manage services
 
 =======================================================================
 	
@@ -3081,17 +3081,17 @@ INTERVIEW CONTENT
 	
 few modules - ping,user,service,shell,debug,command,copy,yumc,uri,twilio,telnet,snmp,setup(gather facts of remote server)
 
-ansible_facts
-gather_facts
-become: true
-become_user: root
-remote_user: root
-register
-debug
-notify
-handler
-ansible-vault ( encrypt,decrypt,view,edit,rekey)
-when (when ansible_facts["os_name"] == "RedHat")
+	ansible_facts
+	gather_facts
+	become: true
+	become_user: root
+	remote_user: root
+	register
+	debug
+	notify
+	handler
+	ansible-vault ( encrypt,decrypt,view,edit,rekey)
+	when (when ansible_facts["os_name"] == "RedHat")
 
 ansible-playbook example.yml --tags "configuration,packages"	
 
