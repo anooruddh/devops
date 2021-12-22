@@ -3,7 +3,8 @@ Ansible
 Every YAML file optionally starts with “---” and ends with “...”.
 
 login users
-awk -F":" '{print "Login:" $1 "\tName:" $5 "\tHome:" $6}' /etc/passwd
+	awk -F":" '{print "Login:" $1 "\tName:" $5 "\tHome:" $6}' /etc/passwd
+	
 ==================================================================
     i-0f96027db0b7cf336: ec2-13-127-142-204.ap-south-1.compute.amazonaws.com		172.31.30.107	ansible-dbserver.server
     i-0022e78ca75778b38: ec2-13-233-28-197.ap-south-1.compute.amazonaws.com			172.31.19.54	ansible-controller.server
