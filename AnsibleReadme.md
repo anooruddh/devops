@@ -3380,14 +3380,14 @@ Altogether, you can add all your tasks in this file or just break the codes even
 		- import_tasks: service.yml
 Lets create install.yml, confgure.yml, service.yml included in the main.yml with actions in the same directory.	
 	
-install.yml
+*install.yml*
 	
 		[root@learnitguide apache]# cat tasks/install.yml
 		---
 		- name: Install httpd Package
 		  yum: name=httpd state=latest
 
-configure.yml
+*configure.yml*
 	
 		[root@learnitguide apache]# cat tasks/configure.yml
 		---
@@ -3398,15 +3398,15 @@ configure.yml
 		  notify:
 		  - restart apache
 
-service.yml	
+*service.yml*	
 	
 		[root@learnitguide apache]# cat tasks/service.yml
 		---
 		- name: Start and Enable httpd service
 		service: name=httpd state=restarted enabled=yes
 
-Files
-	Copy the required files to the files directory
+*Files*
+Copy the required files to the files directory
 	
 		[root@learnitguide apache]# ll files/*
 		-rw-r--r-- 1 root root 11753 Feb  4 10:01 files/httpd.conf
@@ -3414,3 +3414,52 @@ Files
 		[root@learnitguide apache]# cat files/index.html
 		This is a homepage created by learnitguide.net for ansible roles.
 		[root@learnitguide apache]#
+*Handlers*
+		[root@learnitguide apache]# cat handlers/main.yml
+		---
+		# handlers file for /etc/ansible/roles/apache
+		- name: restart apache
+		  service: name=httpd state=restarted	
+
+List directory structure
+	
+	[root@learnitguide apache]# tree
+	.
+	|-- README.md
+	|-- defaults
+	|   `-- main.yml
+	|-- files
+	|   |-- httpd.conf
+	|   `-- index.html
+	|-- handlers
+	|   `-- main.yml
+	|-- meta
+	|   `-- main.yml
+	|-- tasks
+	|   |-- configure.yml
+	|   |-- install.yml
+	|   |-- main.yml
+	|   `-- service.yml
+	|-- templates
+	|-- tests
+	|   |-- inventory
+	|   `-- test.yml
+	`-- vars
+	    `-- main.yml
+	8 directories, 13 files
+	[root@learnitguide apache]#
+
+Create a playbook, which will use/run these roles
+	
+	[root@learnitguide apache]# cat /etc/ansible/runsetup.yml
+	---
+	 - hosts: node2
+	   roles:
+	   - apache
+	[root@learnitguide apache]#
+
+Verify the syntax
+	
+	[root@learnitguide apache]# ansible-playbook /etc/ansible/runsetup.yml --syntax-check
+	playbook: /etc/ansible/runsetup.yml
+	[root@learnitguide apache]#
