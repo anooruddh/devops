@@ -3357,9 +3357,48 @@ Below is a sample playbook codes to deploy Apache web server. Lets convert this 
 
 Edit main.yml available in the tasks folder to define the tasks to be executed.
 
+		[root@learnitguide apache]# vi tasks/main.yml
+		---
+		- name: Install httpd Package
+		  yum: name=httpd state=latest
+		- name: Copy httpd configuration file
+		  copy: src=/data/httpd.original dest=/etc/httpd/conf/httpd.conf
+		- name: Copy index.html file
+		  copy: src=/data/index.html dest=/var/www/html
+		  notify:
+		  - restart apache
+		- name: Start and Enable httpd service
+		  service: name=httpd state=restarted enabled=yes
 
 Altogether, you can add all your tasks in this file or just break the codes even more as below using "import_tasks" statements.
 
-
+		[root@learnitguide apache]# cat tasks/main.yml
+		---
+		# tasks file for /etc/ansible/roles/apache
+		- import_tasks: install.yml
+		- import_tasks: configure.yml
+		- import_tasks: service.yml
 Lets create install.yml, confgure.yml, service.yml included in the main.yml with actions in the same directory.	
+	
+#install.yml
+	[root@learnitguide apache]# cat tasks/install.yml
+	---
+	- name: Install httpd Package
+	  yum: name=httpd state=latest
+
+#configure.yml
+	[root@learnitguide apache]# cat tasks/configure.yml
+	---
+	- name: Copy httpd configuration file
+	  copy: src=files/httpd.conf dest=/etc/httpd/conf/httpd.conf
+	- name: Copy index.html file
+	  copy: src=files/index.html dest=/var/www/html
+	  notify:
+	  - restart apache
+
+#service.yml	
+	[root@learnitguide apache]# cat tasks/service.yml
+	---
+	- name: Start and Enable httpd service
+  	service: name=httpd state=restarted enabled=yes
 	
