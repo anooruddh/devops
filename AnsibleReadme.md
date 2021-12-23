@@ -3104,46 +3104,47 @@ few modules - ping,user,service,shell,debug,command,copy,yumc,uri,twilio,telnet,
 	loop:
 	     - testuser1
 	     - testuser2
-ansible-playbook example.yml --tags "configuration,packages"	
 
-ansible appservers -m setup -i ansible_hosts -a 'filter=ansible_distribution,ansible_distribution_version,ansible_memfree_mb,ansible_memtotal_mb,ansible_processor_cores*,ansible_architecture'
+	ansible-playbook example.yml --tags "configuration,packages"	
+
+	ansible appservers -m setup -i ansible_hosts -a 	'filter=ansible_distribution,ansible_distribution_version,ansible_memfree_mb,ansible_memtotal_mb,ansible_processor_cores*,ansible_architecture'
 
 
-stage: restarted,present,absent,installed,Latest
+	stage: restarted,present,absent,installed,Latest
 
---ask-vault-password		ansible-playbook playbook.yml -i hosts --ask-vault-password
-ansible all --list-hosts
-tasks can be run based on their tags
-ansible-playbook --tags=dependencies playbook.yml
+	--ask-vault-password		ansible-playbook playbook.yml -i hosts --ask-vault-password
+	ansible all --list-hosts
+	tasks can be run based on their tags
+	ansible-playbook --tags=dependencies playbook.yml
 
 /etc/ansible
 /etc/ansible/ansible.config
 /etc/ansible/hosts
 
 cat /etc/ansible/hosts
-	--------------------------------------------------------------------------------------------------------------------------
-	[dbservers]
-	ansible-dbserver.server
+		--------------------------------------------------------------------------------------------------------------------------
+		[dbservers]
+		ansible-dbserver.server
 
-	[appservers]
-	ansible-appserver.server
-	--------------------------------------------------------------------------------------------------------------------------
+		[appservers]
+		ansible-appserver.server
+		--------------------------------------------------------------------------------------------------------------------------
 
-	ANSIBLE.config
-	--------------------------------------------------------------------------------------------------------------------------
-	# SSH timeout
-	#timeout = 10
+		ANSIBLE.config
+		--------------------------------------------------------------------------------------------------------------------------
+		# SSH timeout
+		#timeout = 10
 
-	#remote_user = root
-	#vault_password_file = /path/to/vault_password_file
+		#remote_user = root
+		#vault_password_file = /path/to/vault_password_file
 
-	#retry_files_enabled = False
-	#retry_files_save_path = ~/.ansible-retry
+		#retry_files_enabled = False
+		#retry_files_save_path = ~/.ansible-retry
 
-	#retries = 3
-	#connect_timeout = 30
+		#retries = 3
+		#connect_timeout = 30
 
-	--------------------------------------------------------------------------------------------------------------------------
+		--------------------------------------------------------------------------------------------------------------------------
 
 
 
