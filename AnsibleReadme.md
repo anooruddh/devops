@@ -2825,7 +2825,7 @@ Restarting a service
 
 =========================================================================
 
-###ANSIBLE VAULT
+ANSIBLE VAULT
 
 		[ec2-user@ansible ansible]$ cat hello-world.yml
 			---
