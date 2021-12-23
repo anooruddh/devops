@@ -2645,10 +2645,8 @@ PLAY RECAP *********************************************************************
 ansible-appserver.server   : ok=0    changed=0    unreachable=1    failed=0
 ansible-dbserver.server    : ok=3    changed=1    unreachable=0    failed=0
 
-----------------------------------------------
-Testing :   curl http://public_name_of_db_server:80/
-----------------------------------------------
 
+Testing :   curl http://public_name_of_db_server:80/
 
 ftp> lcd Desktop
 Local directory now C:\Documents and Settings\olga\Desktop.
@@ -2671,7 +2669,7 @@ ftp: 285 bytes sent in 0.00Seconds 285000.00Kbytes/sec.
 ftp> site chmod 664 index.html
 200 CHMOD command successful
 ftp> bye
-========================
+
 https://www.youtube.com/watch?v=SgxtxzQJM4w
 
 uninstall apache
@@ -2735,8 +2733,8 @@ copying this zip file to local from aws linux server
 scp -i GoluAwsKeyPair.pem ec2-user@ec2-13-233-231-216.ap-south-1.compute.amazonaws.com:/etc/ansible/roles.zip C:\guddu\Devops\Ansible
 
 
-ansible-galaxy init --force --offline vivekrole 
-=======================================================
+		ansible-galaxy init --force --offline vivekrole 
+		
 		site.yml
 			---
 			- hosts: wordpress_hosts
