@@ -3262,7 +3262,7 @@ And you may also tag basic include statements:
 
 		- include: foo.yml tags=web,foo	
 
-### ANSIBLE ROLES
+***ANSIBLE ROLES***
 	
 
 1. Ansible roles are consists of many playbooks, which is similar to modules in puppet and cook books in chef. We term the same in ansible as roles.
@@ -3380,14 +3380,14 @@ Altogether, you can add all your tasks in this file or just break the codes even
 		- import_tasks: service.yml
 Lets create install.yml, confgure.yml, service.yml included in the main.yml with actions in the same directory.	
 	
-#install.yml
+install.yml
 	
 		[root@learnitguide apache]# cat tasks/install.yml
 		---
 		- name: Install httpd Package
 		  yum: name=httpd state=latest
 
-#configure.yml
+configure.yml
 	
 		[root@learnitguide apache]# cat tasks/configure.yml
 		---
@@ -3398,14 +3398,14 @@ Lets create install.yml, confgure.yml, service.yml included in the main.yml with
 		  notify:
 		  - restart apache
 
-#service.yml	
+service.yml	
 	
 		[root@learnitguide apache]# cat tasks/service.yml
 		---
 		- name: Start and Enable httpd service
 		service: name=httpd state=restarted enabled=yes
-	
-###Files
+
+Files
 	Copy the required files to the files directory
 	
 		[root@learnitguide apache]# ll files/*
