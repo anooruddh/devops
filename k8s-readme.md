@@ -2153,4 +2153,26 @@ Helm also keeps a release history of all deployed charts, so you can go back to 
 
 ### How to Create a Helm Chart
 	
+The first step, of course, would be to create a new chart with a given name:
+
+		helm create hello-world
+	
+Please note that the name of the chart provided here will be the directory's name where the chart is created and stored.
+
+Let's quickly see the directory structure created for us:
+
+		hello-world /
+		  Chart.yaml
+		  values.yaml
+		  templates /
+		  charts /
+		  .helmignore
+	
+Let's understand the relevance of these files and folders created for us:
+
+		Chart.yaml: This is the main file that contains the description of our chart
+		values.yaml: this is the file that contains the default values for our chart
+		templates: This is the directory where Kubernetes resources are defined as templates
+		charts: This is an optional directory that may contain sub-charts
+		.helmignore: This is where we can define patterns to ignore when packaging (similar in concept to .gitignore)	
 	
