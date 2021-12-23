@@ -3381,24 +3381,36 @@ Altogether, you can add all your tasks in this file or just break the codes even
 Lets create install.yml, confgure.yml, service.yml included in the main.yml with actions in the same directory.	
 	
 #install.yml
-	[root@learnitguide apache]# cat tasks/install.yml
-	---
-	- name: Install httpd Package
-	  yum: name=httpd state=latest
+	
+		[root@learnitguide apache]# cat tasks/install.yml
+		---
+		- name: Install httpd Package
+		  yum: name=httpd state=latest
 
 #configure.yml
-	[root@learnitguide apache]# cat tasks/configure.yml
-	---
-	- name: Copy httpd configuration file
-	  copy: src=files/httpd.conf dest=/etc/httpd/conf/httpd.conf
-	- name: Copy index.html file
-	  copy: src=files/index.html dest=/var/www/html
-	  notify:
-	  - restart apache
+	
+		[root@learnitguide apache]# cat tasks/configure.yml
+		---
+		- name: Copy httpd configuration file
+		  copy: src=files/httpd.conf dest=/etc/httpd/conf/httpd.conf
+		- name: Copy index.html file
+		  copy: src=files/index.html dest=/var/www/html
+		  notify:
+		  - restart apache
 
 #service.yml	
-	[root@learnitguide apache]# cat tasks/service.yml
-	---
-	- name: Start and Enable httpd service
-  	service: name=httpd state=restarted enabled=yes
 	
+		[root@learnitguide apache]# cat tasks/service.yml
+		---
+		- name: Start and Enable httpd service
+		service: name=httpd state=restarted enabled=yes
+	
+###Files
+	Copy the required files to the files directory
+	
+		[root@learnitguide apache]# ll files/*
+		-rw-r--r-- 1 root root 11753 Feb  4 10:01 files/httpd.conf
+		-rw-r--r-- 1 root root    66 Feb  4 10:02 files/index.html
+		[root@learnitguide apache]# cat files/index.html
+		This is a homepage created by learnitguide.net for ansible roles.
+		[root@learnitguide apache]#
