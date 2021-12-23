@@ -3380,14 +3380,16 @@ Altogether, you can add all your tasks in this file or just break the codes even
 		- import_tasks: service.yml
 Lets create install.yml, confgure.yml, service.yml included in the main.yml with actions in the same directory.	
 	
-*install.yml*
+***install.yml***
+
 	
 		[root@learnitguide apache]# cat tasks/install.yml
 		---
 		- name: Install httpd Package
 		  yum: name=httpd state=latest
 
-*configure.yml*
+***configure.yml***
+
 	
 		[root@learnitguide apache]# cat tasks/configure.yml
 		---
@@ -3398,14 +3400,16 @@ Lets create install.yml, confgure.yml, service.yml included in the main.yml with
 		  notify:
 		  - restart apache
 
-*service.yml*	
+***service.yml***
+
 	
 		[root@learnitguide apache]# cat tasks/service.yml
 		---
 		- name: Start and Enable httpd service
 		service: name=httpd state=restarted enabled=yes
 
-*Files*
+***Files***
+
 Copy the required files to the files directory
 	
 		[root@learnitguide apache]# ll files/*
@@ -3414,7 +3418,8 @@ Copy the required files to the files directory
 		[root@learnitguide apache]# cat files/index.html
 		This is a homepage created by learnitguide.net for ansible roles.
 		[root@learnitguide apache]#
-*Handlers*
+***Handlers***
+
 		[root@learnitguide apache]# cat handlers/main.yml
 		---
 		# handlers file for /etc/ansible/roles/apache
