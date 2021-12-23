@@ -2402,4 +2402,40 @@ Although less likely, we may want to uninstall a release completely. We can use 
 	
 It removes all of the resources associated with the last release of the chart and the release history.	
 	
-#Distributing Charts	
+###Distributing Charts	
+	
+	Firstly, we need to package the charts we've created to be able to distribute them. This is the command to create a versioned archive file of the chart:
+
+	helm package ./hello-world
+	Successfully packaged chart and saved it to: \hello-world\hello-world-0.1.0.tgz
+	
+Note that it produces an archive on our machine that we can distribute manually or through public or private chart repositories. We also have an option to sign the chart archive.
+
+###Helm Repo
+	
+Finally, we need a mechanism to work with shared repositories to collaborate. There are several sub-commands available within this command that we can use to add, remove, update, list, or index chart repositories. Let's see how we can use them.
+
+We can create a git repository and use that to function as our chart repository. The only requirement is that it should have an index.yaml file.
+
+We can create index.yaml for our chart repo:
+
+		helm repo index my-repo/ --url https://<username>.github.io/my-repo
+This generates the index.yaml file, which we should push to the repository along with the chart archives.
+
+After successfully creating the chart repository, subsequently, we can remotely add this repo:
+
+		helm repo add my-repo https://my-pages.github.io/my-repo
+	
+Now, we should be able to install the charts from our repo directly:	
+	
+		helm install my-repo/hello-world --name=hello-world
+	
+There are quite a several commands available to work with the chart repositories.
+	
+###Helm Search	
+	
+Finally, we should search for a keyword within a chart that can be present on any public or private chart repositories.
+
+	helm search repo <KEYWORD>
+	
+There are sub-commands available for this command that allows us to search different locations for charts. For instance, we can search for charts in the Artifact Hub or our own repositories. Further, we can search for a keyword in the charts available in all the repositories we've configured.
