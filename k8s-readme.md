@@ -2176,3 +2176,230 @@ Let's understand the relevance of these files and folders created for us:
 		charts: This is an optional directory that may contain sub-charts
 		.helmignore: This is where we can define patterns to ignore when packaging (similar in concept to .gitignore)	
 	
+### Creating Template
+
+If we see inside the template directory, we'll notice that few templates for common Kubernetes resources have already been created for us:
+
+		hello-world /
+		  templates /
+		    deployment.yaml
+		    service.yaml
+		    ingress.yaml
+	
+we'll create a deployment and service to expose that deployment
+
+Let's edit the file deployment.yaml inside the templates directory to look like:
+	
+		apiVersion: apps/v1
+		kind: Deployment
+		metadata:
+		  name: {{ include "hello-world.fullname" . }}
+		  labels:
+		    app.kubernetes.io/name: {{ include "hello-world.name" . }}
+		    helm.sh/chart: {{ include "hello-world.chart" . }}
+		    app.kubernetes.io/instance: {{ .Release.Name }}
+		    app.kubernetes.io/managed-by: {{ .Release.Service }}
+		spec:
+		  replicas: {{ .Values.replicaCount }}
+		  selector:
+		    matchLabels:
+		      app.kubernetes.io/name: {{ include "hello-world.name" . }}
+		      app.kubernetes.io/instance: {{ .Release.Name }}
+		  template:
+		    metadata:
+		      labels:
+			app.kubernetes.io/name: {{ include "hello-world.name" . }}
+			app.kubernetes.io/instance: {{ .Release.Name }}
+		    spec:
+		      containers:
+			- name: {{ .Chart.Name }}
+			  image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+			  imagePullPolicy: {{ .Values.image.pullPolicy }}
+			  ports:
+			    - name: http
+			      containerPort: 8080
+			      protocol: TCP
+	
+Similarly, let's edit the file service.yaml to look like:
+
+		apiVersion: v1
+		kind: Service
+		metadata:
+		  name: {{ include "hello-world.fullname" . }}
+		  labels:
+		    app.kubernetes.io/name: {{ include "hello-world.name" . }}
+		    helm.sh/chart: {{ include "hello-world.chart" . }}
+		    app.kubernetes.io/instance: {{ .Release.Name }}
+		    app.kubernetes.io/managed-by: {{ .Release.Service }}
+		spec:
+		  type: {{ .Values.service.type }}
+		  ports:
+		    - port: {{ .Values.service.port }}
+		      targetPort: http
+		      protocol: TCP
+		      name: http
+		  selector:
+		    app.kubernetes.io/name: {{ include "hello-world.name" . }}
+		    app.kubernetes.io/instance: {{ .Release.Name }}
+	
+Now, with our knowledge of Kubernetes, these template files look quite familiar except for some oddities. Note the liberal usage of text within double parentheses {{}}. This is what is called a template directive.
+
+Helm makes use of the Go template language and extends that to something called Helm template language. During the evaluation, every file inside the template directory is submitted to the template rendering engine. This is where the template directive injects actual values into the templates.
+	
+### Providing Values
+	
+We can use the file values.yaml in our chart to pass values to the template rendering engine through the Built-in Object Values. Let's modify the values.yaml to look like:
+	
+		replicaCount: 1
+		image:
+		  repository: "hello-world"
+		  tag: "1.0"
+		  pullPolicy: IfNotPresent
+		service:
+		  type: NodePort
+		  port: 80
+
+### Helm Lint ( helm test)
+	
+Firstly, this is a simple command that takes the path to a chart and runs a battery of tests to ensure that the chart is well-formed:
+
+		helm lint ./hello-world
+		==> Linting ./hello-world
+		1 chart(s) linted, no failures
+	
+The output displays the result of the linting with issues that it identifies.
+	
+### Helm Template
+	
+Also, we've this command to render the template locally for quick feedback:
+
+		helm template ./hello-world
+		---
+		# Source: hello-world/templates/service.yaml
+		apiVersion: v1
+		kind: Service
+		metadata:
+		  name: release-name-hello-world
+		  labels:
+		    app.kubernetes.io/name: hello-world
+		    helm.sh/chart: hello-world-0.1.0
+		    app.kubernetes.io/instance: release-name
+		    app.kubernetes.io/managed-by: Tiller
+		spec:
+		  type: NodePort
+		  ports:
+		    - port: 80
+		      targetPort: http
+		      protocol: TCP
+		      name: http
+		  selector:
+		    app.kubernetes.io/name: hello-world
+		    app.kubernetes.io/instance: release-name
+
+		---
+		# Source: hello-world/templates/deployment.yaml
+		apiVersion: apps/v1
+		kind: Deployment
+		metadata:
+		  name: release-name-hello-world
+		  labels:
+		    app.kubernetes.io/name: hello-world
+		    helm.sh/chart: hello-world-0.1.0
+		    app.kubernetes.io/instance: release-name
+		    app.kubernetes.io/managed-by: Tiller
+		spec:
+		  replicas: 1
+		  selector:
+		    matchLabels:
+		      app.kubernetes.io/name: hello-world
+		      app.kubernetes.io/instance: release-name
+		  template:
+		    metadata:
+		      labels:
+			app.kubernetes.io/name: hello-world
+			app.kubernetes.io/instance: release-name
+		    spec:
+		      containers:
+			- name: hello-world
+			  image: "hello-world:1.0"
+			  imagePullPolicy: IfNotPresent
+			  ports:
+			    - name: http
+			      containerPort: 8080
+			      protocol: TCP
+	
+### Helm Instal	
+	
+Once we've verified the chart to be fine, finally, we can run this command to install the chart into the Kubernetes cluster:
+	
+		helm install --name hello-world ./hello-world
+		NAME:   hello-world
+		LAST DEPLOYED: Mon Feb 25 15:29:59 2019
+		NAMESPACE: default
+		STATUS: DEPLOYED
+
+		RESOURCES:
+		==> v1/Service
+		NAME         TYPE      CLUSTER-IP     EXTERNAL-IP  PORT(S)       AGE
+		hello-world  NodePort  10.110.63.169  <none>       80:30439/TCP  1s
+
+		==> v1/Deployment
+		NAME         DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
+		hello-world  1        0        0           0          1s
+
+		==> v1/Pod(related)
+		NAME                          READY  STATUS   RESTARTS  AGE
+		hello-world-7758b9cdf8-cs798  0/1    Pending  0         0s	
+	
+### Helm Get	
+	
+Now, we would like to see which charts are installed as what release. This command lets us query the named releases:
+
+		helm ls --all
+		NAME            REVISION        UPDATED                         STATUS          CHART               APP VERSION NAMESPACE
+		hello-world     1               Mon Feb 25 15:29:59 2019        DEPLOYED        hello-world-0.1.0   1.0         default
+	
+There are several sub-commands available for this command to get the extended information. These include All, Hooks, Manifest, Notes, and Values.	
+	
+### Helm Upgrade
+	
+What if we've modified our chart and need to install the updated version? This command helps us to upgrade a release to a specified or current version of the chart or configuration:
+
+		helm upgrade hello-world ./hello-world
+		Release "hello-world" has been upgraded. Happy Helming!
+		LAST DEPLOYED: Mon Feb 25 15:36:04 2019
+		NAMESPACE: default
+		STATUS: DEPLOYED
+
+		RESOURCES:
+		==> v1/Service
+		NAME         TYPE      CLUSTER-IP     EXTERNAL-IP  PORT(S)       AGE
+		hello-world  NodePort  10.110.63.169  <none>       80:30439/TCP  6m5s
+
+		==> v1/Deployment
+		NAME         DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
+		hello-world  1        1        1           1          6m5s
+
+		==> v1/Pod(related)
+		NAME                          READY  STATUS   RESTARTS  AGE
+		hello-world-7758b9cdf8-cs798  1/1    Running  0         6m4s	
+	
+### Helm Rollback	
+	
+It can always happen that a release went wrong and needs to be taken back. This is the command to roll back a release to the previous versions:
+
+		helm rollback hello-world 1
+		Rollback was a success! Happy Helming!
+	
+We can specify a specific version to roll back to or leave this argument black, in which case it rolls back to the previous version.	
+	
+### Helm Uninstall	
+	
+Although less likely, we may want to uninstall a release completely. We can use this command to uninstall a release from Kubernetes:
+
+		helm uninstall hello-world
+		release "hello-world" deleted
+	
+It removes all of the resources associated with the last release of the chart and the release history.	
+	
+#Distributing Charts	
