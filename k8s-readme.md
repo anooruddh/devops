@@ -2136,5 +2136,21 @@ Security-Enhanced Linux (SELinux) is a security architecture for Linux® systems
 
 SELinux defines access controls for the applications, processes, and files on a system. It uses security policies, which are a set of rules that tell SELinux what can or can’t be accessed, to enforce the access allowed by a policy. 
 
+	
 If SELinux has been disabled in your environment, you can enable SElinux by editing /etc/selinux/config and setting SELINUX=permissive. Since SELinux was not currently enabled
+	
+### What is Helm?
+
+Helm is widely known as "the package manager for Kubernetes".	
+
+The path Helm took to solve this issue was to create Helm Charts. Each chart is a bundle with one or more Kubernetes manifests – a chart can have child charts and dependent charts as well.	
+	
+his means that Helm installs the whole dependency tree of a project if you run the install command for the top-level chart. You just a single command to install your entire application, instead of listing the files to install via kubectl.
+
+Charts allow you to version your manifest files too, just like we do with Node.js or any other package. This lets you install specific chart versions, which means keeping specific configurations for your infrastructure in the form of code.
+
+Helm also keeps a release history of all deployed charts, so you can go back to a previous release if something went wrong.
+
+### How to Create a Helm Chart
+	
 	
