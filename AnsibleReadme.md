@@ -3261,3 +3261,105 @@ You may also apply tags to roles:
 And you may also tag basic include statements:
 
 		- include: foo.yml tags=web,foo	
+
+### ANSIBLE ROLES
+	
+
+1. Ansible roles are consists of many playbooks, which is similar to modules in puppet and cook books in chef. We term the same in ansible as roles.
+
+2. Roles are a way to group multiple tasks together into one container to do the automation in very effective manner with clean directory structures.
+
+3. Roles are set of tasks and additional files for a certain role which allow you to break up the configurations.
+
+4. It can be easily reuse the codes by anyone if the role is suitable to someone.	
+	
+5. It can be easily modify and will reduce the syntax errors.	
+	
+
+To create a Ansible roles, use ansible-galaxy command which has the templates to create it. This will create it under the default directory /etc/ansible/roles and do the modifications else we need to create each directories and files manually.
+	
+
+	[root@learnitguide ~]# ansible-galaxy init /etc/ansible/roles/apache --offline
+	- apache was created successfully
+	[root@learnitguide ~]# 
+
+init is to initiliaze the role.
+apache is the name of role,	
+offline - create offline mode rather than getting from online repository.
+
+
+List out the directory created under /etc/ansible/roles.
+	
+	[root@learnitguide ~]# tree /etc/ansible/roles/apache/
+	[root@learnitguide ~]# tree /etc/ansible/roles/apache/
+	/etc/ansible/roles/apache/
+	|-- README.md
+	|-- defaults
+	|   `-- main.yml
+	|-- files
+	|-- handlers
+	|   `-- main.yml
+	|-- meta
+	|   `-- main.yml
+	|-- tasks
+	|   `-- main.yml
+	|-- templates
+	|-- tests
+	|   |-- inventory
+	|   `-- test.yml
+	`-- vars
+	    `-- main.yml
+	8 directories, 8 files
+	[root@learnitguide ~]#
+
+	/etc/ansible/roles/apache/	
+
+
+We have got the clean directory structure with the ansible-galaxy command. Each directory must contain a main.yml file, which contains the relevant content.
+Directory Structure
+	
+	tasks - contains the main list of tasks to be executed by the role.
+
+	handlers - contains handlers, which may be used by this role or even anywhere outside this role.
+
+	defaults - default variables for the role.
+
+	vars - other variables for the role. Vars has the higher priority than defaults.
+
+	files - contains files required to transfer or deployed to the target machines via this role.
+
+	templates - contains templates which can be deployed via this role.
+
+	meta - defines some data / information about this role (author, dependency, versions, examples, etc,.)
+
+	
+Lets take an example to create a role for Apache Web server.
+		
+Below is a sample playbook codes to deploy Apache web server. Lets convert this playbook codes into Ansible roles.
+	
+	---
+	- hosts: all
+	  tasks:
+	  - name: Install httpd Package
+	    yum: name=httpd state=latest
+	  - name: Copy httpd configuration file
+	    copy: src=/data/httpd.original dest=/etc/httpd/conf/httpd.conf
+	  - name: Copy index.html file
+	    copy: src=/data/index.html dest=/var/www/html
+	    notify:
+	    - restart apache
+	  - name: Start and Enable httpd service
+	    service: name=httpd state=restarted enabled=yes
+	  handlers:
+	  - name: restart apache
+	    service: name=httpd state=restarted
+
+
+Edit main.yml available in the tasks folder to define the tasks to be executed.
+
+
+Altogether, you can add all your tasks in this file or just break the codes even more as below using "import_tasks" statements.
+
+
+Lets create install.yml, confgure.yml, service.yml included in the main.yml with actions in the same directory.	
+	
