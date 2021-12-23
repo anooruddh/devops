@@ -3093,7 +3093,13 @@ few modules - ping,user,service,shell,debug,command,copy,yumc,uri,twilio,telnet,
 	handler
 	ansible-vault ( encrypt,decrypt,view,edit,rekey)
 	when (when ansible_facts["os_name"] == "RedHat")
-
+	with_items:
+	  - 1
+	  - [2,3]
+	  - 4
+	loop:
+	     - testuser1
+	     - testuser2
 ansible-playbook example.yml --tags "configuration,packages"	
 
 ansible appservers -m setup -i ansible_hosts -a 'filter=ansible_distribution,ansible_distribution_version,ansible_memfree_mb,ansible_memtotal_mb,ansible_processor_cores*,ansible_architecture'
