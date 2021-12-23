@@ -2737,16 +2737,16 @@ scp -i GoluAwsKeyPair.pem ec2-user@ec2-13-233-231-216.ap-south-1.compute.amazona
 
 ansible-galaxy init --force --offline vivekrole 
 =======================================================
-site.yml
-	---
-	- hosts: wordpress_hosts
-	  roles:
-	    - nginx
-	    - php
-	    - mysql
-	    - wordpress
+		site.yml
+			---
+			- hosts: wordpress_hosts
+			  roles:
+			    - nginx
+			    - php
+			    - mysql
+			    - wordpress
 
-ansible-playbook site.yml
+		ansible-playbook site.yml
 
 https://www.digitalocean.com/community/search?q=ansible
 
@@ -2825,79 +2825,80 @@ Restarting a service
 
 =========================================================================
 
-ANSIBLE VAULT
+###ANSIBLE VAULT
 
-[ec2-user@ansible ansible]$ cat hello-world.yml
-	---
-	- name: This is a hello world program for ansible
-	  hosts: all
-	  tasks:
-	  - name: Create a temp file and write hello world in it
-	    copy:
-	      content: "hello world\n"
-	      dest: /tmp/HelloWorld.txt
-[ec2-user@ansible ansible]$ ls -lrt
-total 64
--rw-r--r-- 1 ansadm ansadm 19557 Nov 24 18:13 ansible.cfg
--rw-r--r-- 1 ansadm ansadm  1092 Jan 12 17:28 hosts
-drwxr-xr-x 3 ansadm ansadm  4096 Jan 17 10:42 roles
--rw-rw-r-- 1 ansadm ansadm    24 Jan 17 13:50 goapache.retry
--rw-rw-r-- 1 ansadm ansadm 15153 Jan 17 14:16 roles.zip
--rw-rw-r-- 1 ansadm ansadm    95 Jan 30 07:27 goapache.yml
--rw-r--r-- 1 root   root     206 Feb  5 05:56 hello-world.yml
--rw-rw-r-- 1 ansadm ansadm    25 Feb  5 05:57 hello-world.retry
--rw------- 1 ansadm ansadm  1197 Feb  5 06:00 demo-hello-world.yml
-[ec2-user@ansible ansible]$ ansible-vault decrypt demo-hello-world.yml
-Vault password:
-ERROR! [Errno 13] Permission denied: u'/etc/ansible/demo-hello-world.yml'
-[ec2-user@ansible ansible]$ sudo ansible-vault decrypt demo-hello-world.yml
-Vault password:
-Decryption successful
-[ec2-user@ansible ansible]$ cat demo-hello-world.yml
-cat: demo-hello-world.yml: Permission denied
-[ec2-user@ansible ansible]$ sudo cat demo-hello-world.yml
-	---
-	- name: Anooruddh - This is a hello world program for ansible
-	  hosts: all
-	  tasks:
-	  - name: Create a temp file and write hello world in it
-	    copy:
-	      content: "hello world\n"
-	      dest: /tmp/HelloWorld.txt
-[ec2-user@ansible ansible]$ ansible-vault encrypt demo-hello-world.yml
-New Vault password:
-Confirm New Vault password:
- [WARNING]: Error in vault password prompt (default): Passwords do not match
+		[ec2-user@ansible ansible]$ cat hello-world.yml
+			---
+			- name: This is a hello world program for ansible
+			  hosts: all
+			  tasks:
+			  - name: Create a temp file and write hello world in it
+			    copy:
+			      content: "hello world\n"
+			      dest: /tmp/HelloWorld.txt
+		[ec2-user@ansible ansible]$ ls -lrt
+		total 64
+	
+		-rw-r--r-- 1 ansadm ansadm 19557 Nov 24 18:13 ansible.cfg
+		-rw-r--r-- 1 ansadm ansadm  1092 Jan 12 17:28 hosts
+		drwxr-xr-x 3 ansadm ansadm  4096 Jan 17 10:42 roles
+		-rw-rw-r-- 1 ansadm ansadm    24 Jan 17 13:50 goapache.retry
+		-rw-rw-r-- 1 ansadm ansadm 15153 Jan 17 14:16 roles.zip
+		-rw-rw-r-- 1 ansadm ansadm    95 Jan 30 07:27 goapache.yml
+		-rw-r--r-- 1 root   root     206 Feb  5 05:56 hello-world.yml
+		-rw-rw-r-- 1 ansadm ansadm    25 Feb  5 05:57 hello-world.retry
+		-rw------- 1 ansadm ansadm  1197 Feb  5 06:00 demo-hello-world.yml
+		[ec2-user@ansible ansible]$ ansible-vault decrypt demo-hello-world.yml
+		Vault password:
+		ERROR! [Errno 13] Permission denied: u'/etc/ansible/demo-hello-world.yml'
+		[ec2-user@ansible ansible]$ sudo ansible-vault decrypt demo-hello-world.yml
+		Vault password:
+		Decryption successful
+		[ec2-user@ansible ansible]$ cat demo-hello-world.yml
+		cat: demo-hello-world.yml: Permission denied
+		[ec2-user@ansible ansible]$ sudo cat demo-hello-world.yml
+			---
+			- name: Anooruddh - This is a hello world program for ansible
+			  hosts: all
+			  tasks:
+			  - name: Create a temp file and write hello world in it
+			    copy:
+			      content: "hello world\n"
+			      dest: /tmp/HelloWorld.txt
+		[ec2-user@ansible ansible]$ ansible-vault encrypt demo-hello-world.yml
+		New Vault password:
+		Confirm New Vault password:
+		 [WARNING]: Error in vault password prompt (default): Passwords do not match
 
-ERROR! Passwords do not match
-[ec2-user@ansible ansible]$ ansible-vault encrypt demo-hello-world.yml
-New Vault password:
-Confirm New Vault password:
-ERROR! [Errno 13] Permission denied: u'/etc/ansible/demo-hello-world.yml'
-[ec2-user@ansible ansible]$ sudo ansible-vault encrypt demo-hello-world.yml
-New Vault password:
-Confirm New Vault password:
-Encryption successful
-[ec2-user@ansible ansible]$ cat demo-hello-world.yml
-cat: demo-hello-world.yml: Permission denied
-[ec2-user@ansible ansible]$ sudo cat demo-hello-world.yml
-$ANSIBLE_VAULT;1.1;AES256
-34343730306164393131353961366238623464333065663533613636636366356161383230343139
-3534313634326230656138326439396337393039343666630a326262336235653231333636613761
-65353932393736663239393130666235656631356263376234366461313138393738366364316638
-3638626133636363340a326434363230663931336134393631626636656334346630643165333037
-30653663313339663431343466316238666266363039626533636130326666646161326135346462
-64343562353438363961656361306331613261613932643433313630313738303561303232636532
-30313635316665383039643533623638613530643339643235386163636230326237656566323737
-64383961323565306333336462383234643636346438633633383536306431303765336130633439
-32393931316335613265323237646331666633353666363231313434383030666666633762383639
-61393566373837623332313937383565653231303937393866303834373739376266666563306435
-35303937346265346339373163626139313664353530323430353136396138316231613639663164
-66376565666338623466393633633637663331353834356231666663666665363837643437643561
-38376461383838326663313838326636643763333962353039313836626537623362363434636636
-38613536666638303338353737396436626462376563333861376262373136376166353963663833
-653036306536303461626538356562303334
-[ec2-user@ansible ansible]$
+		ERROR! Passwords do not match
+		[ec2-user@ansible ansible]$ ansible-vault encrypt demo-hello-world.yml
+		New Vault password:
+		Confirm New Vault password:
+		ERROR! [Errno 13] Permission denied: u'/etc/ansible/demo-hello-world.yml'
+		[ec2-user@ansible ansible]$ sudo ansible-vault encrypt demo-hello-world.yml
+		New Vault password:
+		Confirm New Vault password:
+		Encryption successful
+		[ec2-user@ansible ansible]$ cat demo-hello-world.yml
+		cat: demo-hello-world.yml: Permission denied
+		[ec2-user@ansible ansible]$ sudo cat demo-hello-world.yml
+		$ANSIBLE_VAULT;1.1;AES256
+		34343730306164393131353961366238623464333065663533613636636366356161383230343139
+		3534313634326230656138326439396337393039343666630a326262336235653231333636613761
+		65353932393736663239393130666235656631356263376234366461313138393738366364316638
+		3638626133636363340a326434363230663931336134393631626636656334346630643165333037
+		30653663313339663431343466316238666266363039626533636130326666646161326135346462
+		64343562353438363961656361306331613261613932643433313630313738303561303232636532
+		30313635316665383039643533623638613530643339643235386163636230326237656566323737
+		64383961323565306333336462383234643636346438633633383536306431303765336130633439
+		32393931316335613265323237646331666633353666363231313434383030666666633762383639
+		61393566373837623332313937383565653231303937393866303834373739376266666563306435
+		35303937346265346339373163626139313664353530323430353136396138316231613639663164
+		66376565666338623466393633633637663331353834356231666663666665363837643437643561
+		38376461383838326663313838326636643763333962353039313836626537623362363434636636
+		38613536666638303338353737396436626462376563333861376262373136376166353963663833
+		653036306536303461626538356562303334
+		[ec2-user@ansible ansible]$
 
 
 =========================
@@ -2906,22 +2907,25 @@ TAGS
 
 vim example.yml
 
-	tasks:
+			tasks:
 
-	    - yum: name={{ item }} state=installed
-	      with_items:
-		 - httpd
-		 - memcached
-	      tags:
-		 - packages
+			    - yum: name={{ item }} state=installed
+			      with_items:
+				 - httpd
+				 - memcached
+			      tags:
+				 - packages
 
-	    - template: src=templates/src.j2 dest=/etc/foo.conf
-	      tags:
-		 - configuration
+			    - template: src=templates/src.j2 dest=/etc/foo.conf
+			      tags:
+				 - configuration
 
 
 RUN ansible with tag
-ansible-playbook example.yml --tags "configuration,packages"		 will run both  tasks configuration,packages, if you want to run only one task specify that tag only mentioned under task
+	
+			ansible-playbook example.yml --tags "configuration,packages"
+
+( will run both  tasks configuration,packages, if you want to run only one task specify that tag only mentioned under task)
 =========================
 
 	Common core modules include:
@@ -2949,24 +2953,24 @@ If one of your tasks requires sensitive information (let’s say the database us
 Ansible ships with a command line tool called ansible-vault, that allows you to create and manage encrypted files. This way you can commit the encrypted file to your source control and only users with the decryption password will be able to read it.
 
 # Encrypt an existing file. You'll need to create an encryption password.
-	ansible-vault encrypt secrets.yml
+		ansible-vault encrypt secrets.yml
 
 # Creates a new, encrypted file. You'll need to create an encryption password.
-	ansible-vault create secrets.yml
+		ansible-vault create secrets.yml
 
 # Decrypt a file. You'll have to enter password used for encryption.
 # Use it with caution! Don't leave your files unecrypted.
-	ansible-vault decrypt secrets.yml
+		ansible-vault decrypt secrets.yml
 
 # Edit an encrypted file (uses vim by default, can be overriden by the environment variable $EDITOR)
-	ansible-vault edit secrets.yml
+		ansible-vault edit secrets.yml
 
 # Print the contents of the encrypted file
-	ansible-vault edit secrets.yml
+		ansible-vault edit secrets.yml
 
 If you import the vars_file secrets.yml in your playbook, Ansible will fail, as it will not know how to read the encrypted file. You’ll have to specify the command line argument --ask-vault-pass, which will make Ansible prompt you the password of the encrypted file.
 
-	ansible-playbook playbook.yml -i hosts --ask-vault-password
+		ansible-playbook playbook.yml -i hosts --ask-vault-password
 
 Another way is to store the password in a file (which should not be commited) and specify the path to the file using the --vault-password-file argument. If this file is marked as executable, Ansible will run it and use the output as the password.
 	
@@ -2996,24 +3000,24 @@ Handlers that were notified will be executed one time at the end of the playbook
 
 Here is an example of how restart two services when the contents of a file change, but only if the file changes (extracted from Ansible docs):
 
-	- name: template configuration file
-	  template: src=template.j2 dest=/etc/foo.conf
-	  notify:
-	     - restart memcached
-	     - restart apache
+		- name: template configuration file
+		  template: src=template.j2 dest=/etc/foo.conf
+		  notify:
+		     - restart memcached
+		     - restart apache
 
 The handlers should be declared somewhere else in your playbook:
 
-	handlers:
-	    - name: restart memcached
-	      # The service module was used, but you could use whatever module you wanted
-	      service: name=memcached state=restarted
-	    - name: restart apache
-	      service: name=apache state=restarted
+		handlers:
+		    - name: restart memcached
+		      # The service module was used, but you could use whatever module you wanted
+		      service: name=memcached state=restarted
+		    - name: restart apache
+		      service: name=apache state=restarted
 ---------------------------------------------------------------------
 check what tasks yaml file is going to perform
 
-	ansible-playbook --check playbook.yml	
+		ansible-playbook --check playbook.yml	
 ---------------------------------------------------------------------	
 AS yes or no performing existing a task/action from ansible playbook
 	
@@ -3049,33 +3053,33 @@ Tasks can be run based on their tags
 
 You can add one or more tags to a task or a play. To do so, simply mark what you want to tag with the tags attribute:
 # playbook.yml
-	- hosts: servername
-	  tags:
-	    - server
-	  tasks:
-	    - name: Download optional files
-	      tags:
-		- download
-		- optional
-	    - name: Install dependencies
-	      tags:
-		- dependencies
+		- hosts: servername
+		  tags:
+		    - server
+		  tasks:
+		    - name: Download optional files
+		      tags:
+			- download
+			- optional
+		    - name: Install dependencies
+		      tags:
+			- dependencies
 
 -----
 	Later on you can decide which tags to run or skip using the flags --tags <tagname> (or simply -t) and --skip-tags <tagnames>:
 
 # will run only tasks with the tag 'dependencies'
-	$ ansible-playbook --tags=dependencies playbook.yml
+		$ ansible-playbook --tags=dependencies playbook.yml
 
 # will run all tasks except the ones that contain the tag 'optional'
-	$ ansible-playbook --skip-tags=optional playbook.yml
+		$ ansible-playbook --skip-tags=optional playbook.yml
 
 You can specify more than one tag by separating them with commas.	
 
 ----------------------------------------
-	- name: install git
-  yum: name=git state=present
-when: ansible_os_family == 'RedHat'
+		- name: install git
+		  yum: name=git state=present
+		when: ansible_os_family == 'RedHat'
 
 INTERVIEW CONTENT
 ====================================================================================================================================================================
@@ -3185,7 +3189,7 @@ Standard loops
 
 ============================================================================================================================
 
-Kubernetest
+Kubernetes
 
 to delete label user - after lable name k label service lblsvc-
 
