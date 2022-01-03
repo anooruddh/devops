@@ -34,3 +34,6 @@ Automation is an important part of the site reliability engineer’s role. If th
 Maintaining the balance between operations and development work is a key component of SRE. 
 
 SRE is different because it relies on site reliability engineers within the development team who also have an operations background to remove communication and workflow problems.
+
+The site reliability engineer role itself combines the skillset of dev teams and operations teams by requiring an ov
+erlap in responsibilities. 
