@@ -32,3 +32,5 @@ Excess operational work and poorly performing services can be redirected back to
 Automation is an important part of the site reliability engineer’s role. If they are dealing with a problem repeatedly then they will automate a solution. This also helps ensure that operations work remains at half of their workload. 
 
 Maintaining the balance between operations and development work is a key component of SRE. 
+
+SRE is different because it relies on site reliability engineers within the development team who also have an operations background to remove communication and workflow problems.
