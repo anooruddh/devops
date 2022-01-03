@@ -18,6 +18,13 @@
     
     9.Incident response is a key component of SRE, which is also facilitated by an efficient monitoring strategy.
 
+![Screenshot](SREPQ01.png)
+![Screenshot](sre-pq01.png)
+![Screenshot](SREPQ02.png)
+![Screenshot](SREPQ03.png)
+![Screenshot](SREPQ04.png)
+![Screenshot](SREPQ05.png)
+![Screenshot](SREPQ06.png)
 
 # What is SRE (site reliability engineering)?
 
