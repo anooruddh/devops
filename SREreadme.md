@@ -60,6 +60,10 @@ An SLI (service level indicator) measures compliance with an SLO (service level 
 
 ![Screenshot](service_levels_agreements_objectives_indicators.png)
 
+![Screenshot](1f_sli-slo-sla-chart-min.jpg)
+
+
+
 ### What is an error budget?
 
 An error budget is the maximum amount of time that a technical system can fail without contractual consequences. 
