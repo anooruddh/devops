@@ -1,6 +1,6 @@
 # ROLES OF SRE
 
-1.Site reliability engineers collaborate with other engineers, product owners, and customers to come up with targets and measures. This helps ensure system availability. You easily know when action should be taken once you’ve agreed upon a system’s uptime and availability. This is done through service level indicators (SLIs) and service level objectives (SLOs).
+:+1: Site reliability engineers collaborate with other engineers, product owners, and customers to come up with targets and measures. This helps ensure system availability. You easily know when action should be taken once you’ve agreed upon a system’s uptime and availability. This is done through service level indicators (SLIs) and service level objectives (SLOs).
 
 2.SRE introduces error budgets that help you measure risk and consequently balance availability and feature development. Having an error budget means that failure is accepted as normal and that requiring 100 percent availability is not necessary. With no unrealistic reliability targets set, a team has the flexibility to deliver updates and improvements to a system.
 
