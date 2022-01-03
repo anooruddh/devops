@@ -1,7 +1,7 @@
 
-### What is SRE (site reliability engineering)?
+# What is SRE (site reliability engineering)?
 
-# Overview
+### Overview
 Site reliability engineering (SRE) is a software engineering approach to IT operations. SRE teams use software as a tool to manage systems, solve problems, and automate operations tasks.
 
 SRE takes the tasks that have historically been done by operations teams, often manually, and instead gives them to engineers or ops teams who use software and automation to solve problems and manage production systems. 
@@ -16,7 +16,7 @@ Standardization and automation are 2 important components of the SRE model. Site
 
 In this way, SRE helps to improve the reliability of a system today, while also improving it as it grows over time.
 
-# What does a site reliability engineer do?
+### What does a site reliability engineer do?
 A site reliability engineer is a unique role that requires either a background as a software developer with additional operations experience, or as a sysadmin or in an IT operations role that also has software development skills. 
 
 SRE teams are responsible for how code is deployed, configured, and monitored, as well as the availability, latency, change management, emergency response, and capacity management of services in production.
