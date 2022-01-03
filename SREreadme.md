@@ -79,3 +79,11 @@ If your SLA promises 99.95% uptime, your error budget is four hours, 22 minutes,
 | 99.99% uptime | 52 minutes, 35 seconds  |4 minutes, 23 seconds | 
 | 99.95% uptime  | 4 hours, 22 minutes, 48 seconds  |21 minutes, 54 seconds | 
 | 99.9% uptime  | 8 hours, 45 minutes, 57 seconds |43 minutes, 50 seconds | 
+
+
+# Error Budget
+Error budget is generall the budget you can spend on pushing features. Let's say you have an uptime of 90% for your application or service. This means that you can have a downtime of 36.5 days per year, this is a downtime of 72 hours per month. You can either spend this downtime on fixing errors or you build your system reliable and spend it on pushing new features. It's fully up to you. You should just make sure that you freeze new features until your error budget has recovered. This has several advantages:
+
+    Your Software Engineers will try to build your application as much as stable. Because if your application is unstable they will need their error budget for fixing these errors instead of pushing new features.
+    If you have a stable application you are free to push new features as much as your error budget allows you to.
+    Your uptime will be consistent to your SLA. Nobody wants to get sued, trust me.
