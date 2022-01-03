@@ -58,6 +58,8 @@ An SLO (service level objective) is an agreement within an SLA about a specific 
 ### What is an SLI?
 An SLI (service level indicator) measures compliance with an SLO (service level objective). So, for example, if your SLA specifies that your systems will be available 99.95% of the time, your SLO is likely 99.95% uptime and your SLI is the actual measurement of your uptime. Maybe it’s 99.96%. Maybe 99.99%. To stay in compliance with your SLA, the SLI will need to meet or exceed the promises made in that document.
 
+![Screenshot](service_levels_agreements_objectives_indicators.png)
+
 ### What is an error budget?
 
 An error budget is the maximum amount of time that a technical system can fail without contractual consequences. 
