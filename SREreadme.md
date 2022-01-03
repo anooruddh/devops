@@ -15,3 +15,20 @@ SRE helps teams find a balance between releasing new features and making sure th
 Standardization and automation are 2 important components of the SRE model. Site reliability engineers should always be looking for ways to enhance and automate operations tasks.
 
 In this way, SRE helps to improve the reliability of a system today, while also improving it as it grows over time.
+
+# What does a site reliability engineer do?
+A site reliability engineer is a unique role that requires either a background as a software developer with additional operations experience, or as a sysadmin or in an IT operations role that also has software development skills. 
+
+SRE teams are responsible for how code is deployed, configured, and monitored, as well as the availability, latency, change management, emergency response, and capacity management of services in production.
+
+With SRE, 100% reliability is not expected; failure is planned for and accepted. 
+
+Site reliability engineers split their time between operations tasks and project work. According to SRE best practices from Google, a site reliability engineer can only spend a maximum of 50% of their time on operations, which should be monitored to ensure they don’t go over. 
+
+The rest of the time should be spent on development tasks like creating new features, scaling the system, and implementing automation.
+
+Excess operational work and poorly performing services can be redirected back to the dev team to run instead of the site reliability engineer spending too much time on the operations of an application or service. 
+
+Automation is an important part of the site reliability engineer’s role. If they are dealing with a problem repeatedly then they will automate a solution. This also helps ensure that operations work remains at half of their workload. 
+
+Maintaining the balance between operations and development work is a key component of SRE. 
