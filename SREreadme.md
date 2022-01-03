@@ -1,22 +1,22 @@
 # ROLES OF SRE
 
-:point_right: Site reliability engineers collaborate with other engineers, product owners, and customers to come up with targets and measures. This helps ensure system availability. You easily know when action should be taken once you’ve agreed upon a system’s uptime and availability. This is done through service level indicators (SLIs) and service level objectives (SLOs).
+:dart: Site reliability engineers collaborate with other engineers, product owners, and customers to come up with targets and measures. This helps ensure system availability. You easily know when action should be taken once you’ve agreed upon a system’s uptime and availability. This is done through service level indicators (SLIs) and service level objectives (SLOs).
 
-:point_right: SRE introduces error budgets that help you measure risk and consequently balance availability and feature development. Having an error budget means that failure is accepted as normal and that requiring 100 percent availability is not necessary. With no unrealistic reliability targets set, a team has the flexibility to deliver updates and improvements to a system.
+:dart: SRE introduces error budgets that help you measure risk and consequently balance availability and feature development. Having an error budget means that failure is accepted as normal and that requiring 100 percent availability is not necessary. With no unrealistic reliability targets set, a team has the flexibility to deliver updates and improvements to a system.
 
-:point_right: SRE believes in reducing toil. Therefore, it aims at automating tasks that require a human operator to manually work on a system. For instance, Google expects that only 50 percent of each site reliability engineer’s time goes to coding. The other 50 percent is for the feeding and daily care of existing applications.
+:dart: SRE believes in reducing toil. Therefore, it aims at automating tasks that require a human operator to manually work on a system. For instance, Google expects that only 50 percent of each site reliability engineer’s time goes to coding. The other 50 percent is for the feeding and daily care of existing applications.
 
-:point_right: A site reliability engineer should have a holistic understanding of the systems as well as the connections between the systems.
+:dart: A site reliability engineer should have a holistic understanding of the systems as well as the connections between the systems.
 
-:point_right: Site reliability engineers have the task of ensuring the early discovery of problems to reduce the cost of failure.
+:dart: Site reliability engineers have the task of ensuring the early discovery of problems to reduce the cost of failure.
 
-:point_right: Since the goal of SRE is to solve problems between teams, the expectation is that both the SRE teams and the development teams have a holistic view of libraries, front end, back end, storage, and other components. And shared ownership means that any one team can’t jealously own single components.
+:dart: Since the goal of SRE is to solve problems between teams, the expectation is that both the SRE teams and the development teams have a holistic view of libraries, front end, back end, storage, and other components. And shared ownership means that any one team can’t jealously own single components.
 
-:point_right: Performance is another area that an SRE can help improve. SRE teams can act proactively and help organizations uncover performance bottlenecks across the system. That way, they can be solved before they make into production and cause frustration for the end-users.
+:dart: Performance is another area that an SRE can help improve. SRE teams can act proactively and help organizations uncover performance bottlenecks across the system. That way, they can be solved before they make into production and cause frustration for the end-users.
 
-:point_right: To improve availability and also to uncover and fix performance issues, SREs need to know what’s happening with their systems. That’s why monitoring is a key aspect of SRE. Thanks to monitoring, SRE teams can have a comprehensive and up to date view of how their systems are behaving and how healthy they are.
+:dart: To improve availability and also to uncover and fix performance issues, SREs need to know what’s happening with their systems. That’s why monitoring is a key aspect of SRE. Thanks to monitoring, SRE teams can have a comprehensive and up to date view of how their systems are behaving and how healthy they are.
 
-:point_right: Incident response is a key component of SRE, which is also facilitated by an efficient monitoring strategy.
+:dart: Incident response is a key component of SRE, which is also facilitated by an efficient monitoring strategy.
 
 ![Screenshot](SREPQ01.png)
 ![Screenshot](sre-pq01.png)
