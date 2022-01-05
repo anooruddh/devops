@@ -76,3 +76,41 @@ From maven project pom file
         <url>http://35.154.91.240:8081/artifactory/libs-snapshot-local</url>
     </snapshotRepository>
     </distributionManagement>
+
+# SCM ( in pom file)
+
+        <project>
+          ...
+          <packaging>jar</packaging>
+          <version>1.0-SNAPSHOT</version>
+          <name>SCM Sample Project</name>
+          <url>http://somecompany.com</url>
+          <scm>
+            <connection>scm:svn:http://somerepository.com/svn_repo/trunk</connection>
+            <developerConnection>scm:svn:https://somerepository.com/svn_repo/trunk</developerConnection>
+            <url>http://somerepository.com/view.cvs</url>
+          </scm>
+          ...
+        </project>
+        
+# Project Details
+
+        <project>
+          ...
+          <build>
+            [...]
+            <plugins>
+              <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>1.12.2</version>
+                <configuration>
+                  <connectionType>connection</connectionType>
+                </configuration>
+              </plugin>
+              ...
+            </plugins
+            ...
+          </build>
+          ...
+        </project>
