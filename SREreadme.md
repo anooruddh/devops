@@ -120,13 +120,18 @@ Error budget is generall the budget you can spend on pushing features. Let's say
 
 # Toil
 “Toil is the kind of work that tends to be manual, repetitive, automatable, tactical, devoid of enduring value, and that scales linearly as a service grows.”
+Few more examples of toil are manual releases, physically connecting to infrastructure to check something, doing regular password resets, testing over and over, acknowledging the same alerts every day, creating users, manual resets, on-call response, extracting data, manual scaling of infrastructure, etc.
 
 Some examples of toil may include:
 
-  Handling quota requests
+    Handling quota requests
 
-  Applying database schema changes
+    Applying database schema changes
 
-  Reviewing non-critical monitoring alerts
+    Reviewing non-critical monitoring alerts
 
-  Copying and pasting commands from a playbook
+    Copying and pasting commands from a playbook
+
+A common thread in all of these examples is that they do not require an engineer’s human judgment. The work is easy but it’s not very rewarding, and it interrupts us from making progress on engineering work to scale services and launch features.
+
+Here’s how to take your team through the process of identifying, measuring, and eliminating toil.
