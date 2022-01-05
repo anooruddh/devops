@@ -142,7 +142,7 @@ Observability is instrumenting your systems with tools to collect actionable dat
 
 ## There are three observability pillars. 
 
-![Screenshot](three pillars observability.png)
+![Screenshot](observability.png)
 
 ## Metrics 
 The foundation of monitoring - metrics are aggregated data about the performance of a service. It usually consists of a single number that is tracked over time. Traditionally, system-level metrics such as CPU, memory, and disk performance were used for tracking. That includes data such as:
