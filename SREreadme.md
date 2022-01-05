@@ -135,3 +135,33 @@ Some examples of toil may include:
 A common thread in all of these examples is that they do not require an engineer’s human judgment. The work is easy but it’s not very rewarding, and it interrupts us from making progress on engineering work to scale services and launch features.
 
 Here’s how to take your team through the process of identifying, measuring, and eliminating toil.
+
+# Observability 
+
+Observability is instrumenting your systems with tools to collect actionable data to know when the errors occur—but more importantly, why they happen. It’s an approach to understanding multilayer architectures to find what is broken and what requires improvement for better performance.
+
+## There are three observability pillars. 
+
+![Screenshot](three pillars observability.png)
+
+## Metrics 
+The foundation of monitoring - metrics are aggregated data about the performance of a service. It usually consists of a single number that is tracked over time. Traditionally, system-level metrics such as CPU, memory, and disk performance were used for tracking. That includes data such as:
+
+Counter: the number of queries by a particular time frame
+Distribution: latency associated with service requests or queries 
+Gauge: CPU load.
+The challenge here is that while this gives enough information about the system, it doesn’t tell you about the user experience or how to improve your code’s performance. To tackle the issue, some modern monitoring services also offer APM (Application Performance Monitoring) - features to track application-level metrics. These metrics include requests per minute and error rates with each metric tracking only one variable, which can be relatively cheap to store and send. 
+
+The DevOps, Ops, or SRE team usually determines the best set of metrics to watch for, which can vary depending on the service itself and its overall maturity. Often teams watch metrics dashboards when code changes occur or when a new fix or release is shipped.
+
+## Logs
+Logs represent the output from your code, sometimes referred to as events that are immutable, time-stamped records that can be used to identify certain patterns in a system. All processes in a system emit logs that usually include information such as records of individual user queries and debugging information generically associated with the service. 
+
+Logs can be any arbitrary string. However, programming languages and frameworks use libraries to generate logs from the running code with relevant data at various levels of specificity (e.g. INFO vs. DEBUG mode). Among programming communities, there’s no standard about what should be included on various log levels. 
+
+## Traces
+In a distributed system, a trace displays the operation flow from the parent event to the child event where both events are timestamped. When individual events form a trace, they are referred to as spans. Each span stores the following information: start time, duration, and parent-id. Without the parent-id, spans are rendered as root spans.
+
+Traces allow individual execution flows to be traced through the system that helps teams figure out which component or set of code is causing a potential system error. Teams can use dedicated tracing tools to look into the details of a certain request. By looking at trace spans and waterfall views that show multiple spans in your system, you can run queries to examine timing (latency), errors, and dependency details. 
+
+Many observability tools provide tracing capabilities as part of their offerings.
