@@ -116,3 +116,17 @@ Error budget is generall the budget you can spend on pushing features. Let's say
 :white_check_mark: If you have a stable application you are free to push new features as much as your error budget allows you to.
 
 :white_check_mark: Your uptime will be consistent to your SLA. Nobody wants to get sued, trust me.
+
+
+# Toil
+“Toil is the kind of work that tends to be manual, repetitive, automatable, tactical, devoid of enduring value, and that scales linearly as a service grows.”
+
+Some examples of toil may include:
+
+  Handling quota requests
+
+  Applying database schema changes
+
+  Reviewing non-critical monitoring alerts
+
+  Copying and pasting commands from a playbook
