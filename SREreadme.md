@@ -147,11 +147,11 @@ Observability is instrumenting your systems with tools to collect actionable dat
 ## Metrics 
 The foundation of monitoring - metrics are aggregated data about the performance of a service. It usually consists of a single number that is tracked over time. Traditionally, system-level metrics such as CPU, memory, and disk performance were used for tracking. That includes data such as:
 
-Counter: the number of queries by a particular time frame
+        Counter: the number of queries by a particular time frame
 
-Distribution: latency associated with service requests or queries 
+        Distribution: latency associated with service requests or queries 
 
-Gauge: CPU load.
+        Gauge: CPU load.
 
 The challenge here is that while this gives enough information about the system, it doesn’t tell you about the user experience or how to improve your code’s performance. To tackle the issue, some modern monitoring services also offer APM (Application Performance Monitoring) - features to track application-level metrics. These metrics include requests per minute and error rates with each metric tracking only one variable, which can be relatively cheap to store and send. 
 
