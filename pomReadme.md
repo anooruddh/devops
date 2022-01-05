@@ -1,4 +1,5 @@
-A complete settings.xml file looks like:
+# settings.xml
+A complete settings.xml file looks like: (typically, this will be /user.home/.m2/settings.xml).
 
     <?xml version="1.0" encoding="UTF-8"?>
     <settings xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd" xmlns="http://maven.apache.org/SETTINGS/1.0.0"
