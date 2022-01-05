@@ -160,10 +160,14 @@ The DevOps, Ops, or SRE team usually determines the best set of metrics to watch
 ## Logs
 Logs represent the output from your code, sometimes referred to as events that are immutable, time-stamped records that can be used to identify certain patterns in a system. All processes in a system emit logs that usually include information such as records of individual user queries and debugging information generically associated with the service. 
 
+![Screenshot](logs1.jpg)
+
 Logs can be any arbitrary string. However, programming languages and frameworks use libraries to generate logs from the running code with relevant data at various levels of specificity (e.g. INFO vs. DEBUG mode). Among programming communities, there’s no standard about what should be included on various log levels. 
 
 ## Traces
 In a distributed system, a trace displays the operation flow from the parent event to the child event where both events are timestamped. When individual events form a trace, they are referred to as spans. Each span stores the following information: start time, duration, and parent-id. Without the parent-id, spans are rendered as root spans.
+
+![Screenshot](trace1.jpg)
 
 Traces allow individual execution flows to be traced through the system that helps teams figure out which component or set of code is causing a potential system error. Teams can use dedicated tracing tools to look into the details of a certain request. By looking at trace spans and waterfall views that show multiple spans in your system, you can run queries to examine timing (latency), errors, and dependency details. 
 
