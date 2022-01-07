@@ -129,6 +129,8 @@ But release version always gives exactly same set files with each download.
 
 ### snapshots are mutable, releases are immutable.
 
+* A "release" is the final build for a version which does not change. A "snapshot" is a build which can be replaced by another build which has the same name. It implies that the build could change at any time and is still under active development. You have different artifacts for different builds based on the same code.
+* 
 
 Just add this to your ~/.m2/settings.xml:
 
