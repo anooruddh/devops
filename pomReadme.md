@@ -115,3 +115,33 @@ From maven project pom file
           </build>
           ...
         </project>
+
+
+# What is the difference between a Release version and SNAPSHOT version in Maven?
+
+A SNAPSHOT version in Maven is the one that has not been released.
+
+Before every release version there is a SNAPSHOT version. Before 1.0 release there will be 1.0-SNAPSHOT.
+
+If we download 1.0-SNAPSHOT today then we may get different set of files than the one we get on downloading it yesterday. SNAPSHOT version can keep getting changes in it since it is under development.
+
+But release version always gives exactly same set files with each download.
+
+### snapshots are mutable, releases are immutable.
+
+
+Just add this to your ~/.m2/settings.xml:
+    <profiles>
+      <profile>
+         <id>allow-snapshots</id>
+            <activation><activeByDefault>true</activeByDefault></activation>
+         <repositories>
+           <repository>
+             <id>snapshots-repo</id>
+             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+             <releases><enabled>false</enabled></releases>
+             <snapshots><enabled>true</enabled></snapshots>
+           </repository>
+         </repositories>
+       </profile>
+    </profiles>
