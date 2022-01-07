@@ -147,3 +147,19 @@ Just add this to your ~/.m2/settings.xml:
          </repositories>
        </profile>
     </profiles>
+
+And add these following lines in your project's pom.xml file -
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>my-snapshots</id>
+            <name>My internal repository</name>
+            <url>http://localhost:8081/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+
+        <repository>
+            <id>my-releases</id>
+            <name>My internal repository</name>
+            <url>http://localhost:8081/nexus/content/repositories/releases</url>
+        </repository>
+    </distributionManagement>
