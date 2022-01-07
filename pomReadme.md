@@ -1,3 +1,7 @@
+# What is POM version?
+
+A Project Object Model or POM is the fundamental unit of work in Maven. It is an XML file that contains information about the project and configuration details used by Maven to build the project. It contains default values for most projects.
+
 # settings.xml
 A complete settings.xml file looks like: (typically, this will be /user.home/.m2/settings.xml).
 
