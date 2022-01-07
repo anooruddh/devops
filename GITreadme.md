@@ -1,0 +1,507 @@
+https://www.tutorialspoint.com/git/git_basic_concepts.htm
+
+Following are the types of VCS:
+
+    Centralized version control system (CVCS).
+    Distributed/Decentralized version control system (DVCS).
+	
+	
+    Distributed VCS: Git, Mercurial.
+    Centralized VCS: CVS, Perforce, SVN.
+	
+	Distributed VCS, on the other hand, doesn’t allow for partial check out of the repository
+
+The main difference between the two classes is that Centralized VCSs keep the history of changes on a central server from which everyone requests 
+the latest version of the work and pushes the latest changes to. This means that everyone sharing the server also shares everyone’s work. 
+Sourceforge.net uses this type of versioning in their projects.
+
+On the other hand, on a Distributed VCS, everyone has a local copy of the entire work’s history. This means that it is not necessary to be online to 
+change revisions or add changes to the work. “Distributed” comes from the fact that there isn’t a central entity in charge of the work’s history, 
+so that anyone can sync with any other team member. This helps avoid failure due to a crash of the central versioning server. Open source projects, 
+such as Mozilla Firefox, tend to use this type of versioning.
+
+https://www.tutorialspoint.com/git/git_basic_concepts.htm
+Advantages
+
+Free and open source
+Fast and small
+Implicit backup
+Security
+No need of powerful hardware
+
+
+Git falls under distributed version control system
+git config --list
+
+$ git config --global user.name "anooruddh"
+$ git config --global user.email "sendtoanoo@gmail.com"
+$ git config --global color.ui true
+
+$ git config --list
+user.name=King Kong
+user.email=king-kong@gmail.com
+
+$ git init
+Initialized empty Git repository in /home/dell/new-folder/.git/
+
+$ git status
+
+$ git status
+On branch master
+Initial commit
+nothing to commit (create/copy files and use "git add" to track)
+
+
+$ git add my_new_file.txt
+
+$ git status
+On branch master
+Initial commit
+Changes to be committed:
+(use "git rm --cached <file>..." to unstage)
+new file: my_new_file.txt
+
+$ git add my-file.ts another-file.js new_file.rb
+
+$ git status
+Changes to be committed:
+(use "git rm --cached <file>..." to unstage)
+
+	new file: another_file.js
+	new file: my_file.ts
+	new file: my_new_file.txt
+new file: new_file.rb
+
+$ git add 
+$ git add --all
+
+To remove files from the staging area, use the following command:
+
+$ git rm --cached my-file.ts
+
+ you can untrack files if necessary. As an alternative to "rm --cached <filename>", you can use the "reset" command:
+
+$ git reset another-file.js
+
+$ git commit -m "Add three files"
+
+add modified files to the staging area and commit them at the same time
+$ git commit -a -m "Do something once more"
+
+
+
+Instead of resetting the HEAD and undoing the last commit, we can rectify a commit by using the "--amend" option when committing to a repository. Just add the remaining file to the staging area and then commit:
+$ git add file-i-forgot-to-add.html
+$ git commit --amend -m "Add the remaining file"
+
+
+he "--amend" option lets you amend the last commit by adding a new file (or multiple files). Using the "--amend" option, you can also overwrite the message of your last commit.
+
+$ git remote add origin https://github.com/YourUsername/some-small-app.git
+
+$ git push -u origin master
+ git push --force https://github.com/anooruddh/Repository2.git
+
+$ git remote add origin git@github.com:YourUsername/your-app.git
+
+you can view the list of repositories by running the following command:
+$ git remote -v
+
+
+$ git clone git@github.com:YourUsername/your-app.git
+
+What "git clone" does is it copies the entire project to a directory on your computer. The directory will be created automatically and will have the same project name as the remote repository.
+
+If you don't like the name of the repository you're cloning, just pass your preferred name to the command:
+$ git clone git@github.com:YourUsername/your-app.git this-name-is-much-better
+
+
+
+
+when other developers push their changes to a remote repository, you'll want to see their changes on your computer. That is, you'll want to pull their code to your local repository. To do so, run the following command:
+
+$ git pull
+
+
+
+For example: to see your last 5 commits
+
+git log -n 5 --author=Salvador
+
+If you want a simpler one line solution:
+
+git log --oneline -n 5 --author=Salvador
+
+
+==============================================
+
+git --version
+
+git config --global user.email "sendtoanoo@gmail.com"
+git config --global user.name "anooruddh"
+
+Git Commands
+
+go to location of folder
+>git init
+>git status
+touch test1.txt
+>git status
+>git add test1.txt
+>git status <test1.txt be added in staging/index>
+>git commit -m "Added test1.txt file in pository"
+>git status <should be clean"
+
+For a more detailed explanation of how the SSH protocol works, we advise you to
+read this nice tutorial by DigitalOcean.
+
+=============================================================================================
+Locating an existing SSH key pair
+
+Before generating a new SSH key pair check if your system already has one
+at the default location by opening a shell, or Command Prompt on Windows,
+and running the following command:
+
+Windows Command Prompt:
+
+type %userprofile%\.ssh\id_rsa.pub
+Git Bash on Windows / GNU/Linux / macOS / PowerShell:
+
+cat ~/.ssh/id_rsa.pub
+If you see a string starting with ssh-rsa you already have an SSH key pair
+and you can skip the generate portion of the next section and skip to the copy
+to clipboard step.
+If you don't see the string or would like to generate a SSH key pair with a
+custom name continue onto the next step.
+=============================================================================================
+
+Add github repository on your git bash
+
+git remote add origin git@github.com:peter/first_app.git
+git push origin master
+
+
+
+git remote add origin git@github.com:peter/first_app.git (git remote add is to add a "short name", such as origin, and it can be any name as well, which is like an alias to a URL)
+git push origin master
+
+git push origin master  (What is git push origin master.)
+This is a command that says "push the commits in the local branch named master to the remote named origin". Once this is executed, all the stuff that you last synchronised with origin will be sent to the remote repository and other people will be able to see them there)
+
+>git push -u origin master
+
+>git --help
+
+>git log (-l 5--->last 5 commit)
+
+
+>git branch
+
+>git branch <b_branch1>
+>git checkout b_branch1
+
+to merge MASTER with DEV
+>git checkout MASTER
+git merge DEV
+
+to delete branch
+>git branch -d b_branch1   (local delete)
+>git push origin --delete b_branch1 (remote delete)
+
+
+>git tag <t_tag>			{lighweigh tag}
+> git tag (show tag)
+>git tag -a <tag_annotatic_tag_name> -m "annotatic tag added"   { its stores all information related to tag including who,when created}
+>git push origin <tag_name>
+>git push origin --tags {push all tags}
+>git push --tags
+
+deleting tags
+
+>git tag -d <tag_name>
+>git tag --delete <tag_name>
+
+>git push origin -d <tag_name>
+>git push origin --delete <tag_name> 
+
+>git diff
+
+>git revert <commitid>  {no commit needed}
+>git revert -n <commitid>, then commit is needed
+>git revert HEAD~5..HEAD~2	(If you want to revert a set of Git commits, you can add .. between two gitrevisions. The older commit should come first, followed by the newer commit.)
+
+Git Reset
+While Git revert uses forward change to undo commits, the operation of Git reset is just the opposite.
+
+Git reset is a way to move back in time to a particular commit, and to reset our active position to the chosen commit in a branch’s commit history.	
+
+
+=====================================
+
+
+Getting & Creating Projects
+
+Command 	Description
+
+git init 	Initialize a local Git repository
+git clone ssh://git@github.com/[username]/[repository-name].git 	Create a local copy of a remote repository
+Basic Snapshotting
+
+Command 	Description
+
+git status 	Check status
+git add [file-name.txt] 	Add a file to the staging area
+git add -A 	Add all new and changed files to the staging area
+git commit -m "[commit message]" 	Commit changes
+git rm -r [file-name.txt] 	Remove a file (or folder)
+
+Branching & Merging
+Command 	Description
+git branch 	List branches (the asterisk denotes the current branch)
+git branch -a 	List all branches (local and remote)
+git branch [branch name] 	Create a new branch
+git branch -d [branch name] 	Delete a branch
+git push origin --delete [branchName] 	Delete a remote branch
+git checkout -b [branch name] 	Create a new branch and switch to it
+git checkout -b [branch name] origin/[branch name] 	Clone a remote branch and switch to it
+git checkout [branch name] 	Switch to a branch
+git checkout - 	Switch to the branch last checked out
+git checkout -- [file-name.txt] 	Discard changes to a file
+git merge [branch name] 	Merge a branch into the active branch
+git merge [source branch] [target branch] 	Merge a branch into a target branch
+git stash 	Stash changes in a dirty working directory
+git stash clear 	Remove all stashed entries
+
+Sharing & Updating Projects
+
+Command 	Description
+git push origin [branch name] 	Push a branch to your remote repository
+git push -u origin [branch name] 	Push changes to remote repository (and remember the branch)
+git push 	Push changes to remote repository (remembered branch)
+git push origin --delete [branch name] 	Delete a remote branch
+git pull 	Update local repository to the newest commit
+git pull origin [branch name] 	Pull changes from remote repository
+git remote add origin ssh://git@github.com/[username]/[repository-name].git 	Add a remote repository
+git remote set-url origin ssh://git@github.com/[username]/[repository-name].git 	Set a repository's origin branch to SSH
+
+Inspection & Comparison
+Command 	Description
+git log 	View changes
+git log --summary 	View changes (detailed)
+git diff [source branch] [target branch} 	Preview changes before merging
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://github.com/anooruddh/RepoOrange.git
+
+
+…or create a new repository on the command line
+
+echo "# RepoOrange" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/anooruddh/RepoOrange.git
+git push -u origin master
+
+…or push an existing repository from the command line
+
+git remote add origin https://github.com/anooruddh/RepoOrange.git
+git push -u origin master
+
+…or import code from another repository
+
+You can initialize this repository with code from a Subversion, Mercurial, or TFS project.
+
+
+
+=========================================
+
+HEAD DETECT Issue
+
+How can I reconcile detached HEAD with master/origin?
+
+
+
+First, let’s clarify what HEAD is and what it means when it is detached.
+
+HEAD is the symbolic name for the currently checked out commit. When HEAD is not detached (the “normal”1 situation: you have a branch checked out), HEAD actually points to a branch’s “ref” and the branch points to the commit. HEAD is thus “attached” to a branch. When you make a new commit, the branch that HEAD points to is updated to point to the new commit. HEAD follows automatically since it just points to the branch.
+
+    git symbolic-ref HEAD yields refs/heads/master
+    The branch named “master” is checked out.
+    git rev-parse refs/heads/master yield 17a02998078923f2d62811326d130de991d1a95a
+    That commit is the current tip or “head” of the master branch.
+    git rev-parse HEAD also yields 17a02998078923f2d62811326d130de991d1a95a
+    This is what it means to be a “symbolic ref”. It points to an object through some other reference.
+    (Symbolic refs were originally implemented as symbolic links, but later changed to plain files with extra interpretation so that they could be used on platforms that do not have symlinks.)
+
+We have HEAD → refs/heads/master → 17a02998078923f2d62811326d130de991d1a95a
+
+When HEAD is detached, it points directly to a commit—instead of indirectly pointing to one through a branch. You can think of a detached HEAD as being on an unnamed branch.
+
+    git symbolic-ref HEAD fails with fatal: ref HEAD is not a symbolic ref
+    git rev-parse HEAD yields 17a02998078923f2d62811326d130de991d1a95a
+    Since it is not a symbolic ref, it must point directly to the commit itself.
+
+We have HEAD → 17a02998078923f2d62811326d130de991d1a95a
+
+The important thing to remember with a detached HEAD is that if the commit it points to is otherwise unreferenced (no other ref can reach it), then it will become “dangling” when you checkout some other commit. Eventually, such dangling commits will be pruned through the garbage collection process (by default, they are kept for at least 2 weeks and may be kept longer by being referenced by HEAD’s reflog).
+
+1 It is perfectly fine to do “normal” work with a detached HEAD, you just have to keep track of what you are doing to avoid having to fish dropped history out of the reflog.
+
+The intermediate steps of an interactive rebase are done with a detached HEAD (partially to avoid polluting the active branch’s reflog). If you finish the full rebase operation, it will update your original branch with the cumulative result of the rebase operation and reattach HEAD to the original branch. My guess is that you never fully completed the rebase process; this will leave you with a detached HEAD pointing to the commit that was most recently processed by the rebase operation.
+
+To recover from your situation, you should create a branch that points to the commit currently pointed to by your detached HEAD:
+
+git branch temp
+git checkout temp
+
+(these two commands can be abbreviated as git checkout -b temp)
+
+This will reattach your HEAD to the new temp branch.
+
+Next, you should compare the current commit (and its history) with the normal branch on which you expected to be working:
+
+git log --graph --decorate --pretty=oneline --abbrev-commit master origin/master temp
+git diff master temp
+git diff origin/master temp
+
+(You will probably want to experiment with the log options: add -p, leave off --pretty=… to see the whole log message, etc.)
+
+If your new temp branch looks good, you may want to update (e.g.) master to point to it:
+
+git branch -f master temp
+git checkout master
+
+(these two commands can be abbreviated as git checkout -B master temp)
+
+You can then delete the temporary branch:
+
+git branch -d temp
+
+Finally, you will probably want to push the reestablished history:
+
+git push origin master
+
+You may need to add --force to the end of this command to push if the remote branch can not be “fast-forwarded” to the new commit (i.e. you dropped, or rewrote some existing commit, or otherwise rewrote some bit of history).
+
+If you were in the middle of a rebase operation you should probably clean it up. You can check whether a rebase was in process by looking for the directory .git/rebase-merge/. You can manually clean up the in-progress rebase by just deleting that directory (e.g. if you no longer remember the purpose and context of the active rebase operation). Usually you would use git rebase --abort, but that does some extra resetting that you probably want to avoid (it moves HEAD back to the original branch and resets it back to the original commit, which will undo some of the work we did above).
+
+
+--------
+
+
+Just do this:
+
+git checkout master
+
+Or, if you have changes that you want to keep, do this:
+git branch -d temp
+git checkout -b temp
+git checkout -B master temp
+============================
+to remove a remote:
+git remote remove origin
+
+To add a remote:
+git remote add origin yourRemoteUrl
+& then git push -u origin master
+===============================
+
+Groovy
+
+// change this variable to match the name of the job whose builds you want to delete
+def jobName = "CiCd"
+def job = Jenkins.instance.getItem(jobName)
+
+job.getBuilds().each { it.delete() }
+// uncomment these lines to reset the build number to 1:
+job.nextBuildNumber = 1
+job.save()
+
+
+
+https://docs.docker.com/install/overview/
+
+------------------------
+
+
+Permanently authenticating with Git repositories,
+
+Run following command to enable credential caching.
+
+$ git config credential.helper store
+$ git push https://github.com/repo.git
+
+Username for 'https://github.com': <USERNAME>
+Password for 'https://USERNAME@github.com': <PASSWORD>
+
+Use should also specify caching expire,
+
+git config --global credential.helper 'cache --timeout 7200'
+
+After enabling credential caching, it will be cached for 7200 seconds (2 hour).
+
+Note: Credential helper storing unencrypted password on local disk.
+
+
+sudo git config credential.helper store
+sudo git push https://github.com/anooruddh/EC2-Linux.git
+
+sudo git config --global credential.helper 'cache --timeout 43200'
+
+[ec2-user@ansible HelloWorld]$ sudo git config credential.helper store
+[ec2-user@ansible HelloWorld]$ sudo git push https://github.com/anooruddh/EC2-Linux.git
+Username for 'https://github.com': sendtoanoo@gmail.com
+Password for 'https://sendtoanoo@gmail.com@github.com':
+Everything up-to-date
+[ec2-user@ansible HelloWorld]$ sudo git config --global credential.helper 'cache --timeout 43200'
+[ec2-user@ansible HelloWorld]$ this set the password no remider to 12 hours.^C
+[ec2-user@ansible HelloWorld]$
+
+use webHooks to perform auto build when a commit happen in GitHUB
+Under Repo --setting--Webhooks-Add Webhook --Payload URL is JENKINS_URL_TILL_PORT/github-webhook/ (like below)
+http://ec2-13-234-35-254.ap-south-1.compute.amazonaws.com:8282/github-webhook/
+
+$ sudo git remote add origin https://github.com/anooruddh/EC2-Linux.git
+$ sudo git config --global user.name "anooruddh"
+$ sudo git config --global user.email "sendtoanoo@gmail.com"
+$ sudo git config --global color.ui true
+
+
+[ec2-user@ansible .git]$ ls
+branches  COMMIT_EDITMSG  config  description  HEAD  hooks  index  info  logs  objects  refs
+[ec2-user@ansible .git]$ pwd
+/opt/java/HellAnooruddh/.git
+[ec2-user@ansible .git]$
+
+
+Available lifecycle phases are: validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy, pre-clean, clean, post-clean, pre-site, site, post-site, site-deploy.
+
+
+<plugin>            
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-war-plugin</artifactId>
+  <configuration>
+    <webXml>src\main\webapp\WEB-INF\web.xml</webXml>        
+  </configuration>
+</plugin>
+
+  
+	
+# Merge vs Rebase
+	
+If you want to see the history completely same as it happened, you should use merge. Merge preserves history whereas rebase rewrites it.
+Merging adds a new commit to your history
+Rebasing is better to streamline a complex history, you are able to change the commit history by interactive rebase.	
