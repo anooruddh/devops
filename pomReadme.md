@@ -131,6 +131,9 @@ But release version always gives exactly same set files with each download.
 
 #### A "release" is the final build for a version which does not change. A "snapshot" is a build which can be replaced by another build which has the same name. It implies that the build could change at any time and is still under active development. You have different artifacts for different builds based on the same code.
 
+#### A snapshot version in Maven is one that has not been released. The idea is that before a 1.0 release (or any other release) is done, there exists a 1.0-SNAPSHOT. The difference between a “real” version and a snapshot version is that snapshots might get updates.
+
+#### Also Know, what is snapshot and release in Nexus? Release repositories hold releases and Snapshot repositories hold snapshots. By definition, snapshots are mutable, releases are immutable. This is why Nexus makes you store them separately because usually you don't care if you lose snapshots, but you will care if you lose releases.
 
 Just add this to your ~/.m2/settings.xml:
 
