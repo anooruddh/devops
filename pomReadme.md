@@ -131,6 +131,8 @@ But release version always gives exactly same set files with each download.
 
 
 Just add this to your ~/.m2/settings.xml:
+
+
     <profiles>
       <profile>
          <id>allow-snapshots</id>
