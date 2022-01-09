@@ -526,6 +526,10 @@ Since pods are ephemeral, a service enables a group of pods, which provide speci
 
 ![Screenshot](ingress.jpg)
 
+----------------
+
+![Screenshot](kubernetesServices.png)
+
 
 # What is a headless service?
 
