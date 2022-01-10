@@ -1080,3 +1080,86 @@ The second stage starts by pulling the official Nginx image from Docker Hub. It 
 	WORKDIR webapps 
 	COPY --from=maven /usr/src/mymaven/target/java-tomcat-maven-example.war .
 	RUN rm -rf ROOT && mv java-tomcat-maven-example.war ROOT.war	
+
+-------------------------------------------
+### How to Use docker-compose Environment Variables
+	
+	Specify environment variables in dockerfile
+		# Version of Docker compose file
+		version: "2.2"
+
+		services:
+		# Defining the service
+		  mysql:
+		# Defining the base image to be used 
+		    image: mysql:5.7
+		    hostname: mysql
+		    container_name: mysql
+		# Defining the environmental variable
+		    environment:
+		      # ENVIRONMET_VARIABLE_NAME: "environment variable value" 
+		      MYSQL_ROOT_PASSWORD: "root_password"
+		      MYSQL_ALLOW_EMPTY_PASSWORD: "password"
+		      MYSQL_RANDOM_ROOT_PASSWORD: "password"
+	
+### .ENV	
+Substituting the Environment Variables
+	
+store the values for environment variables in a file named .env that only the admin can read.
+Create a file named .env in the same ~/docker-compose-demo directory and copy the code below in the .env file. The file will have all the environment variables with their respective values.
+	
+		# Defining the values of environmental variables
+		 MYSQL_ROOT_PASSWORD="root_password"
+		 MYSQL_ALLOW_EMPTY_PASSWORD="password"
+		 MYSQL_RANDOM_ROOT_PASSWORD="password"
+	
+Again, execute the docker-compose up command. When you run the docker-compose up command, the docker-compose.yml file looks for the values of the environment variables in the .env file. The docker-compose command automatically looks for a .env file in the project directory or in the parent folder of your compose file.
+	
+### .ENV FILE PER ENVIRONMENT ( Dev,Stage,QA,PROD)
+Using Multiple Environment Variables Files for Multiple Environments
+	
+The example below will emulate the usual environments one might encounter in IT Ops: Dev, QA, and Prod. Back on your terminal:
+		
+		# Enviornmental Variables file .env.dev
+		MYSQL_ROOT_PASSWORD="password_DEV"
+		MYSQL_ALLOW_EMPTY_PASSWORD="password1"
+		MYSQL_RANDOM_ROOT_PASSWORD="password1"
+	
+		# Enviornmental Variables file .env.dev
+		MYSQL_ROOT_PASSWORD="password_DEV"
+		MYSQL_ALLOW_EMPTY_PASSWORD="password1"
+		MYSQL_RANDOM_ROOT_PASSWORD="password1"
+	
+	
+		# Enviornmental Variables file .env.prod
+		MYSQL_ROOT_PASSWORD="password_PROD"
+		MYSQL_ALLOW_EMPTY_PASSWORD="password3"
+		MYSQL_RANDOM_ROOT_PASSWORD="password3"
+	
+Next, execute the docker-compose command with the --env-file option, specifying the .env.dev file. The docker-compose command looks for the .env.dev file in the current ~/docker-compose-demo directory.
+	
+		docker-compose --env-file .env.dev up
+	
+	Passing the file as an argument allows you to store the file anywhere and with an appropriate name.
+	
+### env_file 
+	
+When you store environment variables values in the .env file separately, you end up with lots of lines and references in the docker-compose.yml.
+
+To reduce the references and the number of lines for environment variables in the docker-compose.yml file, consider incorporating the env_file in your docker-compose.yml file.
+Create a file ./var.env, refer this in your docker/compose file
+	
+		version: "2.2"
+		services:
+		  mysql_svc:
+		    image: mysql:5.7
+		    hostname: mysql
+		    container_name: mysql
+		# Replacing the environment: with env_file: 
+		  # environment:
+		  #   MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+		  #   MYSQL_ALLOW_EMPTY_PASSWORD: ${MYSQL_ALLOW_EMPTY_PASSWORD}
+		  #   MYSQL_RANDOM_ROOT_PASSWORD: ${MYSQL_RANDOM_ROOT_PASSWORD}
+		    env_file:
+		     - ./var.env
+	
