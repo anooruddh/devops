@@ -496,3 +496,18 @@ branches  COMMIT_EDITMSG  config  description  HEAD  hooks  index  info  logs  o
 If you want to see the history completely same as it happened, you should use merge. Merge preserves history whereas rebase rewrites it.
 Merging adds a new commit to your history
 Rebasing is better to streamline a complex history, you are able to change the commit history by interactive rebase.	
+
+### How to Push an Empty Commit in Git
+
+Git makes this process of pushing an empty commit super simple. It's like pushing a regular commit, except that you add the --allow-empty flag.
+
+		git commit --allow-empty -m "Empty-Commit"
+		
+You will now need to push this to the main directory. To do this, you can use this command:	
+		git push origin main
+		
+You can see that the commit has been pushed to your branch without any changes after running the above commands.
+
+### Why would you need push an empty commit?
+		
+It's possible that you'll need to start a build without making any changes to your project. Or you may not be able to manually initiate the build. The only method to start the build is to use Git. You can start your build without making any modifications to the project by pushing an empty commit.		
