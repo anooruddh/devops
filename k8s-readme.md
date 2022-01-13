@@ -1577,6 +1577,11 @@ Providing an easy method of separating development, testing, and deployment of c
     $ kubectl delete ns ns-dev
     namespace "ns-dev" deleted
 
+# How to check current namespace
+
+	$ kubectl config view --minify | grep namespace
+    		namespace: ns-dev
+
 # Inter-Namespace communication
 
 Namespaces are isolated from each other, but service in one namespace can still talk to a service in another namespace.
