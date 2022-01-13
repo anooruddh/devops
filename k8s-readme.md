@@ -75,6 +75,35 @@ Its job includes
 
 > Reports the status of PODs and Nodes to the API-Server regularly
 
+### What is kubelet?
+Kubelet is an agent or program which runs on each node. This is responsible for all the communications between the Kubernetes control plane [group of programs which control kubernetes] and the nodes where the actual workload runs. Below are the exact tasks of the kubelet.
+
+![Screenshot](kubelet.png)
+
+Joining the cluster.
+With help of kubelet a node can join the cluster and tell the cluster that it is available to run the workload.
+
+Running and health check of the containers
+Kubelet talks to the control plane to get the pods list that needs to run on the node and runs the pod. It also does a health check on containers and tells the status back to API server.
+
+Reporting status of Node
+Kubelet is also responsible for reporting the status of the node back to the Kubernetes to make an informed decision.
+
+Kubelet works on pod spec which is supplied to it from api server. In pod spec, it is defined that what pod needs to be launched and what all containers need to be launched. Apart from it there is other information like health check etc. Below is a small example for pod spec.
+
+		apiVersion: v1
+		kind: Pod
+		metadata:
+		  name: nginx
+		  labels:
+		    env: test
+		spec:
+		  containers:
+		  - name: nginx
+		    image: nginx
+		    imagePullPolicy: IfNotPresent
+		  nodeSelector:
+		    disktype: ssd
 
 ## Kube-proxy service
 
@@ -83,6 +112,19 @@ Each compute node contains a network proxy called a kube-proxy that facilitates 
 The kube-proxy runs on each node to ensure that services are available to external parties and deal with individual host subnetting. It serves as a network proxy and service load balancer on its node, managing the network routing for UDP and TCP packets. In fact, the kube-proxy routes traffic for all service endpoints.
 
 ### Kube-proxy runs in three modes: userspace, iptables, and ipvs. (Userspace is old, slow and not recommended.)
+
+### What is the job of kube-proxy?
+The main task of Kube-proxy is making configurations so that packets can reach their destination when you call a service and not routing the packets. This must be clear to you, in the very basic configuration, when you talk about kube-proxy it doesn’t route the packets, it makes configuration so that packet can reach the destination.
+
+### What configuration does it make?
+
+	Kube-proxy creates iptables rules for the services that are created.
+
+Kube proxy runs on each node and talks to api-server to get the details of the services and endpoints present. Based on this information, kube-proxy creates entries in iptables, which then routes the packets to the correct destination.
+
+![Screenshot](kubeproxy.png)
+
+When you create any service in Kubernetes, the traffic can come on any of the nodes, and then its iptables will route the packet to the correct node and after that, it can reach the correct pod.
 
 ## Pods
 
