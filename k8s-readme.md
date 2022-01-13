@@ -892,6 +892,16 @@ For completeness, this is the definition file for myservice:
             targetPort: 9376
 
 
+### What are they used for?
+
+These containers are used to prepare the pod to run the main application containers. These tasks can be changing permissions of some files to changing some specific environments. They can also be used as a precheck to verify if the application can be run on this pod.
+
+There may be some tasks that only the root user can do. And since you never want to run your application as a root user as this is a security threat. Init containers can do the task for you that you wanted to run as a root user.
+
+Below is the workflow of how they look like.
+
+![Screenshot](initcontainer.png)
+
 # Deployment & Rollback
 
     kubectl set image deployment/frontend www=image:v2               # Rolling update "www" containers of "frontend" deployment, updating the image
