@@ -580,7 +580,7 @@ Since pods are ephemeral, a service enables a group of pods, which provide speci
 
 In Kubernetes, an Ingress is an object that allows access to your Kubernetes services from outside the Kubernetes cluster. You configure access by creating a collection of rules that define which inbound connections reach which services.
 
-![Screenshot](ingress1.jpg)
+![Screenshot](ingress1.jpeg)
 
 This lets you consolidate your routing rules into a single resource. For example, you might want to send requests to example.com/api/v1/ to an api-v1 service, and requests to example.com/api/v2/ to the api-v2 service. With an Ingress, you can easily set this up without creating a bunch of LoadBalancers or exposing each service on the Node.
 
@@ -588,7 +588,7 @@ This lets you consolidate your routing rules into a single resource. For example
 
 Ingress controllers in Kubernetes are resources that accept traffic from the internet and load balance it to applications (usually in the form of running pods). Ingress controllers abstract away the complexity of routing traffic to applications running within a Kubernetes cluster.
 
-![Screenshot](ingress2.jpg)
+![Screenshot](ingress2.jpeg)
 
 An Ingress controller is a daemon running in a Pod that watches the /ingresses endpoint on the API server. When a new endpoint is created, the daemon uses the configured set of rules to allow traffic into a service.
 
