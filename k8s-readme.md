@@ -568,10 +568,123 @@ Since pods are ephemeral, a service enables a group of pods, which provide speci
 
 ![Screenshot](ingress.jpg)
 
+
 ----------------
 
 ![Screenshot](kubernetesServices.png)
 
+
+### INGRESS
+
+## What is an Ingress?
+
+In Kubernetes, an Ingress is an object that allows access to your Kubernetes services from outside the Kubernetes cluster. You configure access by creating a collection of rules that define which inbound connections reach which services.
+
+![Screenshot](ingress1.jpg)
+
+This lets you consolidate your routing rules into a single resource. For example, you might want to send requests to example.com/api/v1/ to an api-v1 service, and requests to example.com/api/v2/ to the api-v2 service. With an Ingress, you can easily set this up without creating a bunch of LoadBalancers or exposing each service on the Node.
+
+## Ingress Controllers
+
+Ingress controllers in Kubernetes are resources that accept traffic from the internet and load balance it to applications (usually in the form of running pods). Ingress controllers abstract away the complexity of routing traffic to applications running within a Kubernetes cluster.
+
+![Screenshot](ingress2.jpg)
+
+An Ingress controller is a daemon running in a Pod that watches the /ingresses endpoint on the API server. When a new endpoint is created, the daemon uses the configured set of rules to allow traffic into a service.
+
+A controller uses Ingress Rules to handle traffic to and from outside the cluster.
+
+A few popular examples of ingress controllers include:
+
+Traefik: This is known as a simple and reliable open source Kubernetes ingress controller designed for connecting Kubernetes with external applications.
+AWS ALB: This commonly used ingress controller leverages AWS Application Load Balancers to handle ingress resource requests.
+Nginx: This controller uses open source Nginx to implement ingress resources.
+
+## Installation 
+
+	kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
+	minikube addons enable ingress
+	kubectl get pods --all-namespaces -l app=ingress-nginx
+
+## Creating a Kubernetes Ingress
+
+	kind: Pod
+	apiVersion: v1
+	metadata:
+	  name: apple-app
+	  labels:
+	    app: apple
+	spec:
+	  containers:
+	    - name: apple-app
+	      image: hashicorp/http-echo
+	      args:
+		- "-text=apple"
+
+	---
+
+	kind: Service
+	apiVersion: v1
+	metadata:
+	  name: apple-service
+	spec:
+	  selector:
+	    app: apple
+	  ports:
+	    - port: 5678 # Default port for image
+
+-------------------------------------------------------------------------------------------------------
+
+	kind: Pod
+	apiVersion: v1
+	metadata:
+	  name: banana-app
+	  labels:
+	    app: banana
+	spec:
+	  containers:
+	    - name: banana-app
+	      image: hashicorp/http-echo
+	      args:
+		- "-text=banana"
+
+	---
+
+	kind: Service
+	apiVersion: v1
+	metadata:
+	  name: banana-service
+	spec:
+	  selector:
+	    app: banana
+	  ports:
+	    - port: 5678 # Default port for image
+	    
+Create the resources
+
+	$ kubectl apply -f apple.yaml
+	$ kubectl apply -f banana.yaml
+	
+Now, declare an Ingress to route requests to /apple to the first service, and requests to /banana to second service. Check out the Ingress’ rules field that declares how requests are passed along.
+
+	apiVersion: extensions/v1beta1
+	kind: Ingress
+	metadata:
+	  name: example-ingress
+	  annotations:
+	    ingress.kubernetes.io/rewrite-target: /
+	spec:
+	  rules:
+	  - http:
+	      paths:
+		- path: /apple
+		  backend:
+		    serviceName: apple-service
+		    servicePort: 5678
+		- path: /banana
+		  backend:
+		    serviceName: banana-service
+		    servicePort: 5678
 
 # What is a headless service?
 
@@ -589,6 +702,23 @@ A headless service is a service with a service IP but instead of load-balancing 
         - protocol: TCP
           port: 80
           targetPort: 3000 
+
+Create the Ingress in the cluster
+
+	kubectl create -f ingress.yaml
+
+Perfect! Let’s check that it’s working. If you’re using Minikube, you might need to replace localhost with 192.168.99.100.
+
+	$ curl -kL http://localhost/apple
+	apple
+
+	$ curl -kL http://localhost/banana
+	banana
+
+	$ curl -kL http://localhost/notfound
+	default backend - 404
+
+--------------------------------------------------------------
 
 Headless-services allow us to reach each Pod directly, rather than the service acting as a load-balancer or prox
 
