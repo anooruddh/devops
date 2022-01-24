@@ -3,6 +3,7 @@ Ansible
 Every YAML file optionally starts with “---” and ends with “...”.
 
 login users
+
 	awk -F":" '{print "Login:" $1 "\tName:" $5 "\tHome:" $6}' /etc/passwd
 	
 ==================================================================
@@ -67,13 +68,13 @@ On Ansible-control
 	etc....
 
 Now, add ansadm user
->>useradd -d /home/ansadm  -m ansadm
->>passwd ansadm
+	>>useradd -d /home/ansadm  -m ansadm
+	>>passwd ansadm
 set new password
 
 change password to never expire
 
->>passwd -x -1 ansadm		(-1 is ONE)
+	>>passwd -x -1 ansadm		(-1 is ONE)
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 Now generate ssh keys on Ansible-control
 	>>ssh-keygen -t rsa		(/home/ansadm/.ssh/id_rsa, /home/ansadm/.ssh/id_rsa.pub)
@@ -109,6 +110,7 @@ ansible 2.6.8
   
   executable location = /usr/bin/ansible
   python version = 2.6.9 (unknown, Nov  2 2017, 19:21:21) [GCC 4.8.5 20150623 (Red Hat 4.8.5-11)]
+
 [root@ip-172-31-19-54 ec2-user]# which ansible
 /usr/bin/ansible
 [root@ip-172-31-19-54 ec2-user]#
@@ -128,31 +130,31 @@ cat /etc/hosts
 
 ----------------
 check dbserver connecting from Ansible-control
->>ssh dbserver		(login should happen,without asking password)
+	>>ssh dbserver		(login should happen,without asking password)
 exit
 ----------------------
 
 change user and group on /etc/ansible (currently set to root root)
-chown -R ansadm:ansadm /etc/ansible
+	chown -R ansadm:ansadm /etc/ansible
 ls -lrt
 ------------------------
 
 now add servers names in ansible hosts file (on Ansible-control)
 >>vi /etc/ansible/hosts		(everything will be commented #), now add your server groups,and server names
-[db_servers] <---This is group name in []-->
-dbserver1
-dbserver2
-dbserver3
-[app_servers]	<---This is group name in []-->
-webserver1
-webserver2
-webserver3
+	[db_servers] <---This is group name in []-->
+	dbserver1
+	dbserver2
+	dbserver3
+	[app_servers]	<---This is group name in []-->
+	webserver1
+	webserver2
+	webserver3
 ------------------------
 now test something, link ping all servers from 'Ansible-control'
->>ansible db_servers -m ping 		(-m means Module Name ,   ansible-doc -l |more will list all module, ansible-doc -s yum )
->>ansible all -m ping -0			-o for output in single line)
+	>>ansible db_servers -m ping 		(-m means Module Name ,   ansible-doc -l |more will list all module, ansible-doc -s yum )
+	>>ansible all -m ping -0			-o for output in single line)
 
->>ansible all -m shell "uname -a;df -k"
+	>>ansible all -m shell "uname -a;df -k"
 
 -----------------
 
@@ -330,26 +332,26 @@ Let’s create a simple playbook that will install Nginx and a MySQL server on t
 
 $ vi playbook.yml
 
----
-- hosts: webservers
-  gather_facts: yes
-  become_user: root
-  tasks:
-  - name: Install Nginx
-    apt: pkg=nginx state=present
-    notify:
-    - restart nginx
-  - name: Enable Nginx during boot
-    service: name=nginx state=started enabled=yes
-  handlers:
-    - name: restart nginx
-      service: name=nginx state=restarted
+	---
+	- hosts: webservers
+	  gather_facts: yes
+	  become_user: root
+	  tasks:
+	  - name: Install Nginx
+	    apt: pkg=nginx state=present
+	    notify:
+	    - restart nginx
+	  - name: Enable Nginx during boot
+	    service: name=nginx state=started enabled=yes
+	  handlers:
+	    - name: restart nginx
+	      service: name=nginx state=restarted
 
-- hosts: dbservers
-  become_user: root
-  tasks:
-  - name: Install mysql
-    apt: pkg=mysql-server state=present
+	- hosts: dbservers
+	  become_user: root
+	  tasks:
+	  - name: Install mysql
+	    apt: pkg=mysql-server state=present
     
 
 The hosts tells ansible on which hosts to run the tasks. The above playbook includes two host groups from the inventory file. The tasks for webservers group are to install Nginx and enable Nginx during boot, and the dbservers group includes a single task to install MySQL.
@@ -497,19 +499,19 @@ Some modules do not make sense in Ad-Hoc (include, meta, etc)
 
 Creating a User in Ansible
 
----
- - name: Create a login user
-     user:
-      name: fideloper
-      password: '???'
-      groups: # Empty by default, here we give it some groups
-       - docker
-       - sudo
-      state: present
-      shell: /bin/bash       # Defaults to /bin/bash
-      system: no             # Defaults to no
-      createhome: yes        # Defaults to yes
-      home: /home/fideloper  # Defaults to /home/<username>
+	---
+	 - name: Create a login user
+	     user:
+	      name: fideloper
+	      password: '???'
+	      groups: # Empty by default, here we give it some groups
+	       - docker
+	       - sudo
+	      state: present
+	      shell: /bin/bash       # Defaults to /bin/bash
+	      system: no             # Defaults to no
+	      createhome: yes        # Defaults to yes
+	      home: /home/fideloper  # Defaults to /home/<username>
 
 
 Generating Password Strings
@@ -521,6 +523,7 @@ The easiest way to do this is with the mkpasswd command:
 mkpasswd --method=sha-512
 
 This will prompt you for the plaintext password and will give you a hashed password string you can paste into the task definition. For password secret, I get hash 
+	
 	$6$F4NWXRFtSdCi8$DsB5vvMJYusQhSbvGXrYDXL6Xj37MUuqFCd4dGXdKd6NyxT3lpdELN07/Kpo7EjjWnm9zusFg/LLFv6oc.ynu/
 --------------------------------------------------------------------------------------------------------------------------
 	---
@@ -569,16 +572,16 @@ playbook: createuser.yml
 ================================================================
 
 playbook: createuser.yml
-[ansadm@ansible tmp]$ cat createuser.yml
-	---
-	- hosts: dbservers
-	  become: yes
-	  become_user: root
-	  become_method: sudo
-	  tasks:
-	    - name: create user account
-	      ping:
-	      remote_user: root
+	[ansadm@ansible tmp]$ cat createuser.yml
+		---
+		- hosts: dbservers
+		  become: yes
+		  become_user: root
+		  become_method: sudo
+		  tasks:
+		    - name: create user account
+		      ping:
+		      remote_user: root
 [ansadm@ansible tmp]$
 
 ==========
