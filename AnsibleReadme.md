@@ -6,8 +6,11 @@ login users
 	awk -F":" '{print "Login:" $1 "\tName:" $5 "\tHome:" $6}' /etc/passwd
 	
 ==================================================================
+
     i-0f96027db0b7cf336: ec2-13-127-142-204.ap-south-1.compute.amazonaws.com		172.31.30.107	ansible-dbserver.server
+    
     i-0022e78ca75778b38: ec2-13-233-28-197.ap-south-1.compute.amazonaws.com			172.31.19.54	ansible-controller.server
+    
     i-0a5a0a09be9d1ac75: ec2-13-233-225-84.ap-south-1.compute.amazonaws.com			172.31.27.160	ansible-appserver.server
 	
 	
@@ -19,9 +22,13 @@ ansible-appserver.server
 
 
 ==================================================================	
+
 https://www.youtube.com/watch?v=ChSCEXQHfI4&index=2&list=PLLsor6GJ_BEEC9jUSc760iqaOx6u5lqRA
+
 https://www.youtube.com/watch?v=lRwGkO3PtB8&list=PLLsor6GJ_BEEC9jUSc760iqaOx6u5lqRA&index=3
+
 https://www.slideshare.net/PJishnuJaykumar/ansible-overview-system-administration-and-maintenance
+
 
 Ansible-control
 dbserver
@@ -30,34 +37,34 @@ username -  ansadm
 =========================================================================
 Ansible is part of the Extra Packages for Enterprise Linux (EPEL) repository so you need to install epel-release package first
 
-$ sudo yum install epel-release
+	$ sudo yum install epel-release
 
 The repo should now be visible in the repo list
 
-$ sudo yum repolist
+	$ sudo yum repolist
 
 So now you can go ahead and install ansible
 
-$ sudo yum install ansible
+	$ sudo yum install ansible
 
 =========================================================================
 On Ansible-control
-yum repolist
-yum install ansible
-rpm -qa | grep ansible (return ansible name with version)
-rpm -ql name with version |more ,will display where ansible installed and all the files related to ansible
-/etc/ansible
-/etc/ansible/ansible.config
-/etc/ansible/hosts
-/etc/ansible/roles
-/usr/bin/ansible
-/usr/bin/ansible-console
-/usr/bin/ansible-doc
-/usr/bin/ansible-galaxy
-/usr/bin/ansible-playbook
-/usr/bin/ansible-pull
-/usr/bin/ansible-vault
-etc....
+	yum repolist
+	yum install ansible
+	rpm -qa | grep ansible (return ansible name with version)
+	rpm -ql name with version |more ,will display where ansible installed and all the files related to ansible
+	/etc/ansible
+	/etc/ansible/ansible.config
+	/etc/ansible/hosts
+	/etc/ansible/roles
+	/usr/bin/ansible
+	/usr/bin/ansible-console
+	/usr/bin/ansible-doc
+	/usr/bin/ansible-galaxy
+	/usr/bin/ansible-playbook
+	/usr/bin/ansible-pull
+	/usr/bin/ansible-vault
+	etc....
 
 Now, add ansadm user
 >>useradd -d /home/ansadm  -m ansadm
@@ -69,22 +76,22 @@ change password to never expire
 >>passwd -x -1 ansadm		(-1 is ONE)
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 Now generate ssh keys on Ansible-control
->>ssh-keygen -t rsa		(/home/ansadm/.ssh/id_rsa, /home/ansadm/.ssh/id_rsa.pub)
->>cat /home/ansadm/.ssh/id_rsa.pub			(LONG_SSH_KEY)
+	>>ssh-keygen -t rsa		(/home/ansadm/.ssh/id_rsa, /home/ansadm/.ssh/id_rsa.pub)
+	>>cat /home/ansadm/.ssh/id_rsa.pub			(LONG_SSH_KEY)
 
-Now change user login to new user - ansadm
->>su - ansadm
+	Now change user login to new user - ansadm
+	>>su - ansadm
 
 --------------------------------------------------
 Now on dbserver
-> su - ansadm
->>mkdir .ssh directory(mkdir .ssh)
->>chmod 777 .ssh
->>chown ansadm:ansadm .ssh/
->>cd .ssh
->> vi authorized_keys (and whole LONG_SSH_KEY in it, save and quit)
-chown ansadm:ansadm authorized_keys
-chmod 600 authorized_keys
+	> su - ansadm
+	>>mkdir .ssh directory(mkdir .ssh)
+	>>chmod 777 .ssh
+	>>chown ansadm:ansadm .ssh/
+	>>cd .ssh
+	>> vi authorized_keys (and whole LONG_SSH_KEY in it, save and quit)
+	chown ansadm:ansadm authorized_keys
+	chmod 600 authorized_keys
 
 
 ssh -i id_rsa ansadm@172.31.30.107		(from /home/ansadm/.ssh)
