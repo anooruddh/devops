@@ -121,15 +121,15 @@ Docker hub account.
 
 ### Setting up your environment
 
-Install the Docker Pipelines plugin on Jenkins:
+**Install the Docker Pipelines plugin on Jenkins:**
 Manage Jenkins → Manage Plugins.
 Search Docker Pipelines, click on Install without restart and wait until is done.
 
-On Jenkins you need to create a new credential with your Docker Hub account details. Go to Credentials → Global → Add credentials and fill out the form with your username and password. Fill in ID and Descriptions. Note that if you set the ID, you will need this specific ID to refer this credential from your scripts. Here we are just using dockerhub_id.
+On Jenkins you need to create a new credential with your Docker Hub account details. Go to **Credentials → Global → Add credentials** and fill out the form with your username and password. Fill in ID and Descriptions. Note that if you set the ID, you will need this specific ID to refer this credential from your scripts. Here we are just using dockerhub_id.
 
 ### Creating your first Jenkins Pipeline
 
-The Pipeline we are defining have four stages:
+**The Pipeline we are defining have four stages:**
 
 :writing_hand: The first one is to get the Dockerfile from our Github repository,
 
