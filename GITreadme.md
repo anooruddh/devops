@@ -391,23 +391,27 @@ If you were in the middle of a rebase operation you should probably clean it up.
 
 --------
 
+Unstage files
+		git rm --cached <file>..." to unstage
 
 Just do this:
 
-git checkout master
+		git checkout master
 
 Or, if you have changes that you want to keep, do this:
-git branch -d temp
-git checkout -b temp
-git checkout -B master temp
-============================
-to remove a remote:
-git remote remove origin
+		
+		git branch -d temp
+		git checkout -b temp
+		git checkout -B master temp
+
+To remove a remote:
+		
+		git remote remove origin
 
 To add a remote:
-git remote add origin yourRemoteUrl
-& then git push -u origin master
-===============================
+		git remote add origin yourRemoteUrl
+		& then git push -u origin master
+
 
 ### Groovy
 
@@ -451,14 +455,14 @@ Note: Credential helper storing unencrypted password on local disk.
 
 sudo git config --global credential.helper 'cache --timeout 43200'
 
-[ec2-user@ansible HelloWorld]$ sudo git config credential.helper store
-[ec2-user@ansible HelloWorld]$ sudo git push https://github.com/anooruddh/EC2-Linux.git
-Username for 'https://github.com': sendtoanoo@gmail.com
-Password for 'https://sendtoanoo@gmail.com@github.com':
-Everything up-to-date
-[ec2-user@ansible HelloWorld]$ sudo git config --global credential.helper 'cache --timeout 43200'
-[ec2-user@ansible HelloWorld]$ this set the password no remider to 12 hours.^C
-[ec2-user@ansible HelloWorld]$
+	[ec2-user@ansible HelloWorld]$ sudo git config credential.helper store
+	[ec2-user@ansible HelloWorld]$ sudo git push https://github.com/anooruddh/EC2-Linux.git
+	Username for 'https://github.com': sendtoanoo@gmail.com
+	Password for 'https://sendtoanoo@gmail.com@github.com':
+	Everything up-to-date
+	[ec2-user@ansible HelloWorld]$ sudo git config --global credential.helper 'cache --timeout 43200'
+	[ec2-user@ansible HelloWorld]$ this set the password no remider to 12 hours.^C
+	[ec2-user@ansible HelloWorld]$
 
 use webHooks to perform auto build when a commit happen in GitHUB
 Under Repo --setting--Webhooks-Add Webhook --Payload URL is JENKINS_URL_TILL_PORT/github-webhook/ (like below)
