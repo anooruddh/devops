@@ -602,74 +602,75 @@ playbook: createuser.yml
 working ansible playbook
 
 [ansadm@ansible tmp]$ cat a.yml
-	---
-	- hosts: dbservers
-	  become: yes
-	  become_method: sudo
-	  tasks:
-	    - name: Creating 'ansanoo' user on dbservers.
-	      user:
-		name: ansanoo
-		password: 'sdsdeRsFF2ym'
-		group: ansadm
-		system: no
-		createhome: yes
-		home: /home/ansanoo
-		state: present
-		shell: /bin/bash
+		---
+		- hosts: dbservers
+		  become: yes
+		  become_method: sudo
+		  tasks:
+		    - name: Creating 'ansanoo' user on dbservers.
+		      user:
+			name: ansanoo
+			password: 'sdsdeRsFF2ym'
+			group: ansadm
+			system: no
+			createhome: yes
+			home: /home/ansanoo
+			state: present
+			shell: /bin/bash
 
 [ansadm@ansible tmp]$
 [ansadm@ansible tmp]$ ansible-playbook a.yml
 
-PLAY [dbservers] ********************************************************************************************************************************************
+		PLAY [dbservers] ********************************************************************************************************************************************
 
-TASK [Gathering Facts] **************************************************************************************************************************************
-ok: [ansible-dbserver.server]
+		TASK [Gathering Facts] **************************************************************************************************************************************
+		ok: [ansible-dbserver.server]
 
-TASK [Creating 'ansanoo' user on dbservers.] ****************************************************************************************************************
-changed: [ansible-dbserver.server]
+		TASK [Creating 'ansanoo' user on dbservers.] ****************************************************************************************************************
+		changed: [ansible-dbserver.server]
 
-PLAY RECAP **************************************************************************************************************************************************
-ansible-dbserver.server    : ok=2    changed=1    unreachable=0    failed=0
+		PLAY RECAP **************************************************************************************************************************************************
+		ansible-dbserver.server    : ok=2    changed=1    unreachable=0    failed=0
 
 -------------------------------
 To see what hosts would be affected by a playbook before you run it, you can do this:
 
-ansible-playbook playbook.yml --list-hosts
+	ansible-playbook playbook.yml --list-hosts
 
 while installing httpd, you can copy and index.html file from local to server at /var/www/html path
 
 [ansadm@ansible tmp]$ vi InstallApache.yml
-[ansadm@ansible tmp]$ ansible-playbook InstallApache.yml --syntax-check
+	
+		[ansadm@ansible tmp]$ ansible-playbook InstallApache.yml --syntax-check
 
 playbook: InstallApache.yml
 [ansadm@ansible tmp]$ ansible-playbook InstallApache.yml --syntax-checkca^C
 [ansadm@ansible tmp]$ cat InstallApache.yml
-	---
-	- hosts: dbservers
-	  gather_facts: yes
-	  remote_user: root
-	  become: yes
-	  become_method: sudo
-	  vars:
-	    http_port: 80
-	    max_clients: 200
-	  tasks:
-	    - name: Install Apache on DB Servers.
-	      yum:
-		name: httpd
-		state: latest
-	      notify:
-	      - restart apache
-	    - name: Ensure apache is running.
-	      service:
-		name: httpd
-		state: started
-	  handlers:
-	    - name: Restart Apache.
-	      service:
-		 name: httpd
-		 state: restarted
+			---
+			- hosts: dbservers
+			  gather_facts: yes
+			  remote_user: root
+			  become: yes
+			  become_method: sudo
+			  vars:
+			    http_port: 80
+			    max_clients: 200
+			  tasks:
+			    - name: Install Apache on DB Servers.
+			      yum:
+				name: httpd
+				state: latest
+			      notify:
+			      - restart apache
+			    - name: Ensure apache is running.
+			      service:
+				name: httpd
+				state: started
+			  handlers:
+			    - name: Restart Apache.
+			      service:
+				 name: httpd
+				 state: restarted
 
 [ansadm@ansible tmp]$ ansible-playbook InstallApache.yml --syntax-check
 
@@ -742,34 +743,33 @@ You can select the individual parameter from the above output by appending the n
 http://ec2-13-233-109-212.ap-south-1.compute.amazonaws.com
 [ansadm@ansible tmp]$ cat InstallApache.yml
 ---
-	- hosts: all
-	  gather_facts: yes
-	  #remote_user: root
-	  become: yes
-	  become_method: sudo
-	  become_user: root
-	  vars:
-	    http_port: 80
-	    max_clients: 200
-	  tasks:
-	    - name: Install Apache on DB Servers.
-	      yum:
-		name: httpd
-		state: latest
-	      notify:
-	      - restart apache
-	    - name: Ensure apache is running.
-	      service:
-		name: httpd
-		state: started
-	  handlers:
-	    - name: restart apache.
-	      service:
-		 name: httpd
-		 state: restarted
-[ansadm@ansible tmp]$
+			- hosts: all
+			  gather_facts: yes
+			  #remote_user: root
+			  become: yes
+			  become_method: sudo
+			  become_user: root
+			  vars:
+			    http_port: 80
+			    max_clients: 200
+			  tasks:
+			    - name: Install Apache on DB Servers.
+			      yum:
+				name: httpd
+				state: latest
+			      notify:
+			      - restart apache
+			    - name: Ensure apache is running.
+			      service:
+				name: httpd
+				state: started
+			  handlers:
+			    - name: restart apache.
+			      service:
+				 name: httpd
+				 state: restarted
 
-Handlers
+### Handlers
 
 Sometimes you want a task to run only when a change is made on a machine. For example, you may want to restart a service if a task updates the configuration of that service, but not if the configuration is unchanged. Ansible uses handlers to address this use case. Handlers are tasks that only run when notified
 
@@ -781,59 +781,60 @@ By default, handlers run after all the tasks in a particular play have been comp
 
 [ansadm@ansible tmp]$ ansible-playbook InstallApache.yml
 
-PLAY [all] **************************************************************************************************************************************************
+		PLAY [all] **************************************************************************************************************************************************
 
-TASK [Gathering Facts] **************************************************************************************************************************************
-ok: [ansible-dbserver.server]
-fatal: [ansible-appserver.server]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: ssh: connect to host ansible-appserver.server port 22: No route to host\r\n", "unreachable": true}
+		TASK [Gathering Facts] **************************************************************************************************************************************
+		ok: [ansible-dbserver.server]
+		fatal: [ansible-appserver.server]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: ssh: connect to host ansible-			appserver.server port 22: No route to host\r\n", "unreachable": true}
 
-TASK [Install Apache on DB Servers.] ************************************************************************************************************************
+		TASK [Install Apache on DB Servers.] ************************************************************************************************************************
+
 ERROR! The requested handler 'restart apache' was not found in either the main handlers list nor in the listening handlers list
 [ansadm@ansible tmp]$ vi InstallApache.yml
 [ansadm@ansible tmp]$ vi InstallApache.yml
 [ansadm@ansible tmp]$ ansible-playbook InstallApache.yml
 
-PLAY [all] **************************************************************************************************************************************************
+		PLAY [all] **************************************************************************************************************************************************
 
-TASK [Gathering Facts] **************************************************************************************************************************************
-ok: [ansible-dbserver.server]
-fatal: [ansible-appserver.server]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: ssh: connect to host ansible-appserver.server port 22: No route to host\r\n", "unreachable": true}
+		TASK [Gathering Facts] **************************************************************************************************************************************
+		ok: [ansible-dbserver.server]
+		fatal: [ansible-appserver.server]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: ssh: connect to host ansible-appserver.server port 22: No route to host\r\n", "unreachable": true}
 
-TASK [Install Apache on DB Servers.] ************************************************************************************************************************
-ok: [ansible-dbserver.server]
+		TASK [Install Apache on DB Servers.] ************************************************************************************************************************
+		ok: [ansible-dbserver.server]
 
-TASK [Ensure apache is running.] ****************************************************************************************************************************
-changed: [ansible-dbserver.server]
-        to retry, use: --limit @/tmp/InstallApache.retry
+		TASK [Ensure apache is running.] ****************************************************************************************************************************
+		changed: [ansible-dbserver.server]
+			to retry, use: --limit @/tmp/InstallApache.retry
 
-PLAY RECAP **************************************************************************************************************************************************
-ansible-appserver.server   : ok=0    changed=0    unreachable=1    failed=0
-ansible-dbserver.server    : ok=3    changed=1    unreachable=0    failed=0
+		PLAY RECAP **************************************************************************************************************************************************
+		ansible-appserver.server   : ok=0    changed=0    unreachable=1    failed=0
+		ansible-dbserver.server    : ok=3    changed=1    unreachable=0    failed=0
 
 
 Testing :   curl http://public_name_of_db_server:80/
 
-ftp> lcd Desktop
-Local directory now C:\Documents and Settings\olga\Desktop.
-ftp> lcd Web
-Local directory now C:\Documents and Settings\olga\Desktop\Web.
-ftp> open cunix
-Connected to cunix.cc.columbia.edu.
-220 Cunix FTP server (Version 5.60) ready.
-User (cunix.cc.columbia.edu:(none)): olga
-331 Password required for olga.
-Password: (type your password here)
-230 User olga logged in.
-ftp> cd public_html   (That's "public_html" in case you can't see the underscore)
-ftp> binary
-ftp> put index.html
-200 PORT command successful.
-150 Opening ASCII mode data connection for index.html.
-226 Transfer complete.
-ftp: 285 bytes sent in 0.00Seconds 285000.00Kbytes/sec.
-ftp> site chmod 664 index.html
-200 CHMOD command successful
-ftp> bye
+		ftp> lcd Desktop
+		Local directory now C:\Documents and Settings\olga\Desktop.
+		ftp> lcd Web
+		Local directory now C:\Documents and Settings\olga\Desktop\Web.
+		ftp> open cunix
+		Connected to cunix.cc.columbia.edu.
+		220 Cunix FTP server (Version 5.60) ready.
+		User (cunix.cc.columbia.edu:(none)): olga
+		331 Password required for olga.
+		Password: (type your password here)
+		230 User olga logged in.
+		ftp> cd public_html   (That's "public_html" in case you can't see the underscore)
+		ftp> binary
+		ftp> put index.html
+		200 PORT command successful.
+		150 Opening ASCII mode data connection for index.html.
+		226 Transfer complete.
+		ftp: 285 bytes sent in 0.00Seconds 285000.00Kbytes/sec.
+		ftp> site chmod 664 index.html
+		200 CHMOD command successful
+		ftp> bye
 
 https://www.youtube.com/watch?v=SgxtxzQJM4w
 
@@ -868,27 +869,27 @@ drwxrwxr-x 2 ansadm ansadm 4096 Jan 17 10:42 tasks
 drwxrwxr-x 2 ansadm ansadm 4096 Jan 17 10:42 meta
 [ansadm@ansible apache]$
 
-[ansadm@ansible roles]$ tree
-.
-└── apache
-    ├── defaults
-    │   └── main.yml
-    ├── files
-    ├── handlers
-    │   └── main.yml
-    ├── meta
-    │   └── main.yml
-    ├── README.md
-    ├── tasks
-    │   └── main.yml
-    ├── templates
-    ├── tests
-    │   ├── inventory
-    │   └── test.yml
-    └── vars
-        └── main.yml
+		[ansadm@ansible roles]$ tree
+		.
+		└── apache
+		    ├── defaults
+		    │   └── main.yml
+		    ├── files
+		    ├── handlers
+		    │   └── main.yml
+		    ├── meta
+		    │   └── main.yml
+		    ├── README.md
+		    ├── tasks
+		    │   └── main.yml
+		    ├── templates
+		    ├── tests
+		    │   ├── inventory
+		    │   └── test.yml
+		    └── vars
+			└── main.yml
 
-9 directories, 8 files
+		9 directories, 8 files
 ========================================================================
 zip folder in unix
 zip -r roles .
