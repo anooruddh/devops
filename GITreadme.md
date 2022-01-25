@@ -511,3 +511,11 @@ You can see that the commit has been pushed to your branch without any changes a
 ### Why would you need push an empty commit?
 		
 It's possible that you'll need to start a build without making any changes to your project. Or you may not be able to manually initiate the build. The only method to start the build is to use Git. You can start your build without making any modifications to the project by pushing an empty commit.		
+
+### git fetch vs git pull
+		
+**git fetch**
+It will download all refs and objects and any new branches to your local Repository		
+
+**git pull**
+It will apply the changes from remote to the current branch in local		
