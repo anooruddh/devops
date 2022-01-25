@@ -392,6 +392,7 @@ If you were in the middle of a rebase operation you should probably clean it up.
 --------
 
 Unstage files
+		
 		git rm --cached <file>..." to unstage
 
 Just do this:
