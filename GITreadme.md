@@ -504,7 +504,7 @@ Rebasing is better to streamline a complex history, you are able to change the c
 
 ### How to Push an Empty Commit in Git
 
-Git makes this process of pushing an empty commit super simple. It's like pushing a regular commit, except that you add the --allow-empty flag.
+Git makes this process of pushing an empty commit super simple. It's like pushing a regular commit, except that you add the **--allow-empty** flag.
 
 		git commit --allow-empty -m "Empty-Commit"
 		
