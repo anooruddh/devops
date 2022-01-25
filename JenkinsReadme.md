@@ -130,10 +130,11 @@ On Jenkins you need to create a new credential with your Docker Hub account deta
 ### Creating your first Jenkins Pipeline
 
 The Pipeline we are defining have four stages:
-[x] The first one is to get the Dockerfile from our Github repository,
-[x] The second one will build the image using $BUILD_NUMBER to tag the version,
-[x] The third one is pushing the built image to your Docker Hub registry.
-[x] Finally, we will cleanup the previously built image on the local server.
+
+:writing_hand: The first one is to get the Dockerfile from our Github repository,
+:writing_hand: The second one will build the image using $BUILD_NUMBER to tag the version,
+:writing_hand: The third one is pushing the built image to your Docker Hub registry.
+:writing_hand: Finally, we will cleanup the previously built image on the local server.
 
           pipeline {
              environment {
