@@ -109,3 +109,65 @@ use the finalName tag to define/change the name of the war file in the web modul
        </build>
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+## How To Make Docker Images with Jenkins Pipelines
+
+## Prerequisites
+
+A server with Jenkins and Docker running on it (Jenkins user should be allowed to run Docker).
+
+Github account.
+
+Docker hub account.
+
+### Setting up your environment
+
+Install the Docker Pipelines plugin on Jenkins:
+Manage Jenkins → Manage Plugins.
+Search Docker Pipelines, click on Install without restart and wait until is done.
+
+On Jenkins you need to create a new credential with your Docker Hub account details. Go to Credentials → Global → Add credentials and fill out the form with your username and password. Fill in ID and Descriptions. Note that if you set the ID, you will need this specific ID to refer this credential from your scripts. Here we are just using dockerhub_id.
+
+### Creating your first Jenkins Pipeline
+
+The Pipeline we are defining have four stages:
+[x] The first one is to get the Dockerfile from our Github repository,
+[x] The second one will build the image using $BUILD_NUMBER to tag the version,
+[x] The third one is pushing the built image to your Docker Hub registry.
+[x] Finally, we will cleanup the previously built image on the local server.
+
+          pipeline {
+             environment {
+               registry = "YourDockerhubAccount/YourRepository"
+               registryCredential = 'dockerhub_id'
+               dockerImage = ''
+             }
+             agent any
+               stages {
+               stage('Cloning our Git') {
+               steps {
+               git 'https://github.com/YourGithubAccount/YourGithubRepository.git'
+               }
+             }
+             stage('Building our image') {
+               steps{
+               script {
+               dockerImage = docker.build registry + ":$BUILD_NUMBER"
+               }
+             }
+             }
+             stage('Deploy our image') {
+               steps{
+               script {
+               docker.withRegistry( '', registryCredential ) {
+               dockerImage.push()
+               }
+               }
+             }
+             }
+             stage('Cleaning up') {
+                steps{
+                sh "docker rmi $registry:$BUILD_NUMBER"
+                }
+             }
+             }
+      }
