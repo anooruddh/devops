@@ -514,10 +514,6 @@ It's possible that you'll need to start a build without making any changes to yo
 
 # Fetch vs Pull
 		
-**git fetch**
+**git fetch** - It will download all refs and objects and any new branches to your local Repository		
 
-It will download all refs and objects and any new branches to your local Repository		
-
-**git pull**
-
-It will apply the changes from remote to the current branch in local		
+**git pull** - It will apply the changes from remote to the current branch in local		
