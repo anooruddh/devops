@@ -132,3 +132,20 @@ In-Correct syntax
         print("Five is greater than two!")
         
         
+### Creating a Comment
+
+Comments starts with a #, and Python will ignore them:
+
+Single Line Comment (#)
+
+        #This is a comment
+        print("Hello, World!")
+        
+Multi-Line Comment ( 3 " or 3 '  - starting and ending)
+
+        """
+        This is a comment
+        written in
+        more than just one line
+        """
+        print("Hello, World!")
