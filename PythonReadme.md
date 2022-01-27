@@ -171,3 +171,29 @@ And you can assign the same value to multiple variables in one line:
         banana
         >>> print(x)
         apple
+
+### Python frozenset() Function
+
+Its a built-in python function, Which Freeze the list, and make it unchangeable / immutable:
+
+Example
+
+          mylist = ['apple', 'banana', 'cherry']
+          x = frozenset(mylist)
+        
+Note - if you try to change list element in frozen set, it will throw error **TypeError: 'frozenset' object does not support item assignment**        
+
+          list1= [1,2,3]
+          list2= ['apple', 'banana', 'cherry']
+          x = frozenset(list2)
+
+          print(list1)  # [1, 2, 3]
+          print(list2)  # ['apple', 'banana', 'cherry']
+          print(x)	  # frozenset({'banana', 'apple', 'cherry'})
+
+
+          list1[0]=4
+          print(list1)  # [4, 2, 3]
+          x[0]='mango'  # TypeError: 'frozenset' object does not support item assignment. 
+          print(x)  
+
