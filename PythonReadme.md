@@ -29,7 +29,7 @@ Python is an interpreted language, which means the source code of a Python progr
 
 ### PIP
 
-PIP is a package-management system written in Python used to install and manage software packages.[5] It connects to an online repository of public packages, called the Python Package Index
+PIP is a package-management system written in Python used to install and manage software packages. It connects to an online repository of public packages, called the Python Package Index
 
 ### Python Virtual Environment      
 
