@@ -22,7 +22,43 @@ The Zen of Python, by Tim Peters
     If the implementation is hard to explain, it's a bad idea.
     If the implementation is easy to explain, it may be a good idea.
     Namespaces are one honking great idea -- let's do more of those!  
-      
+    
+### Compiled or Interpreted
+
+Python is an interpreted language, which means the source code of a Python program is converted into bytecode that is then executed by the Python virtual machine. Python is different from major compiled languages, such as C and C + +, as Python code is not required to be built and linked like code for these languages.
+
+### PIP
+
+PIP is a package-management system written in Python used to install and manage software packages.[5] It connects to an online repository of public packages, called the Python Package Index
+
+### Python Virtual Environment      
+
+A virtual environment is a tool that helps to keep dependencies required by different projects separate by creating isolated python virtual environments for them. This is one of the most important tools that most of the Python developers use.
+
+### Why do we need a virtual environment?
+
+Imagine a scenario where you are working on two web based python projects and one of them uses a Django 1.9 and the other uses Django 1.10 and so on. In such situations virtual environment can be really useful to maintain dependencies of both the projects.
+
+Installing virtualenv
+
+          pip install virtualenv
+          
+          virtualenv --version
+          
+Creating a virtual environment
+
+          virtualenv my_name
+          python -m venv frontend
+
+Activating a virtual environment
+
+        source /opt/virenvs/frontend/bin/activate
+
+Deactivating a virtual environment
+
+        deactivate  ((virtualenv_name)$ deactivate)
+        
+
 ### Is Python open source?
 
 Yes, all modern versions of Python are copyrighted under a GPL-compatible license certified by the Open Source Initiative.  
