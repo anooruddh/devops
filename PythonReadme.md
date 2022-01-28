@@ -243,11 +243,12 @@ Loops iterate over a block of code until the test expression is false, but somet
 The break and continue statements are used in these cases.
 
 ### break
+
 The break statement terminates the loop containing it. Control of the program flows to the statement immediately after the body of the loop.
 
 If the break statement is inside a nested loop (loop inside another loop), the break statement will terminate the innermost loop.
 
-# Program to show the use of continue statement inside loops
+Program to show the use of continue statement inside loops
 
           for val in "string":
               if val == "i":
@@ -265,6 +266,7 @@ Outpul
           > 
 
 In this program, we iterate through the "string" sequence. We check if the letter is i, upon which we break from the loop. Hence, we see in our output that all the letters up till i gets printed. After that, the loop terminates.
+
 -------------------------------------------------------------------------------------------------------------------
 
 ### continue 
