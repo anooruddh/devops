@@ -404,9 +404,9 @@ A namespace is a system that has a unique name for each and every object in Pyth
 
 In a Python program, there are four types of namespaces: (This is the LEGB rule)
 
-    :white_check_mark:  Built-In  - If it can’t find x anywhere else, then the interpreter tries the built-in scope.
-    :white_check_mark:  Global - If neither of the above searches is fruitful, then the interpreter looks in the global scope next.
-    :white_check_mark:  Enclosing -  If x isn’t in the local scope but appears in a function that resides inside another function, then the interpreter searches in the enclosing function’s scope.
-    :white_check_mark:  Local - If you refer to x inside a function, then the interpreter first searches for it in the innermost scope that’s local to that function.
+:white_check_mark:  Built-In  - If it can’t find x anywhere else, then the interpreter tries the built-in scope.
+:white_check_mark:  Global - If neither of the above searches is fruitful, then the interpreter looks in the global scope next.
+:white_check_mark:  Enclosing -  If x isn’t in the local scope but appears in a function that resides inside another function, then the interpreter searches in the enclosing function’s scope.
+:white_check_mark:  Local - If you refer to x inside a function, then the interpreter first searches for it in the innermost scope that’s local to that function.
     
 These have differing lifetimes. As Python executes a program, it creates namespaces as necessary and deletes them when they’re no longer needed. Typically, many namespaces will exist at any given time.
