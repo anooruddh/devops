@@ -396,3 +396,17 @@ In Python, dictionaries are defined within braces {} with each item being a pair
             A dictionary is a collection which is unordered, changeable and indexed.
             In Python dictionaries are written with curly brackets, and they have keys and values.
             Brackets used to represent: {}.
+
+
+### Namespaces ( way of naming and organizing a python object )
+
+A namespace is a system that has a unique name for each and every object in Python. An object might be a variable or a method. Python itself maintains a namespace in the form of a Python dictionary
+
+In a Python program, there are four types of namespaces: (This is the LEGB rule)
+
+    :white_check_mark:  Built-In  - If it can’t find x anywhere else, then the interpreter tries the built-in scope.
+    :white_check_mark:  Global - If neither of the above searches is fruitful, then the interpreter looks in the global scope next.
+    :white_check_mark:  Enclosing -  If x isn’t in the local scope but appears in a function that resides inside another function, then the interpreter searches in the enclosing function’s scope.
+    :white_check_mark:  Local - If you refer to x inside a function, then the interpreter first searches for it in the innermost scope that’s local to that function.
+    
+These have differing lifetimes. As Python executes a program, it creates namespaces as necessary and deletes them when they’re no longer needed. Typically, many namespaces will exist at any given time.
