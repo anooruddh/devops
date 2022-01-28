@@ -313,6 +313,13 @@ Suppose we have a loop or a function that is not implemented yet, but we want to
 
 :white_check_mark: The **pass** statement in Python is used when a statement is required syntactically but you do not want any command or code to execute.
 
+### Python Array
+
+Arrays in python can only contain elements of same data types
+
+          cars = ["Ford", "Volvo", "BMW"]
+          num  = [ 1,2,3]
+
 ### Python List
 List is an ordered sequence of items. It is one of the most used datatype in Python and is very flexible. All the items in a list do not need to be of the same type.
 
@@ -342,7 +349,20 @@ Set is an unordered collection of unique items. Set is defined by values separat
          output
          {1, 2, 3, 4, 5} 
 
-### GIST
+### Python Dictionary
+Dictionary is an unordered collection of key-value pairs.
+
+It is generally used when we have a huge amount of data. Dictionaries are optimized for retrieving data. We must know the key to retrieve the value.
+
+In Python, dictionaries are defined within braces {} with each item being a pair in the form key:value. Key and value can be of any type.
+
+          d = {'Name':'anooruddh','age':'40'}
+          print(d)
+          
+          output
+          {'Name': 'anooruddh', 'age': '40'}
+          
+### Quick Note about all four
 
 ## Lists
 
