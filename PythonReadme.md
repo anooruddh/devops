@@ -441,7 +441,7 @@ Result without decorator
 
 Result without decorator
 
-              **@uppercase_decorator**
+              @uppercase_decorator
               def say_hi():
                   return 'hello there'
                   
