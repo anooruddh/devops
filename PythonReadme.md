@@ -308,6 +308,8 @@ Suppose we have a loop or a function that is not implemented yet, but we want to
                   pass
 
 :white_check_mark: The break statement in Python terminates the current loop and resumes execution at the next statement, just like the traditional break found in C.
+
 :white_check_mark:  The continue statement in Python returns the control to the beginning of the while loop. The continue statement rejects all the remaining statements in the current iteration of the loop and moves the control back to the top of the loop.
+
 :white_check_mark: The pass statement in Python is used when a statement is required syntactically but you do not want any command or code to execute.
 
