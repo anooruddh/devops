@@ -313,3 +313,31 @@ Suppose we have a loop or a function that is not implemented yet, but we want to
 
 :white_check_mark: The **pass** statement in Python is used when a statement is required syntactically but you do not want any command or code to execute.
 
+### Python List
+List is an ordered sequence of items. It is one of the most used datatype in Python and is very flexible. All the items in a list do not need to be of the same type.
+
+Declaring a list is pretty straight forward. Items separated by commas are enclosed within brackets [ ].
+
+        a = [1, 2.2, 'python']
+        x = [5,5,5,5,1,2,3,4,4]  
+        print(x)
+        output
+        [5, 5, 5, 5, 1, 2, 3, 4, 4] **Unordered and Repeated elements**
+      
+### Python Tuple
+Tuple is an ordered sequence of items same as a list. The only difference is that tuples are immutable. Tuples once created cannot be modified.
+
+Tuples are used to write-protect data and are usually faster than lists as they cannot change dynamically.
+
+It is defined within parentheses () where items are separated by commas.
+
+        t = (5,'program', 1+3j)
+        
+### Python Set
+Set is an unordered collection of unique items. Set is defined by values separated by comma inside braces { }. Items in a set are not ordered.
+
+         y = {5,1,2,3,4,4}
+         print(y)
+         
+         output
+         {1, 2, 3, 4, 5} **No Duplicates and in order**
