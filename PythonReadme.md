@@ -322,7 +322,7 @@ Declaring a list is pretty straight forward. Items separated by commas are enclo
         x = [5,5,5,5,1,2,3,4,4]  
         print(x)
         output
-        [5, 5, 5, 5, 1, 2, 3, 4, 4] **Unordered and Repeated elements**
+        [5, 5, 5, 5, 1, 2, 3, 4, 4] 
       
 ### Python Tuple
 Tuple is an ordered sequence of items same as a list. The only difference is that tuples are immutable. Tuples once created cannot be modified.
@@ -340,4 +340,36 @@ Set is an unordered collection of unique items. Set is defined by values separat
          print(y)
          
          output
-         {1, 2, 3, 4, 5} **No Duplicates and in order**
+         {1, 2, 3, 4, 5} 
+
+### GIST
+
+Lists
+
+            List is a collection which is ordered.
+            Lists are mutable (changeable) .
+            Allows duplicate members
+            Brackets used to represent: []
+            Lists are like arrays declared in other languages.
+
+Tuples
+            Collection of items which is ordered.
+            Tuples are immutable (unchangeable) .
+            Brackets used to represent: ()
+            Only difference between tuples and lists are that lists can be changed.
+            Tuples are faster than lists as they are immutable.
+
+Sets
+            Collection of Unordered and Unindexed items.
+            Sets are mutable (changeable).
+            Does not take duplicate Values.
+            Sets are unordered, so you cannot be sure in which order the items will appear.
+            Brackets used to represent: { }.
+            Sets are not faster than lists however they have a upper hand when it comes to membership testing.
+
+Dictionaries
+
+            Key:Value Pair in Python
+            A dictionary is a collection which is unordered, changeable and indexed.
+            In Python dictionaries are written with curly brackets, and they have keys and values.
+            Brackets used to represent: {}.
