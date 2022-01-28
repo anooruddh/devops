@@ -344,7 +344,7 @@ Set is an unordered collection of unique items. Set is defined by values separat
 
 ### GIST
 
-Lists
+## Lists
 
             List is a collection which is ordered.
             Lists are mutable (changeable) .
@@ -352,14 +352,16 @@ Lists
             Brackets used to represent: []
             Lists are like arrays declared in other languages.
 
-Tuples
+
+## Tuples
             Collection of items which is ordered.
             Tuples are immutable (unchangeable) .
             Brackets used to represent: ()
             Only difference between tuples and lists are that lists can be changed.
             Tuples are faster than lists as they are immutable.
 
-Sets
+
+## Sets
             Collection of Unordered and Unindexed items.
             Sets are mutable (changeable).
             Does not take duplicate Values.
@@ -367,7 +369,8 @@ Sets
             Brackets used to represent: { }.
             Sets are not faster than lists however they have a upper hand when it comes to membership testing.
 
-Dictionaries
+
+## Dictionaries
 
             Key:Value Pair in Python
             A dictionary is a collection which is unordered, changeable and indexed.
