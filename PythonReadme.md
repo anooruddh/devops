@@ -233,3 +233,77 @@ Note - if you try to change list element in frozen set, it will throw error **Ty
           x[0]='mango'  # TypeError: 'frozenset' object does not support item assignment. 
           print(x)  
 
+
+### Python break, Pass and continue
+
+In Python, break and continue statements can alter the flow of a normal loop.
+
+Loops iterate over a block of code until the test expression is false, but sometimes we wish to terminate the current iteration or even the whole loop without checking test expression.
+
+The break and continue statements are used in these cases.
+
+### break
+The break statement terminates the loop containing it. Control of the program flows to the statement immediately after the body of the loop.
+
+If the break statement is inside a nested loop (loop inside another loop), the break statement will terminate the innermost loop.
+
+# Program to show the use of continue statement inside loops
+
+          for val in "string":
+              if val == "i":
+                  break
+              print(val)
+
+          print("The end")
+
+Outpul
+
+          s
+          t
+          r
+          The end
+          > 
+
+In this program, we iterate through the "string" sequence. We check if the letter is i, upon which we break from the loop. Hence, we see in our output that all the letters up till i gets printed. After that, the loop terminates.
+-------------------------------------------------------------------------------------------------------------------
+
+### continue 
+
+The continue statement is used to skip the rest of the code inside a loop for the current iteration only. Loop does not terminate but continues on with the next iteration.
+
+# Program to show the use of continue statement inside loops
+
+          for val in "string":
+              if val == "i":
+                  continue
+              print(val)
+
+          print("The end")
+
+Output
+
+          s
+          t
+          r
+          n
+          g
+          The end
+          
+We continue with the loop, if the string is i, not executing the rest of the block. Hence, we see in our output that all the letters except i gets printed.
+
+### pass
+
+In Python programming, the pass statement is a null statement. The difference between a comment and a pass statement in Python is that while the interpreter ignores a comment entirely, pass is not ignored.
+
+However, nothing happens when the pass is executed. It results in no operation (NOP).
+
+We generally use it as a placeholder
+
+Suppose we have a loop or a function that is not implemented yet, but we want to implement it in the future. They cannot have an empty body. The interpreter would give an error. So, we use the pass statement to construct a body that does nothing.
+
+              '''pass is just a placeholder for
+              functionality to be added later.'''
+              sequence = {'p', 'a', 's', 's'}
+              for val in sequence:
+                  pass
+
