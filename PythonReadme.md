@@ -413,3 +413,37 @@ In a Python program, there are four types of namespaces: (This is the LEGB rule)
 :white_check_mark:  Local - If you refer to x inside a function, then the interpreter first searches for it in the innermost scope that’s local to that function.
     
 These have differing lifetimes. As Python executes a program, it creates namespaces as necessary and deletes them when they’re no longer needed. Typically, many namespaces will exist at any given time.
+
+
+### Decorators in Python
+
+A decorator is a design pattern in Python that allows a user to add new functionality to an existing object without modifying its structure. Decorators are usually called before the definition of a function you want to decorate
+
+Creating Decorators
+
+We do this by defining a wrapper inside an enclosed function. As you can see it very similar to the function inside another function that we created earlier.
+
+            def uppercase_decorator(function):
+                def wrapper():
+                    func = function()
+                    make_uppercase = func.upper()
+                    return make_uppercase
+
+                return wrapper
+                
+Result without decorator
+
+              def say_hi():
+                return 'hello there'
+              
+              say_hi()
+              OUTPUT -  hello there           
+
+Result without decorator
+
+              **@uppercase_decorator**
+              def say_hi():
+                  return 'hello there'
+                  
+              say_hi()
+              OUTPUT - HELLO THERE
