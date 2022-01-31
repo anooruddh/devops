@@ -1164,5 +1164,3 @@ Create a file ./var.env, refer this in your docker/compose file
 		     - ./var.env
 	
 
-	
-Docker, a subset of the Moby project, is a software framework for building, running, and managing containers on servers and the cloud. The term "docker" may refer to either the tools (the commands and a daemon) or to the Dockerfile file format.
