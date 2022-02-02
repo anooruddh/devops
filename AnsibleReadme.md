@@ -1637,3 +1637,76 @@ Verify the syntax
 	[root@learnitguide apache]# ansible-playbook /etc/ansible/runsetup.yml --syntax-check
 	playbook: /etc/ansible/runsetup.yml
 	[root@learnitguide apache]#
+
+	
+### How to Set Up SSH Keys 
+
+Step 1 — Creating the Key Pair
+The first step is to create a key pair on the client machine (usually your computer):
+		ssh-keygen
+		Output
+		Generating public/private rsa key pair.
+		Enter file in which to save the key (/your_home/.ssh/id_rsa):
+
+		Output
+		Your identification has been saved in /your_home/.ssh/id_rsa
+		Your public key has been saved in /your_home/.ssh/id_rsa.pub
+		The key fingerprint is:
+		SHA256:/hk7MJ5n5aiqdfTVUZr+2Qt+qCiS7BIm5Iv0dxrc3ks user@host
+		The key's randomart image is:
+		+---[RSA 3072]----+
+		|                .|
+		|               + |
+		|              +  |
+		| .           o . |
+		|o       S   . o  |
+		| + o. .oo. ..  .o|
+		|o = oooooEo+ ...o|
+		|.. o *o+=.*+o....|
+		|    =+=ooB=o.... |
+		+----[SHA256]-----+
+	
+
+Step 2 — Copying the Public Key to hosts server
+	
+		ssh-copy-id username@remote_host
+		Output
+		The authenticity of host '203.0.113.1 (203.0.113.1)' can't be established.
+		ECDSA key fingerprint is fd:fd:d4:f9:77:fe:73:84:e1:55:00:ad:d6:6d:22:fe.
+		Are you sure you want to continue connecting (yes/no)? yes
+
+		Output
+		Number of key(s) added: 1
+
+		Now try logging into the machine, with:   "ssh 'username@203.0.113.1'"
+		and check to make sure that only the key(s) you wanted were added.	
+
+Copying the Public Key Using SSH
+	
+		cat ~/.ssh/id_rsa.pub | ssh username@remote_host "mkdir -p ~/.ssh && touch ~/.ssh/authorized_keys && chmod -R go= ~/.ssh && cat >> ~/.ssh/authorized_keys"
+	
+Copying the Public Key Manually
+	
+If you do not have password-based SSH access to your server available, you will have to complete the above process manually.
+
+We will manually append the content of your id_rsa.pub file to the ~/.ssh/authorized_keys file on your remote machine.
+
+To display the content of your id_rsa.pub key, type this into your local computer:
+	
+		cat ~/.ssh/id_rsa.pub
+
+Access your remote host using whichever method you have available.
+
+	Once you have access to your account on the remote server, you should make sure the ~/.ssh directory exists. This command will create the directory if necessary, or do nothing if it already exists:
+	
+		mkdir -p ~/.ssh
+		echo public_key_string >> ~/.ssh/authorized_keys
+
+Step 3 — Authenticating to your host server
+	
+		ssh username@remote_host
+	
+Set No Password 
+		sudo nano /etc/ssh/sshd_config
+		PasswordAuthentication no
+		sudo systemctl restart ssh
