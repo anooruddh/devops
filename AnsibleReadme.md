@@ -1708,5 +1708,64 @@ Step 3 — Authenticating to your host server
 	
 Set No Password 
 		sudo nano /etc/ssh/sshd_config
+	
 		PasswordAuthentication no
+	
 		sudo systemctl restart ssh
+	
+### Setting Up the Inventory File
+	
+		sudo nano /etc/ansible/hosts
+		
+		[servers]
+		server1 ansible_host=203.0.113.111
+		server2 ansible_host=203.0.113.112
+		server3 ansible_host=203.0.113.113
+
+		[all:vars]
+		ansible_python_interpreter=/usr/bin/python3
+	
+Whenever you want to check your inventory, you can run:	
+	
+		ansible-inventory --list -y
+	
+		output
+		all:
+		  children:
+		    servers:
+		      hosts:
+			server1:
+			  ansible_host: 203.0.113.111
+			  ansible_python_interpreter: /usr/bin/python3
+			server2:
+			  ansible_host: 203.0.113.112
+			  ansible_python_interpreter: /usr/bin/python3
+			server3:
+			  ansible_host: 203.0.113.113
+			  ansible_python_interpreter: /usr/bin/python3
+		    ungrouped: {}
+
+### Testing Connection
+	
+		ansible all -m ping -u root
+		Output
+		server1 | SUCCESS => {
+		    "changed": false, 
+		    "ping": "pong"
+		}
+		server2 | SUCCESS => {
+		    "changed": false, 
+		    "ping": "pong"
+		}
+		server3 | SUCCESS => {
+		    "changed": false, 
+		    "ping": "pong"
+		}
+	
+### Running Ad-Hoc Commands (Optional)
+	
+		ansible all -a "df -h" -u root
+		ansible all -m apt -a "name=vim state=latest" -u root
+		ansible servers -a "uptime" -u root
+		ansible server1:server2 -m ping -u root
+	
