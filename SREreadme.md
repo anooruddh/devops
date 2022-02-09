@@ -111,6 +111,10 @@ If your SLA promises 99.95% uptime, your error budget is four hours, 22 minutes,
 | ------------- | ------------- | ------ | 
 | X should be true... | Y portion of the time,  | or else. | 
 
+<style>H1{color:Blue;}</style>
+<style>H2{color:DarkOrange;}</style>
+<style>p{color:Black;}</style>
+
 ## SLIs are the key measurements to determine the availability of a system.
 ## SLOs are goals we set for how much availability we expect out of a system.
 ## SLAs are the legal contracts that explain what happens if the system doesn’t meet its SLO.
