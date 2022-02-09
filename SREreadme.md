@@ -107,6 +107,13 @@ If your SLA promises 99.95% uptime, your error budget is four hours, 22 minutes,
 | 99.95% uptime  | 4 hours, 22 minutes, 48 seconds  |21 minutes, 54 seconds | 
 | 99.9% uptime  | 8 hours, 45 minutes, 57 seconds |43 minutes, 50 seconds | 
 
+| SLI  | SLO | SLA | 
+| ------------- | ------------- | ------ | 
+| X should be true... | Y portion of the time,  | or else. | 
+
+## SLIs are the key measurements to determine the availability of a system.
+## SLOs are goals we set for how much availability we expect out of a system.
+## SLAs are the legal contracts that explain what happens if the system doesn’t meet its SLO.
 
 # Error Budget
 Error budget is generall the budget you can spend on pushing features. Let's say you have an uptime of 90% for your application or service. This means that you can have a downtime of 36.5 days per year, this is a downtime of 72 hours per month. You can either spend this downtime on fixing errors or you build your system reliable and spend it on pushing new features. It's fully up to you. You should just make sure that you freeze new features until your error budget has recovered. This has several advantages:
