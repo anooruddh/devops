@@ -524,6 +524,6 @@ It's possible that you'll need to start a build without making any changes to yo
 **git pull** - It will apply the changes from remote to the current branch in local		
 
 	
-To amend a Git commit to include new changes without updating the commit message, you will run:
+### To amend a Git commit to include new changes without updating the commit message, you will run:
 
 		git commit --amend --no-edit	
