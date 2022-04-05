@@ -1770,17 +1770,17 @@ Whenever you want to check your inventory, you can run:
 		ansible server1:server2 -m ping -u root
 	
 
-### Set the order of task execution in Ansible with these two keywords
+# Set the order of task execution in Ansible with these two keywords
 Extend Ansible's flexibility by adding pre_tasks and post_tasks to your playbooks.
 	
 	
 ### Ansible Async POLL with Examples
 By default ansible will run tasks one after the other in sequentially. i,e Ansible executes the first task,after completion of the first task it will go for another task. In some situations task will take more time. If you take a example of apt-get update or yum update it will take more time compared to other tasks. so the playbook will take longer time to complete all the tasks.
 	
-# Ansible Async Poll or Ansible Asynchronous Tasks
+### Ansible Async Poll or Ansible Asynchronous Tasks
 using ansible async module we can put the tasks in background which taking more time and we continue with other tasks. So we can execute other tasks without waiting for the long running task to complete. using ansible async mode we can run the tasks in parallaly and we can check this background running tasks later.
 
-# Ansible Async Examples
+### Ansible Async Examples
 
 	tasks:
 	- name: ansible async poll
@@ -1790,7 +1790,7 @@ using ansible async module we can put the tasks in background which taking more 
 	async:
 Async indicates the Total time to complete the task or its maximum runtime of the task.
 
-# poll
+### poll
 poll indicates to Ansible, how often to poll to check if the command has been completed. or
 how frequently you would like to poll for status. with poll we keep checking whether the job is completed or not. The default poll value is 10 seconds
 
