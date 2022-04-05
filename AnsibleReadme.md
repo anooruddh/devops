@@ -1769,3 +1769,51 @@ Whenever you want to check your inventory, you can run:
 		ansible servers -a "uptime" -u root
 		ansible server1:server2 -m ping -u root
 	
+
+### Set the order of task execution in Ansible with these two keywords
+Extend Ansible's flexibility by adding pre_tasks and post_tasks to your playbooks.
+	
+	
+### Ansible Async POLL with Examples
+By default ansible will run tasks one after the other in sequentially. i,e Ansible executes the first task,after completion of the first task it will go for another task. In some situations task will take more time. If you take a example of apt-get update or yum update it will take more time compared to other tasks. so the playbook will take longer time to complete all the tasks.
+	
+# Ansible Async Poll or Ansible Asynchronous Tasks
+using ansible async module we can put the tasks in background which taking more time and we continue with other tasks. So we can execute other tasks without waiting for the long running task to complete. using ansible async mode we can run the tasks in parallaly and we can check this background running tasks later.
+
+# Ansible Async Examples
+
+	tasks:
+	- name: ansible async poll
+	command: /bin/sleep 50
+	async: 60
+	poll: 10
+	async:
+Async indicates the Total time to complete the task or its maximum runtime of the task.
+
+# poll
+poll indicates to Ansible, how often to poll to check if the command has been completed. or
+how frequently you would like to poll for status. with poll we keep checking whether the job is completed or not. The default poll value is 10 seconds
+
+poll: 5 This will poll the results every 5 seconds
+
+poll: 0 Fire and forget
+if you do not need to wait on the task to complete, you may run the task asynchronously by specifying a poll value of 0: In this mode ansible will connects to the client system, starts the process and disconnects. we don’t need to wait for completion task.
+	
+### Ansible async_status
+Ansible provides the option to get the task status in any time. Using ansible async_status we can get the status of async task at any time.
+
+		- name: install docker
+		yum:
+		name: docker-io
+		state: installed
+		async: 500
+		poll: 0
+		register: my_task
+
+		- name: get the task status using ansible async_status
+		async_status:
+		jid: "{{ my_task.ansible_job_id }}"
+		register: result
+		until: result.finished
+		retries: 30
+		retries how many attempts before failing.	
