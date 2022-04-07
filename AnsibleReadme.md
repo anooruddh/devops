@@ -1780,7 +1780,7 @@ By default ansible will run tasks one after the other in sequentially. i,e Ansib
 ### Ansible Async Poll or Ansible Asynchronous Tasks
 using ansible async module we can put the tasks in background which taking more time and we continue with other tasks. So we can execute other tasks without waiting for the long running task to complete. using ansible async mode we can run the tasks in parallaly and we can check this background running tasks later.
 	
-	By default Ansible runs tasks synchronously, holding the connection to the remote node open until the action is completed. This means within a playbook, each task blocks the next task by default, meaning subsequent tasks will not run until the current task completes. This behavior can create challenges. For example, a task may take longer to complete than the SSH session allows for, causing a timeout. Or you may want a long-running process to execute in the background while you perform other tasks concurrently. Asynchronous mode lets you control how long-running tasks execute.
+By default Ansible runs tasks synchronously, holding the connection to the remote node open until the action is completed. This means within a playbook, each task blocks the next task by default, meaning subsequent tasks will not run until the current task completes. This behavior can create challenges. For example, a task may take longer to complete than the SSH session allows for, causing a timeout. Or you may want a long-running process to execute in the background while you perform other tasks concurrently. Asynchronous mode lets you control how long-running tasks execute.
 
 ### Ansible Async Examples
 
@@ -1792,7 +1792,7 @@ using ansible async module we can put the tasks in background which taking more 
 	async:
 Async indicates the Total time to complete the task or its maximum runtime of the task.
 	
-	If you want to run multiple tasks in a playbook concurrently, use async with poll set to 0. When you set poll: 0, Ansible starts the task and immediately moves on to the next task without waiting for a result. Each async task runs until it either completes, fails or times out (runs longer than its async value). The playbook run ends without checking back on async tasks.
+If you want to run multiple tasks in a playbook concurrently, use async with poll set to 0. When you set poll: 0, Ansible starts the task and immediately moves on to the next task without waiting for a result. Each async task runs until it either completes, fails or times out (runs longer than its async value). The playbook run ends without checking back on async tasks.
 
 ### poll
 poll indicates to Ansible, how often to poll to check if the command has been completed. or
