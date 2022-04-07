@@ -1827,3 +1827,14 @@ Ansible provides the option to get the task status in any time. Using ansible as
 The --start-at-task option allows you to start the execution of a playbook from a specific task. It takes an argument about the name of the task at which to start. You can see the below command.
 	
 		$ ansible-playbook play.yml --start-at-task="Task Name"
+
+# Order of Hosts in playbook execution
+Possible values of order are:
+
+	inventory: The default. The order is ‘as provided’ by the inventory
+	reverse_inventory: As the name implies, this reverses the order ‘as provided’ by the inventory
+	sorted: Hosts are alphabetically sorted by name
+	reverse_sorted: Hosts are sorted by name in reverse alphabetical order
+	shuffle: Hosts are randomly ordered each run
+
+	
