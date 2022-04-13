@@ -1786,10 +1786,10 @@ By default Ansible runs tasks synchronously, holding the connection to the remot
 
 	tasks:
 	- name: ansible async poll
-	command: /bin/sleep 50
-	async: 60
-	poll: 10
-	async:
+	  command: /bin/sleep 50
+		async: 60
+		poll: 10
+		async:
 Async indicates the Total time to complete the task or its maximum runtime of the task.
 	
 If you want to run multiple tasks in a playbook concurrently, use async with poll set to 0. When you set poll: 0, Ansible starts the task and immediately moves on to the next task without waiting for a result. Each async task runs until it either completes, fails or times out (runs longer than its async value). The playbook run ends without checking back on async tasks.
@@ -1808,19 +1808,19 @@ Ansible provides the option to get the task status in any time. Using ansible as
 
 		- name: install docker
 		yum:
-		name: docker-io
-		state: installed
-		async: 500
-		poll: 0
-		register: my_task
+			name: docker-io
+			state: installed
+			async: 500
+			poll: 0
+			register: my_task
 
 		- name: get the task status using ansible async_status
 		async_status:
-		jid: "{{ my_task.ansible_job_id }}"
-		register: result
-		until: result.finished
-		retries: 30
-		retries how many attempts before failing.	
+			jid: "{{ my_task.ansible_job_id }}"
+			register: result
+			until: result.finished
+			retries: 30
+			retries how many attempts before failing.	
 
 # --start-at-task	
 	
