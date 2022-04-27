@@ -1838,3 +1838,29 @@ Possible values of order are:
 	shuffle: Hosts are randomly ordered each run
 
 	
+# TASK INCLUDE
+
+## IMPORT TASK/import_tasks	 - 		
+	Include statements are processed as they are encountered during the execution of the playbook   (other words, import is a static operation)
+
+---
+- name: import a task
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: import a task
+      import_tasks: subtask.yaml
+	  
+## INCLUDE TASK/include_tasks	 -
+	Import statements are pre-processed at the time playbooks are parsed.		(include is a dynamic operation.)
+
+---
+- name: include a task
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: include a task
+      include_tasks: subtask.yaml
+
+*IMPORTANT* - ERROR! You cannot use loops on 'import_tasks' statements. You should use 'include_tasks' instead.	  
+note - since import_task can not be pre-processed due to the loop iterations are inside the main playbook and actual tasks are in the attached file.
