@@ -1864,3 +1864,14 @@ Possible values of order are:
 
 *IMPORTANT* - ERROR! You cannot use loops on 'import_tasks' statements. You should use 'include_tasks' instead.	  
 note - since import_task can not be pre-processed due to the loop iterations are inside the main playbook and actual tasks are in the attached file.
+
+# Host Key Checking	
+
+If you understand the implications and wish to disable this behavior, you can do so by editing /etc/ansible/ansible.cfg or ~/.ansible.cfg:
+	[defaults]
+	host_key_checking = False
+	OR
+	export ANSIBLE_HOST_KEY_CHECKING=False
+	OR
+	ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+	
