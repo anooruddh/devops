@@ -1798,9 +1798,9 @@ If you want to run multiple tasks in a playbook concurrently, use async with pol
 poll indicates to Ansible, how often to poll to check if the command has been completed. or
 how frequently you would like to poll for status. with poll we keep checking whether the job is completed or not. The default poll value is 10 seconds
 
-poll: 5 This will poll the results every 5 seconds
+## poll: 5 This will poll the results every 5 seconds
 
-poll: 0 Fire and forget
+## poll: 0 Fire and forget
 if you do not need to wait on the task to complete, you may run the task asynchronously by specifying a poll value of 0: In this mode ansible will connects to the client system, starts the process and disconnects. we don’t need to wait for completion task.
 	
 ### Ansible async_status
