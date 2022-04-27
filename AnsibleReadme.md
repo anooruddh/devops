@@ -1867,7 +1867,7 @@ note - since import_task can not be pre-processed due to the loop iterations are
 
 # Host Key Checking	
 
-If you understand the implications and wish to disable this behavior, you can do so by editing /etc/ansible/ansible.cfg or ~/.ansible.cfg:
+If you understand the implications and wish to disable this behaWhat is Ansible Block?vior, you can do so by editing /etc/ansible/ansible.cfg or ~/.ansible.cfg:
 	
 	[defaults]
 	
@@ -1881,3 +1881,57 @@ If you understand the implications and wish to disable this behavior, you can do
 	
 	ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 	
+# What is Ansible Block?
+
+Ansible block is a feature that makes the grouping of tasks possible, which can be treated in the same way as a task is treated by the Ansible system. That means like the way we can set data or derivatives or any other feature parameter for a task, in a similar way we can do with Ansible block. Adding to this, we have parameters that are making error handling possible. Below are the keywords which are used in Ansible blocks: –
+
+*Block*: Under this parameter, we define the tasks and other task-related parameters. All the tasks under a block are treated as a group and accordingly, we can set feature parameters on this
+	
+*Rescue*: Under this parameter, we define all such tasks which need to be executed whenever the block section fails. This makes the playbook to continue to run and not halt at the failure of a But make note that, bad syntax or unreachable host are not rescuable.
+
+*Always*: Under this parameter, we defined all those tasks which will run despite the success or failure of the block.	
+	
+### Playbook without Block
+		[ansible@controller ~]$ vim ansible-blocks-1.yml
+		---
+		 - name: Ansible Blocks
+		   hosts: server1
+		   gather_facts: false
+
+		   tasks:
+		     - name: List usr directory content
+		       command: "ls -l /usr/"
+		       become: yes
+
+		     - name: List root partition content
+		       command: "ls -l /root/"
+		       become: yes
+
+		     - name: List ansible user's home directory content
+		       command: "ls -l ~/"
+
+		     - name: List bin diretcory content
+		       command: "ls -l /bin/"
+		       become: yes
+
+### Playbook with Block	
+	
+		---
+		 - name: Ansible Blocks
+		   hosts: server1
+		   gather_facts: false
+
+		   tasks:
+		     - block:
+			- name: List usr directory content
+			  command: "ls -l /usr/"
+
+			- name: List root partition content
+			  command: "ls -l /root/"
+
+			- name: List bin directory content
+			  command: "ls -l /bin/"
+		       become: yes
+
+		     - name: List ansible user's home directory content
+		       command: "ls -l ~/"
