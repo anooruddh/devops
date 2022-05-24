@@ -2906,3 +2906,44 @@ Finally, we should search for a keyword within a chart that can be present on an
 	helm search repo <KEYWORD>
 	
 There are sub-commands available for this command that allows us to search different locations for charts. For instance, we can search for charts in the Artifact Hub or our own repositories. Further, we can search for a keyword in the charts available in all the repositories we've configured.
+
+# Kubernetes Custom Resource Definition (CRDs)
+	
+CRD concepts in K8S
+To begin to understand what CRD is, we must go over a couple of concepts in Kubernetes:
+
+	A resource is an endpoint in k8s API that allow you to store an API object of any kind.
+	A custom resource allows you to create your own API objects and define your own kind just like Pod, Deployment, ReplicaSet, etc.	
+
+Custom Resource allows you to extend Kubernetes capabilities by adding any kind of API object useful for your application. Custom Resource Definition is what you use to define a Custom Resource. This is a powerful way to extend Kubernetes capabilities beyond the default installation.
+
+# How to create a CRD
+The manifest below shows an example CRD crd.yaml
+	
+		apiVersion: apiextensions.k8s.io/v1beta1
+		kind: CustomResourceDefinition
+		metadata:
+		name: appconfigs.stable.example.com
+		spec:
+		group: stable.example.com
+		versions:
+		- name: v1
+		served: true
+		storage: true
+		scope: Namespaced
+		names:
+		plural: appconfigs
+		singular: appconfig
+		kind: AppConfig
+		shortNames:
+		- ac	
+
+# CRDs expand Kubernetes
+CRD is a way to extend kubernetes allowing us to create a custom resource of our choice and making it declarative with the help of a custom controller.	
+
+# What Are CRDs?
+In Kubernetes, a resource is essentially a collection of similar objects, accessible via the Kubernetes API. Kubernetes comes with several resources by default which you are likely familiar with, including Pods, Deployments, ReplicaSets, etc. CRDs are Kubernetes’ way of allowing you to extend the Kubernetes API to store and access your own API objects. This means you can work with them in the same way you would with its core resources	
+
+Creating custom resources in this way has some benefits. CRDs are stored in etcd alongside core resources and can take advantage of the same functionality, such as replication and lifecycle management. This can save a lot of effort in that you don’t have to build it yourself, and you can instead rely on a well-known, stable foundation.
+
+Their primary purpose is to provide a mechanism for creating, storing, and exposing Kubernetes API objects containing data that you have deemed useful. 	
