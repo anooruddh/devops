@@ -2966,3 +2966,19 @@ Monitor: a Service Mesh enables the visibility of your microservices system. Ser
 - Load balancing is limited.	
 
 # Pod disruption budget	
+
+A typical pdb looks like
+
+	apiVersion: policy/v1
+	kind: PodDisruptionBudget
+	metadata:
+	  name: pdb
+	spec:
+	  minAvailable: 1
+	  selector:
+	    matchLabels:
+	      app: nginx
+If we take a closer look at this sample, we will notice
+
+It selects other resources based on labels
+It demands that there needs to be at least one pod running.
