@@ -2980,5 +2980,6 @@ A typical pdb looks like
 	      app: nginx
 If we take a closer look at this sample, we will notice
 
-It selects other resources based on labels
-It demands that there needs to be at least one pod running.
+- It selects other resources based on labels
+
+- It demands that there needs to be at least one pod running.
