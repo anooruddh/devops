@@ -2949,6 +2949,7 @@ Creating custom resources in this way has some benefits. CRDs are stored in etcd
 Their primary purpose is to provide a mechanism for creating, storing, and exposing Kubernetes API objects containing data that you have deemed useful. 	
 
 # What is Service Mesh?
+Service Mesh manages communication between microservices.
 A service mesh is a layer for a microservices application that you can configure. The mesh provides microservice discovery, load balancing, encryption, authentication, and authorization that are flexible, reliable, and fast.	
 
 With a Service Mesh, you can split the business logic of the application from observability and network and security policies. The Service Mesh will enable you to connect, secure, and monitor your microservices.
@@ -2959,6 +2960,21 @@ Secure: a Service Mesh offers you reliable communication between services. You c
 
 Monitor: a Service Mesh enables the visibility of your microservices system. Service Mesh can integrate with out-of-the-box monitoring tools such as Prometheus and Jaeger.	
 
+# Service Mesh Options for Kubernetes:
+- Consul Connect
+- Istio
+- Linkerd
+
+# Service Mesh Common Capabilities
+	
+	* API (Kubernetes Custom Resource Definitions (CRD), programmable interface)
+	* Communication resiliency (circuit-breaking, retries, rate limiting, timeouts)
+	* Load balancing (consistent hashing, least request, zone/latency aware)
+	* Observability (alerting, Layer 7 metrics, tracing)
+	* Routing control (traffic mirroring, traffic shifting)
+	* Security (authorization policies, end-to-end mutual TLS encryption, service level and method level access control)
+	* Service discovery (distributed cache)
+ 
 # Problems occur if you do not use Service Mesh
 
 - There is no security between services.
