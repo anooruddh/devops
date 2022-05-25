@@ -2999,3 +2999,6 @@ If we take a closer look at this sample, we will notice
 - It selects other resources based on labels
 
 - It demands that there needs to be at least one pod running.
+
+	
+# A DaemonSet container has to service all targeted containers in a cluster node, whereas a Sidecar container can only service focus on containers in its pod.	
