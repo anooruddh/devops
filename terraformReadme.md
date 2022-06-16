@@ -156,3 +156,109 @@ Repeat step 3 and add your AWS_ACCESS_KEY_ID and click the Add secret button.
 https://aninditabasak.medium.com/managing-ci-cd-on-terraform-with-github-actions-workflows-abf0bdeb4877https://aninditabasak.medium.com/managing-ci-cd-on-terraform-with-github-actions-workflows-abf0bdeb4877
 
 https://faun.pub/what-is-terraform-cloud-and-why-you-might-need-it-c9847fb8f6e6
+
+
+# WORKSPACES
+In Terraform CLI, workspaces are separate instances of state data that can be used from the same working directory. You can use workspaces to manage multiple non-overlapping groups of resources with the same configuration. Every initialized working directory has at least one workspace.
+
+## What is Terraform Workspace?
+If we use the local backend for storing Terraform state, Terraform creates a file called terraform.tfstate to store the state of the applied configuration. However, in scenarios where you want to use the same configuration for different contexts, separate states might be necessary with same configuration.
+
+Workspaces allows you to separate your state and infrastructure without changing anything in your code when you wanted the same exact code base to deploy to multiple environments without overlap. i.e. Workspaces help to create multiple state files for set of same terraform configuration file
+
+## Key Points
+
+With Workspaces, we can set deploy different environment with same terraform configuration files.
+
+To manage multiple distinct sets of infrastructure resources (e.g. multiple environments), we can use Workspaces.
+
+Workspaces isolate Terraform state. It is a best practice to have separate state per environment. Workspaces are technically equivalent to renaming your state file.
+
+Workspaces ensure that the environments are isolated and mirrored.
+
+Workspaces are the successor to old Terraform Environments.
+
+Each of environments required separate state files to avoid collision. With the use of workspaces, you can prepend the workspace name to the path of the state file, ensuring each workspace (environment) had its own state.
+
+## Commands:
+  new, list, show, select and delete Terraform workspaces.
+
+## Subcommands:
+		delete    Delete a workspace
+		list      List Workspaces
+		new       Create a new workspace
+		select    Select a workspace
+		show      Show the name of the current workspace
+
+examples:
+		terraform workspace new Production
+		terraform workspace select Production
+		# Create deployment plan
+		terraform plan -out prod.tfplan
+		# Apply the deployment
+		terraform apply "prod.tfplan"
+
+Usage: Within your Terraform configuration, you may include the name of the current workspace using the ${terraform.workspace} interpolation sequence. This can be used anywhere where interpolations are allowed.
+		resource "aws_s3_bucket" "bucket" {
+		bucket = "${var.bucket-name}-${terraform.workspace}"
+		acl    = "private"
+		}
+		
+## Default Workspace: 
+If you don’t declare a workspace, Terraform uses a default workspace named default and it cannot ever be deleted. If you don’t specify workspace explicitly, it means you use default workspace.		
+
+## Current Workspace Interpolation
+Within your Terraform configuration, you may include the name of the current workspace using the ${terraform.workspace} interpolation sequence. This can be used anywhere interpolations are allowed.
+
+## Advantages of workspace
+
+- mantain different stages for different workspaces
+- store these state  files in backend like azure,aws etc (A number of remote backends are supported, including Amazon S3, Azure Storage, Google Cloud Storage etc.)Remote backends solve many issues like Manual Error, Locking, Secrets etc.
+- enable versioning on these state files
+- shared by multiple members
+- locking is possible
+
+## Use of workspace Configuration
+
+		provider "aws" {
+		   region     = "eu-central-1"
+		   access_key = "AKIATspmbXB2EPCJFO4Y"
+		   secret_key = "AH9Hw//EfW6OJM8EFrWllkKdlgovpihIvYpu9TTxr"
+
+		}
+
+		locals {
+		  instance_name = "${terraform.workspace}-instance" 
+		}
+
+		resource "aws_instance" "ec2_example" {
+
+		    ami = "ami-0767046d1677be5a0" 
+
+		    instance_type = var.instance_type
+
+		    tags = {
+		      Name = local.instance_name
+		    }
+		}
+
+## When to use multiple terraform workspaces?
+
+1.When you feel that you need a parallel, distinct copy of your infrastructure which you can test and verify in the development, test, and staging environment before putting it into the production environment.
+
+2.If you have your infrastructure where each deployment requires you to put different setup credentials then you should not use Terraform workspaces for that.
+
+# Terraform Environment Variables
+
+ARM environment variable
+
+	 ARM_ENDPOINT 
+	 ARM_SUBSCRIPTION_ID 
+	 ARM_TENANT_ID 
+	 ARM_ACCESS_KEY 
+	 ARM_CLIENT_ID 
+	 ARM_CLIENT_SECRET 
+	 
+	 AWS_ACCESS_KEY_ID
+	 AWS_SECRET_ACCESS_KEY
+	 AWS_SHARED_CREDENTIALS_FILE
