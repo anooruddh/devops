@@ -227,13 +227,13 @@ Within your Terraform configuration, you may include the name of the current wor
 ## Advantages of workspace
 
 - mantain different stages for different workspaces
-- 
+
 - store these state  files in backend like azure,aws etc (A number of remote backends are supported, including Amazon S3, Azure Storage, Google Cloud Storage etc.)Remote backends solve many issues like Manual Error, Locking, Secrets etc.
 
 - enable versioning on these state files
-- 
+
 - shared by multiple members
-- 
+
 - locking is possible
 
 ## Use of workspace Configuration
