@@ -280,3 +280,23 @@ ARM environment variable
 	 AWS_ACCESS_KEY_ID
 	 AWS_SECRET_ACCESS_KEY
 	 AWS_SHARED_CREDENTIALS_FILE
+
+# What is a Backend
+
+The primary function of a backend is to store the state created by Terraform runs after provisioning our resources. This gives Terraform a single place to look up what the expectation of our resources is from the last time we applied
+
+# Backend Types
+
+Local — where the state file is stored on the local filesystem.
+
+Remote — where the state file is stored in some remote filesystem or database.
+
+		terraform {
+		  backend "azurerm" {
+		    resource_group_name  = "rg-aus-prd-mom-state"
+		    storage_account_name = "saausprdmomstate"
+		    container_name       = "dev"
+		    key                  = "mysteries-kubernetes.terraform.tfstate"
+		  }
+		}
+
