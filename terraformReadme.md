@@ -162,6 +162,7 @@ https://faun.pub/what-is-terraform-cloud-and-why-you-might-need-it-c9847fb8f6e6
 In Terraform CLI, workspaces are separate instances of state data that can be used from the same working directory. You can use workspaces to manage multiple non-overlapping groups of resources with the same configuration. Every initialized working directory has at least one workspace.
 
 ## What is Terraform Workspace?
+
 If we use the local backend for storing Terraform state, Terraform creates a file called terraform.tfstate to store the state of the applied configuration. However, in scenarios where you want to use the same configuration for different contexts, separate states might be necessary with same configuration.
 
 Workspaces allows you to separate your state and infrastructure without changing anything in your code when you wanted the same exact code base to deploy to multiple environments without overlap. i.e. Workspaces help to create multiple state files for set of same terraform configuration file
@@ -181,24 +182,37 @@ Workspaces are the successor to old Terraform Environments.
 Each of environments required separate state files to avoid collision. With the use of workspaces, you can prepend the workspace name to the path of the state file, ensuring each workspace (environment) had its own state.
 
 ## Commands:
+
   new, list, show, select and delete Terraform workspaces.
 
 ## Subcommands:
 		delete    Delete a workspace
+		
 		list      List Workspaces
+		
 		new       Create a new workspace
+		
 		select    Select a workspace
+		
 		show      Show the name of the current workspace
 
 examples:
+
 		terraform workspace new Production
+		
 		terraform workspace select Production
+		
 		# Create deployment plan
+		
 		terraform plan -out prod.tfplan
+		
 		# Apply the deployment
+		
 		terraform apply "prod.tfplan"
 
-Usage: Within your Terraform configuration, you may include the name of the current workspace using the ${terraform.workspace} interpolation sequence. This can be used anywhere where interpolations are allowed.
+Usage: 
+Within your Terraform configuration, you may include the name of the current workspace using the ${terraform.workspace} interpolation sequence. This can be used anywhere where interpolations are allowed.
+
 		resource "aws_s3_bucket" "bucket" {
 		bucket = "${var.bucket-name}-${terraform.workspace}"
 		acl    = "private"
@@ -213,9 +227,13 @@ Within your Terraform configuration, you may include the name of the current wor
 ## Advantages of workspace
 
 - mantain different stages for different workspaces
+- 
 - store these state  files in backend like azure,aws etc (A number of remote backends are supported, including Amazon S3, Azure Storage, Google Cloud Storage etc.)Remote backends solve many issues like Manual Error, Locking, Secrets etc.
+
 - enable versioning on these state files
+- 
 - shared by multiple members
+- 
 - locking is possible
 
 ## Use of workspace Configuration
