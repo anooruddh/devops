@@ -310,5 +310,19 @@ drops the cache time to 5 minutes):
 
            	$ git config credential.helper 'cache --timeout=300'
 
+# Azure Statefile Locking & Manage Versioning
 
+Azurerm as the backend. It Stores the state as a Blob with the given Key within the Blob Container within the Azure Blob Storage Account. This backend also supports state locking and consistency checking via native capabilities of Azure Blob Storage.
+
+Different authentication mechanisms can be used to connect Azure Storage Container to the terraform backend — Azure CLI or Service Principal, Managed Service Identity, Storage Account Access Key, Storage Account associated SAS Token.
+
+## State Locking
+State locking is used to control write-operations on the state and to ensure that only one process modifies the state at one point in time. Not all State Backends support state locking. Luckily it’s supported for Azure Blob Storage by using the previously referenced Azure Blob Storage Lease mechanism. State locking is applied automatically by Terraform.
+
+## Manage versions with snapshots
+Blob storage service has the ability to create snapshots of the blobs that can be used for tracking changes done on a blob over different periods of time. Snapshots provide an automatic and free versioning mechanism. Using snapshots, you can rollback any changes done on a blob to a specific point in time or even to the original blob. Using this feature you can manage the version of your state file.
+
+terraform state pull
+terraform state push
+State Locking
 
