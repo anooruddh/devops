@@ -561,9 +561,9 @@ base=https://github.com/docker/machine/releases/download/v0.14.0 &&
 	
 ### RUN. Mainly used to build images and install applications and packages. Builds a new layer over an existing image by committing the results.
 	
-### CMD. Sets default parameters that can be overridden from the Docker Command Line Interface (CLI) when a container is running.
+### CMD. CMD defines default commands and/or parameters for a container. CMD is an instruction that is best to use if you need a default command which users can easily override. If a Dockerfile has multiple CMDs, it only applies the instructions from the last one.
 	
-### ENTRYPOINT. Default parameters that cannot be overridden when Docker Containers run with CLI parameters.
+### ENTRYPOINT. Default parameters that cannot be overridden when Docker Containers run with CLI parameters.ENTRYPOINT is preferred when you want to define a container with a specific executable
 
 # Docker CMD - An essential feature of a CMD command is its ability to be overridden. This allows users to execute commands through the CLI to override CMD instructions within a Dockerfile.
 	
@@ -612,7 +612,34 @@ ENTRYPOINT instructions are suitable for both single-purpose and multi-mode imag
 
 One of its popular use-cases is building wrapper containers-images that encapsulate legacy programs for containerization, which leverages an ENTRYPOINT instruction to ensure the program will always run.	
 	
+
+Combine ENTRYPOINT with CMD if you need a container with a specified executable and a default parameter that can be modified easily. For example, when containerizing an application use ENTRYPOINT and CMD to set environment-specific variables.	
+
+# How to Override Entrypoint Using Docker Run	(--entrypoint flag)
+
+		FROM ubuntu
+		MAINTAINER sofija
+		RUN apt-get update
+		ENTRYPOINT [“echo”, “Hello”]
+		CMD [“World”]		
 	
+		$ docker run container_name
+		OUTPUT
+		Hello World
+	
+		OVERRIDE CMD
+	
+		$ docker run container_name ANOORUDDH
+		OUTPUT
+		Hello ANOORUDDH
+		
+		OVERRIDE ENTRYPOINT
+		docker run --entrypoint [new_command] [docker_image] [optional:value]
+		sudo docker run -it --entrypoint /bin/bash [docker_image]
+		OUTPUT
+		Instead of showing you Hello World, You will be see that you are inside docker container 	
+
+Don’t forget that this is only temporary. Once you exit out of the container and run it again using the standard docker run command, it executes the default ENTRYPOINT instruction.	
 	
   ======================================================================
   
