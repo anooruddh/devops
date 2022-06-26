@@ -330,30 +330,49 @@ docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
 	Dockerfile Commands
 
     ADD – Defines files to copy from the Host file system onto the Container
-        ADD ./local/config.file /etc/service/config.file
+		
+        	ADD ./local/config.file /etc/service/config.file
+
     CMD – This is the command that will run when the Container starts
-        CMD ["nginx", "-g", "daemon off;"]
+		
+        	CMD ["nginx", "-g", "daemon off;"]
+		
     ENTRYPOINT – Sets the default application used every time a Container is created from the Image. If used in conjunction with CMD, you can remove the application and just define the arguments there
-        CMD Hello World!
-        ENTRYPOINT echo
+		
+		CMD Hello World!
+		ENTRYPOINT echo
+		
     ENV – Set/modify the environment variables within Containers created from the Image.
-        ENV VERSION 1.0
+		
+        	ENV VERSION 1.0
+		
     EXPOSE – Define which Container ports to expose
-        EXPOSE 80
+		
+        	EXPOSE 80
     FROM – Select the base image to build the new image on top of
-        FROM ubuntu:latest
+		
+        	FROM ubuntu:latest
+		
     MAINTAINER – Optional field to let you identify yourself as the maintainer of this image
-        MAINTAINER Some One "someone@xyz.xyz"
+		
+        	MAINTAINER Some One "someone@xyz.xyz"
+		
     RUN – Specify commands to make changes to your Image and subsequently the Containers started from this Image. This includes updating packages, installing software, adding users, creating an initial database, setting up certificates, etc. These are the commands you would run at the command line to install and configure your application
-        RUN apt-get update && apt-get upgrade -y && apt-get install -y nginx && rm -rf /var/lib/apt/lists/*
+		
+        	RUN apt-get update && apt-get upgrade -y && apt-get install -y nginx && rm -rf /var/lib/apt/lists/*
+		
     USER – Define the default User all commands will be run as within any Container created from your Image. It can be either a UID or username
-        USER docker
+		
+        	USER docker
+		
     VOLUME – Creates a mount point within the Container linking it back to file systems accessible by the Docker Host. New Volumes get populated with the pre-existing contents of the specified location in the image. It is specially relevant to mention is that defining Volumes in a Dockerfile can lead to issues. Volumes should be managed with docker-compose or “docker run” commands.
-        VOLUME /var/log
+		
+        	VOLUME /var/log
+		
     WORKDIR – Define the default working directory for the command defined in the “ENTRYPOINT” or “CMD” instructions
 	
 	
-	docker-compose -f docker-compose.json up
+		docker-compose -f docker-compose.json up
 	
 ==============================================================================================================================
 [root@ip-172-31-24-94 ag1]# docker build -t sendtoanoo/web1:v1 .
@@ -537,6 +556,64 @@ base=https://github.com/docker/machine/releases/download/v0.14.0 &&
   curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
   sudo install /tmp/docker-machine /usr/local/bin/docker-machine
   
+	
+# RUN vs CMD vs ENTRYPOINT	
+	
+### RUN. Mainly used to build images and install applications and packages. Builds a new layer over an existing image by committing the results.
+	
+### CMD. Sets default parameters that can be overridden from the Docker Command Line Interface (CLI) when a container is running.
+	
+### ENTRYPOINT. Default parameters that cannot be overridden when Docker Containers run with CLI parameters.
+
+# Docker CMD - An essential feature of a CMD command is its ability to be overridden. This allows users to execute commands through the CLI to override CMD instructions within a Dockerfile.
+	
+		FROM centos:7
+		RUN    apt-get update
+		RUN     apt-get -y install python
+		COPY ./opt/source code
+		CMD ["echo", "Hello, Darwin"]		
+	
+		$ docker build -t Darwin .
+	
+		$ docker run Darwin
+		OUTPUT
+	 	Hello, Darwin
+	
+		$ docker run Darwin hostname
+		OUTPUT
+		6e14beead430		(As a CMD default command gets overridden, the above command will run the container and display the hostname, thereby ignoring the echo instruction in the Dockerfile)
+
+# When to use CMD
+	
+The best way to use a CMD instruction is by specifying default programs that should run when users do not input arguments in the command line.
+
+This instruction ensures the container is in a running state by starting an application as soon as the container image is run. By doing so, the CMD argument loads the base image as soon as the container starts.
+
+Additionally, in specific use-cases, a docker run command can be executed through a CLI to override instructions specified within the Dockerfile.	
+
+# Docker ENTRYPOINT
+	
+In Dockerfiles, an ENTRYPOINT instruction is used to set executables that will always run when the container is initiated. Unlike CMD commands, ENTRYPOINT commands cannot be ignored or overridden—even when the container runs with command line arguments stated.
+	
+		FROM centos:7
+		RUN    apt-get update
+		RUN     apt-get -y install python
+		COPY ./opt/source code
+		ENTRYPOINT ["echo", "Hello, Darwin"]
+	
+		$ docker build -t Darwin .
+		$ docker run Darwin hostname
+		OUTPUT
+		Hello, Darwin 6e14beead430	(will execute the ENTRYPOINT, echoing Hello, Darwin then displaying the hostname to return the output)
+
+# When to use ENTRYPOINT
+	
+ENTRYPOINT instructions are suitable for both single-purpose and multi-mode images where there is a need for a specific command to always run when the container starts.
+
+One of its popular use-cases is building wrapper containers-images that encapsulate legacy programs for containerization, which leverages an ENTRYPOINT instruction to ensure the program will always run.	
+	
+	
+	
   ======================================================================
   
   docker commands
@@ -652,7 +729,7 @@ Other companies host paid online Docker registries for public use. Cloud provide
 
 	
 	
-	-------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	Here is the docker-compose.yml that powers the whole setup.
 
@@ -704,7 +781,7 @@ You could say that CMD is a Docker run-time operation, meaning it’s not someth
 
 For example, if you were creating a Dockerfile for your own web application, a reasonable CMD to have would be to start your web application’s app server.
 
---------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 A Dockerfile is a simple text file that contains the commands a user could call to assemble an image.
 
 Example, Dockerfile
@@ -719,7 +796,7 @@ Example, Dockerfile
 	ADD hello.py /home/hello.py
 
 	WORKDIR /home
---------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Docker Compose
 
     is a tool for defining and running multi-container Docker applications.
@@ -746,7 +823,7 @@ Example, docker-compose.yml
 	volumes:
 	  logvolume01: {}	
 
-===============
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Difference between COPY and ADD
 
@@ -790,7 +867,7 @@ If you’re copying in local files to your Docker image, always use COPY because
 		v1: digest: sha256:88197b5f77af1bb3f44dae15746fa49871f8c48bb3402bb7ebc9ead12e0f4dfe size: 1150
 		[root@ansible docker_java]#
 
-===========================================
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 		docker volume create --name jenkins_data
 		docker run --name jenkins -d -v jenkins_data:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins:latest
@@ -823,7 +900,7 @@ If you’re copying in local files to your Docker image, always use COPY because
 		/
 
 
-=================================
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Getting started with IBM Cloud Container Registry
 
@@ -884,7 +961,7 @@ Verify that the image was pushed successfully by running the following command.
 
 	ibmcloud cr image-list
 
-===============================
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	docker push <login server>/<repository name>/aci-helloworld:v1
 
@@ -898,7 +975,7 @@ Verify that the image was pushed successfully by running the following command.
 	v1: digest: sha256:565dba8ce20ca1a311c2d9485089d7ddc935dd50140510050345a1b0ea4ffa6e size: 1576
 
 
-======================
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Initialize a swarm with autolocking enabled
 
@@ -942,7 +1019,7 @@ command and provide the following key:
 Please remember to store this key in a password manager, since without it you
 will not be able to restart the manager.
 
-============================================================================
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Before you can store your Docker images in IBM® Cloud Container Registry, you must install the IBM Cloud CLI and the container-registry plug-in, and then set up a registry namespace to create your own image repository in IBM Cloud Container Registry.
 
 ibmcloud login
@@ -966,7 +1043,7 @@ We can also turn it off by
   cf disable-feature-flag diego_docker
 
 
----------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 1. Push an image to IBM Cloud Container Registry
 
@@ -1002,7 +1079,7 @@ To push an image:
 
 You are now ready to use Kubernetes to deploy the hello-world application.
 
------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Remove java 7
 	sudo yum remove -y java
 
@@ -1049,7 +1126,7 @@ Sample Dockerfile
 		EXPOSE 3000
 		COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 		COPY --from=build /app/build /usr/share/nginx/html
---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 		FROM golang:latest as builder
 		RUN mkdir -p /go/src/github.com/ruanbekker
@@ -1081,7 +1158,7 @@ The second stage starts by pulling the official Nginx image from Docker Hub. It 
 	COPY --from=maven /usr/src/mymaven/target/java-tomcat-maven-example.war .
 	RUN rm -rf ROOT && mv java-tomcat-maven-example.war ROOT.war	
 
--------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### How to Use docker-compose Environment Variables
 	
 	Specify environment variables in dockerfile
