@@ -3038,7 +3038,7 @@ It’s also possible for applications to take up more resources than they should
 
 ## Resources Types
 	
-Kubernetes has only two built-in manageable resources: CPU and memory. CPU base units are cores, and memory is specified in bytes. These two resources play a critical role in how the scheduler allocates pods to nodes. Memory and CPU can be requested, allocated, and consumed. You should always set the right CPU memory values. You will be in control of your cluster and make sure that a misbehaving application does not impact the capacity available for other pods in your cluster.	
+Kubernetes has only two built-in manageable resources: **CPU** and **memory**. CPU base units are cores, and memory is specified in bytes. These two resources play a critical role in how the scheduler allocates pods to nodes. Memory and CPU can be requested, allocated, and consumed. You should always set the right CPU memory values. You will be in control of your cluster and make sure that a misbehaving application does not impact the capacity available for other pods in your cluster.	
 	
 ## Requests & Limits	
 	
