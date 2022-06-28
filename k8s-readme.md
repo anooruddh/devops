@@ -3061,7 +3061,9 @@ QoS class is assigned to pods by Kubernetes itself. DevOps can, however, control
 There are three QoS classes in Kubernetes:
 
 **Guaranteed**
+	
 **Burstable**
+	
 **BestEffort**
 	
 # Guaranteed
