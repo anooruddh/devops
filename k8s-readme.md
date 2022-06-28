@@ -3030,3 +3030,151 @@ If we take a closer look at this sample, we will notice
 
 	
 # A DaemonSet container has to service all targeted containers in a cluster node, whereas a Sidecar container can only service focus on containers in its pod.	
+
+# QoS - Quality of Service
+
+Quality of Service (QoS) class is a Kubernetes concept which determines the scheduling and eviction priority of pods. QoS class is used by the Kubernetes scheduler to make decisions about scheduling pods onto nodes.
+	
+QoS class is assigned to pods by Kubernetes itself. DevOps can, however, control the QoS class assigned to a pod by playing around with resource requests and limits for individual containers inside the pod.
+
+There are three QoS classes in Kubernetes:
+
+**Guaranteed**
+**Burstable**
+**BestEffort**
+	
+# Guaranteed
+
+## How Can I Assign a QoS class of Guaranteed to a Pod?
+	
+For a pod to be placed in the Guaranteed QoS class, every container in the pod must have a CPU and memory limit. Kubernetes will automatically assign CPU and memory request values (that are equal to the CPU and memory limit values) to the containers inside this pod and will assign it the Guaranteed QoS class.
+
+Pods with explicit and equal values for both CPU requests and limits and memory requests and limits are also placed in the Guaranteed QoS class.	
+
+## How does the Kubernetes Scheduler Handle Guaranteed Pods?
+
+The Kubernetes scheduler assigns Guaranteed pods only to nodes which have enough resources to fulfil their CPU and memory requests. The Scheduler does this by ensuring that the sum of both memory and CPU requests for all containers (running and newly scheduled) is lower than the total capacity of the node.	
+
+## Create a Pod that gets assigned a QoS class of Guaranteed
+For a Pod to be given a QoS class of Guaranteed:
+
+	Every Container in the Pod must have a memory limit and a memory request.
+	
+	For every Container in the Pod, the memory limit must equal the memory request.
+	
+	Every Container in the Pod must have a CPU limit and a CPU request.
+	
+	For every Container in the Pod, the CPU limit must equal the CPU request.
+	
+	These restrictions apply to init containers and app containers equally.
+
+Here is the configuration file for a Pod that has one Container. The Container has a memory limit and a memory request, both equal to 200 MiB. The Container has a CPU limit and a CPU request, both equal to 700 milliCPU:
+	
+		apiVersion: v1
+		kind: Pod
+		metadata:
+		  name: qos-demo
+		  namespace: qos-example
+		spec:
+		  containers:
+		  - name: qos-demo-ctr
+		    image: nginx
+		    resources:
+		      limits:
+			memory: "200Mi"
+			cpu: "700m"
+		      requests:
+			memory: "200Mi"
+			cpu: "700m"
+
+The output shows that Kubernetes gave the Pod a QoS class of Guaranteed.The output also verifies that the Pod Container has a memory request that matches its memory limit, and it has a CPU request that matches its CPU limit.
+	
+		spec:
+		  containers:
+		    ...
+		    resources:
+		      limits:
+			cpu: 700m
+			memory: 200Mi
+		      requests:
+			cpu: 700m
+			memory: 200Mi
+		    ...
+		status:
+		  qosClass: Guaranteed
+	
+# Burstable
+
+## Create a Pod that gets assigned a QoS class of Burstable
+	
+A Pod is given a QoS class of Burstable if:
+
+	The Pod does not meet the criteria for QoS class Guaranteed.
+	
+	At least one Container in the Pod has a memory or CPU request or limit.
+	
+	Here is the configuration file for a Pod that has one Container. The Container has a memory limit of 200 MiB and a memory request of 100 MiB.
+
+		apiVersion: v1
+		kind: Pod
+		metadata:
+		  name: qos-demo-2
+		  namespace: qos-example
+		spec:
+		  containers:
+		  - name: qos-demo-2-ctr
+		    image: nginx
+		    resources:
+		      limits:
+			memory: "200Mi"
+		      requests:
+			memory: "100Mi"
+	
+# How Can I assign a QoS class of Burstable to a Pod?
+	
+A pod is assigned a Burstable QoS class if at least one container in that pod has a memory or CPU request.	
+	
+The output shows that Kubernetes gave the Pod a QoS class of Burstable.
+	
+	
+		spec:
+		  containers:
+		  - image: nginx
+		    imagePullPolicy: Always
+		    name: qos-demo-2-ctr
+		    resources:
+		      limits:
+			memory: 200Mi
+		      requests:
+			memory: 100Mi
+		  ...
+		status:
+		  qosClass: Burstable	
+	
+#BestEffort	
+	
+## Create a Pod that gets assigned a QoS class of BestEffort	
+	
+For a Pod to be given a QoS class of BestEffort, the Containers in the Pod must not have any memory or CPU limits or requests.
+
+Here is the configuration file for a Pod that has one Container. The Container has no memory or CPU limits or requests:
+	
+		apiVersion: v1
+		kind: Pod
+		metadata:
+		  name: qos-demo-3
+		  namespace: qos-example
+		spec:
+		  containers:
+		  - name: qos-demo-3-ctr
+		    image: nginx	
+
+The output shows that Kubernetes gave the Pod a QoS class of BestEffort.
+	
+		spec:
+		  containers:
+		    ...
+		    resources: {}
+		  ...
+		status:
+		  qosClass: BestEffort	
