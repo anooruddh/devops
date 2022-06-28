@@ -3150,7 +3150,7 @@ The output shows that Kubernetes gave the Pod a QoS class of Burstable.
 		  ...
 		status:
 		  qosClass: Burstable	
-	
+
 #BestEffort	
 	
 ## Create a Pod that gets assigned a QoS class of BestEffort	
