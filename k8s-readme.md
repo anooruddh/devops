@@ -3267,8 +3267,11 @@ In very rare scenarios, Kubernetes might be forced to terminate Pods that are st
 # Pod conditions
 	
 **PodScheduled**: the Pod has been scheduled to a node;
+	
 **Ready**: the Pod is able to serve requests and should be added to the load balancing pools of all matching Services;
+	
 **Initialized**: all init containers have started successfully;
+	
 **ContainersReady**: all containers in the Pod are ready.
 
 	
