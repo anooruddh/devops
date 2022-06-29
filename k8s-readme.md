@@ -10,6 +10,7 @@ Docker is a containerization platform, and Kubernetes is a container orchestrato
 | Kubernetes can run on various platforms: from your laptop, to VMs on a cloud provider, to a rack of bare metal servers. For setting up a single node K8s cluster, one can use Minikube.      | To install a single-node Docker Swarm or Kubernetes cluster, one can deploy Docker for Mac & Docker for Windows.      |
 | Kubernetes support for Windows server is under beta phase. | Docker has official support for Windows 10 and Windows Server 2016 and 1709.     |
 | Kubernetes Client and Server packages need to be upgraded manually on all the systems. | It’s so easy to upgrade Docker Engine under Docker for Mac & Windows via just 1 click.|
+| **Pod** is the smallest unit of deployment in Kubernates      | **Container** is the smallest unit of deployment in Docker  |
 
 
 
@@ -1761,6 +1762,13 @@ The Kubernetes API now listens on local port 8080 and forwards data to port 5762
 		
 The port-forward command establishes a tunnel from the target pod to your localhost. The command requires you to define the type or name of the resource as well as local and remote port numbers
 
+		kubectl port-forward service/mongo 28015:27017
+
+Any of the above commands works. The output is similar to this:
+
+		Forwarding from 127.0.0.1:28015 -> 27017
+		Forwarding from [::1]:28015 -> 27017
+		
 # MY DEPLOYMENT
 
     $ cat deploy.yml 
