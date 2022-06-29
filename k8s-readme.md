@@ -3251,3 +3251,24 @@ Kubernetes looks for Pods that are using more resources than they requested. If 
 If Kubernetes finds multiple pods that have gone over their requests, it will then rank these by the Pod’s priority, and terminate the lowest priority pods first. If all the Pods have the same priority, Kubernetes terminates the Pod that’s the most over its request.
 
 In very rare scenarios, Kubernetes might be forced to terminate Pods that are still within their requests. This can happen when critical system components, like the kubelet or docker, start taking more resources than were reserved for them.
+
+### Here are the possible values for phase:
+	
+**Pending** -	The Pod has been accepted by the Kubernetes system, but one or more of the Container images has not been created. This includes time before being scheduled as well as time spent downloading images over the network, which could take a while.	
+	
+**Running** -	The Pod has been bound to a node, and all of the Containers have been created. At least one Container is still running, or is in the process of starting or restarting.	
+	
+**Succeeded** -	All Containers in the Pod have terminated in success, and will not be restarted.	
+	
+**Failed** -	All Containers in the Pod have terminated, and at least one Container has terminated in failure. That is, the Container either exited with non-zero status or was terminated by the system.
+	
+**Unknown** -	For some reason the state of the Pod could not be obtained, typically due to an error in communicating with the host of the Pod.
+	
+# Pod conditions
+	
+**PodScheduled**: the Pod has been scheduled to a node;
+**Ready**: the Pod is able to serve requests and should be added to the load balancing pools of all matching Services;
+**Initialized**: all init containers have started successfully;
+**ContainersReady**: all containers in the Pod are ready.
+
+	
