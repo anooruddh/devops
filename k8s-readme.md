@@ -1,3 +1,5 @@
+# Kubernetes - Kubernetes is Greek for pilot or helmsman (the person holding the ship’s steering wheel). 
+
 # Difference between Docker and Kubernetes
 
 Docker is a containerization platform, and Kubernetes is a container orchestrator for container platforms like Docker. 
@@ -1744,6 +1746,21 @@ If you want to just create some resource for troubleshooting, learning or intera
 
     --------------------------------------------------------------------------------------------------------------------------------------------------------------
     
+# Port-Forwarding
+
+### What Is Port Forwarding?
+
+Port forwarding redirects a single system’s IP address and port number to another system
+
+### Basic kubectl port-forward Commands
+
+		kubectl port-forward TYPE/NAME [options] LOCAL_PORT:REMOTE_PORT
+		kubectl port-forward pod/mongo-db-r3pl1ka3 8080:5762
+		
+The Kubernetes API now listens on local port 8080 and forwards data to port 5762 on the defined pod.		
+		
+The port-forward command establishes a tunnel from the target pod to your localhost. The command requires you to define the type or name of the resource as well as local and remote port numbers
+
 # MY DEPLOYMENT
 
     $ cat deploy.yml 
