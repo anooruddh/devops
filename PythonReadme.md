@@ -1,6 +1,8 @@
 ### What is Python?
 Python is a widely-used, interpreted, object-oriented, and high-level programming language with dynamic semantics, used for general-purpose programming. It was created by Guido van Rossum, and first released on February 20, 1991.
-  
+
+# Python is an interpreted language
+
 The Zen of Python, by Tim Peters
 
     Beautiful is better than ugly.
@@ -536,4 +538,11 @@ Next, create a superuser. We’ll come back to this later:
               python manage.py createsuperuser
               
 RESTful structure: GET, POST, PUT, and DELETE methods
+
 In a RESTful API, endpoints define the structure and usage with the GET, POST, PUT, and DELETE HTTP methods. You must organize these methods logically.
+
+# Difference between .py and .pyc files?
+
+Python compiles the .py files and saves it as .pyc files , so it can reference them in subsequent invocations. The .pyc contain the compiled bytecode of Python source files. The .pyc contain the compiled bytecode of Python source files, which is what the Python interpreter compiles the source to. This code is then executed by Python's virtual machine . There's no harm in deleting them (.pyc), but they will save compilation time if you're doing lots of processing.
+
+For example, When you run myprog.py source file, the python interpreter first looks to see if any 'myprog.pyc' (which is the byte-code compiled version of 'myprog.py') exists, and if it is more recent than 'myprog.py'. If so, the interpreter runs it. If it does not exist, or 'myprog.py' is more recent than it (meaning you have changed the source file), the interpreter first compiles 'myprog.py' to 'myprog.pyc'.
