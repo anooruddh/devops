@@ -449,3 +449,91 @@ Result with decorator
                   
               say_hi()
               OUTPUT - HELLO THERE
+
+# DJango
+
+### What is Django?
+
+Django is a free, open source, Python-based web framework that follows the Model-View-Template (MVT) architectural pattern. It reduces the hassle of web development so that you can focus on writing your app instead of reinventing the wheel.
+
+### What is a REST API?
+
+A REST API is a popular way for systems to expose useful functions and data. REST, which stands for representational state transfer, can be made up of one or more resources that can be accessed at a given URL and returned in various formats, like JSON, images, HTML, and more.
+
+### Why Django REST framework?
+
+Django REST framework (DRF) is a powerful and flexible toolkit for building Web APIs. Its main benefit is that it makes serialization much easier.
+
+Django REST framework is based on Django’s class-based views, so it’s an excellent option if you’re familiar with Django. It adopts implementations like class-based views, forms, model validator, QuerySet, and more.
+
+### Setting up Django REST framework
+
+Ideally, you’d want to create a virtual environment to isolate dependencies, however, this is optional. Run the command python -m venv django_env from inside your projects folder to create the virtual environment. Then, run source ./django_env/bin/activate to turn it on.
+
+Keep in mind that you’ll need to reactivate your virtual environment in every new terminal session. You’ll know that it is turned on because the environment’s name will become part of the shell prompt.
+
+Navigate to an empty folder in your terminal and install Django and Django REST framework in your project with the commands below:
+
+            pip install django
+            pip install django_rest_framework
+            
+Create a Django project called todo with the following command:
+
+            django-admin startproject todo
+            
+Then, cd into the new todo folder and create a new app for your API:
+
+            django-admin startapp todo_api
+            
+Run your initial migrations of the built-in user model:
+
+            python manage.py migrate
+
+Next, add rest_framework and todo to the INSTALLED_APPS inside the todo/todo/settings.py file:
+
+            # settings.py
+            INSTALLED_APPS = [
+                'django.contrib.admin',
+                'django.contrib.auth',
+                'django.contrib.contenttypes',
+                'django.contrib.sessions',
+                'django.contrib.messages',
+                'django.contrib.staticfiles',
+                'rest_framework',
+                'todo_api'
+            ]
+Create a serializers.py and urls.py file in todo/todo_api and add new files as configured in the directory structure below:
+
+                ├── todo
+                │   ├── __init__.py
+                │   ├── settings.py
+                │   ├── urls.py
+                ├── db.sqlite3
+                ├── manage.py
+                └── todo_api
+                    ├── admin.py
+                    ├── serializers.py
+                    ├── __init__.py
+                    ├── models.py
+                    ├── urls.py
+                    └── views.py
+                    
+Be sure to include rest_framework and URLs as shown below in your main urls.py file:
+
+              # todo/todo/urls.py : Main urls.py
+              from django.contrib import admin
+              from django.urls import path, include
+              from todo_api import urls as todo_urls
+
+              urlpatterns = [
+                  path('admin/', admin.site.urls),
+                  path('api-auth/', include('rest_framework.urls')),
+                  path('todos/', include(todo_urls)),
+              ]
+              
+Next, create a superuser. We’ll come back to this later:
+
+              python manage.py createsuperuser
+              
+RESTful structure: GET, POST, PUT, and DELETE methods
+In a RESTful API, endpoints define the structure and usage with the GET, POST, PUT, and DELETE HTTP methods. You must organize these methods logically.
