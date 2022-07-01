@@ -29,6 +29,12 @@ Open a terminal/command prompt, cd to the folder containing the get-pip.py file 
 
             python get-pip.py
 
+## Upgrading pip
+
+            python -m pip install --upgrade pip
+
+
+
 The Zen of Python, by Tim Peters
 
     Beautiful is better than ugly.
