@@ -589,5 +589,22 @@ For example, When you run myprog.py source file, the python interpreter first lo
 # What is Cython?
 
 A superset of Python that compiles to C, Cython combines the ease of Python and the speed of native code
+Cython source file names consist of the name of the module followed by a .pyx extension, for example a module called primes would have a source file named primes.pyx.
 
+Compilation Stage
 
+ - A .pyx file is compiled by Cython to a .c file.
+ - The .c file is compiled by a C compiler to a .so file (or a .pyd file on Windows)
+ 
+Compiling from the command line
+
+ - The cython command takes a .py or .pyx file and compiles it into a C/C++ file.
+ - The cythonize command takes a .py or .pyx file and compiles it into a C/C++ file. It then compiles the C/C++ file into an extension module which is directly importable from Python.
+ 
+Compiling with the cython command
+ 
+            cython primes.pyx
+
+cythonize command
+
+            cythonize -a -i yourmod.pyx
