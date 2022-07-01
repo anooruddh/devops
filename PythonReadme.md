@@ -3,6 +3,32 @@ Python is a widely-used, interpreted, object-oriented, and high-level programmin
 
 # Python is an interpreted language
 
+# The Virtual Machine is the runtime engine of Python and it is always present as part of the Python system, and is the component that truly runs the Python scripts
+
+# PIP installation
+
+## Supported Methods
+If your Python environment does not have pip installed, there are 2 mechanisms to install pip supported directly by pip’s maintainers:
+
+### ensurepip
+### get-pip.py
+
+### ensurepip
+
+Python comes with an ensurepip module1, which can install pip in a Python environment.
+            
+            python -m ensurepip --upgrade
+
+### get-pip.py
+
+This is a Python script that uses some bootstrapping logic to install pip.
+
+Download the script, from https://bootstrap.pypa.io/get-pip.py.
+
+Open a terminal/command prompt, cd to the folder containing the get-pip.py file and run:
+
+            python get-pip.py
+
 The Zen of Python, by Tim Peters
 
     Beautiful is better than ugly.
