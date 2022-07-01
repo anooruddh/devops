@@ -578,3 +578,16 @@ In a RESTful API, endpoints define the structure and usage with the GET, POST, P
 Python compiles the .py files and saves it as .pyc files , so it can reference them in subsequent invocations. The .pyc contain the compiled bytecode of Python source files. The .pyc contain the compiled bytecode of Python source files, which is what the Python interpreter compiles the source to. This code is then executed by Python's virtual machine . There's no harm in deleting them (.pyc), but they will save compilation time if you're doing lots of processing.
 
 For example, When you run myprog.py source file, the python interpreter first looks to see if any 'myprog.pyc' (which is the byte-code compiled version of 'myprog.py') exists, and if it is more recent than 'myprog.py'. If so, the interpreter runs it. If it does not exist, or 'myprog.py' is more recent than it (meaning you have changed the source file), the interpreter first compiles 'myprog.py' to 'myprog.pyc'.
+
+
+# How to Protect Python Source Code
+
+## Compile using CPython
+## Wrap with Cython ( Cython is a superset of Python )
+## Licence your python code 
+
+# What is Cython?
+
+A superset of Python that compiles to C, Cython combines the ease of Python and the speed of native code
+
+
