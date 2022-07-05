@@ -3276,9 +3276,38 @@ In very rare scenarios, Kubernetes might be forced to terminate Pods that are st
 	
 **ContainersReady**: all containers in the Pod are ready.
 
+# What are labels
+	
+**Labels** are nothing more than custom key-value pairs that are attached to objects and are used to describe and manage different Kubernetes resources. Labels can be used by both Kubernetes and homo-sapiens to organize and to select subsets of objects. When dealing with Kubernetes config files, labels are always added under the “metadata” section of the manifest.
+	
+		Must be 63 characters or less (can be empty),
+		Unless empty, must begin and end with an alphanumeric character ([a-z0-9A-Z]),
+		Could contain dashes (-), underscores (_), dots (.), and alphanumerics between
+
+### Delete a lable	
+
+To remove the label from any given Kubernetes resource you need to add - at the end of the Label key name.
+	
+	root@kube-master:~/labels# kubectl label pod lco-label-demo-nginx pod_type-
+	
+## What are Annotations in Kubernetes?
+	
+When you want to attach arbitrary non-identifying metadata to Kubernetes objects which can be retrieved later by clients such as tools and libraries.	
+
+Annotations are also defined in a key/value map manner like Labels.
+	
+		metadata:
+		  name: lco-annotations-demo
+		  annotations:
+		    imageregistry: "https://hub.docker.com/"
+
+# Labels vs annotations
+
+	Annotations are also key-value pairs that are attached to objects and are used to describe Kubernetes resources. Unlike labels, annotations are not used to identify and select resources. 
+
 # Selectors
 	
-## matchLabels 	vs matchExpressions
+## matchLabels ( Equality-based selectors)	vs matchExpressions (Set-based selectors)
 	
 matchExpressions is a more expressive label selector in Kubernetes and supports support set-based matching unlike the matchLabels which can only be used for exact matching. This can be used with or without the matchLabels selector.
 	
@@ -3304,3 +3333,21 @@ The resources, such as Job, Deployment, ReplicaSet, and DaemonSet, support match
 **Exists**—Pod must include a label with the specified key (the value isn’t important). When using this operator, the values field should not be specified.
 	
 **DoesNotExist**—Pod must not include a label with the specified key. The values property must not be specified.
+
+## Kubernetes supports two type of selectors −
+
+Equality-based selectors - They allow filtering by key and value. Operators used as part of this are: =, ==, !=
+	
+		root@kube-master:~# kubectl get pods --show-labels		
+		kubectl get pods -l 'environment = prod'  --show-labels
+		# this would return all resources with the `environment = prod` label environment = prod
+	
+	
+
+Set-based selectors - Set-based selectors allow filtering of keys according to a set of values. Operators used as part of this are: in, notin, exists.
+	
+		kubectl get pods -l 'environment in (prod,staging)' --show-labels
+		kubectl get pods -l 'environment,environment notin (staging)' --show-labels
+
+
+	
