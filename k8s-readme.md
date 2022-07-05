@@ -3276,4 +3276,31 @@ In very rare scenarios, Kubernetes might be forced to terminate Pods that are st
 	
 **ContainersReady**: all containers in the Pod are ready.
 
+# Selectors
 	
+## matchLabels 	vs matchExpressions
+	
+matchExpressions is a more expressive label selector in Kubernetes and supports support set-based matching unlike the matchLabels which can only be used for exact matching. This can be used with or without the matchLabels selector.
+	
+The resources, such as Job, Deployment, ReplicaSet, and DaemonSet, support matchExpressions.
+
+		selector:
+		  matchLabels:
+		    tier: frontend
+		  matchExpressions:
+		    - {key: name, operator: In, values: [payroll, web]}
+		    - {key: environment, operator: NotIn, values: [dev]}	
+
+### There are four valid operators:
+
+**In**—Label’s value must match one of the specified values.
+	
+**NotIn**—Label’s value must not match any of the specified values.
+	
+**Exists**—Pod must include a label with the specified key (the value isn’t important). When using this operator, the values field should not be specified.
+	
+**NotIn**—Label’s value must not match any of the specified values.
+	
+**Exists**—Pod must include a label with the specified key (the value isn’t important). When using this operator, the values field should not be specified.
+	
+**DoesNotExist**—Pod must not include a label with the specified key. The values property must not be specified.
