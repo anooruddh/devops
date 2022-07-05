@@ -3082,14 +3082,16 @@ The limit can never be lower than the request. Kubernetes will throw an error an
 Quality of Service (QoS) class is a Kubernetes concept which determines the scheduling and eviction priority of pods. QoS class is used by the Kubernetes scheduler to make decisions about scheduling pods onto nodes.
 	
 QoS class is assigned to pods by Kubernetes itself. DevOps can, however, control the QoS class assigned to a pod by playing around with resource requests and limits for individual containers inside the pod.
+	
+![Screenshot](QoS.png)	
 
 There are three QoS classes in Kubernetes:
 
-**Guaranteed**
+**Guaranteed** (These pods are most prior and will not be killed until system exceed resource limit.)
 	
-**Burstable**
+**Burstable** (If there is no BestEffort class pod, these pods are killed before Guaranteed class pods when they reached their limit.)
 	
-**BestEffort**
+**BestEffort** (These classes of pods are lowest prior and will be killed first if system has no memory.)
 	
 # Guaranteed
 
