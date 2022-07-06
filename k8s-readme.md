@@ -655,6 +655,13 @@ Other operations for exploring API resources:
 		  restartPolicy: Always
 		status: {}
 
+
+Pod	--generator=run-pod/v1 OR --restart=Never			kubectl run --generator=run-pod/v1 www-1 --image=nginx:1.16
+Job	--restart=OnFailure  OR --generator=job/v1			kubectl run hello --image=hello-world --restart=OnFailure
+Deployment	--restart=Always
+Cron Job	--schedule=<cron>
+
+
 # Deployment(s) in Kubernetes
 
 In Kubernetes, a deployment is a method of launching a pod with containerized applications and ensuring that the necessary number of replicas is always running on the cluster. 
