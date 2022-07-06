@@ -630,6 +630,31 @@ Other operations for exploring API resources:
 
     minikube service mongo-express-service
     
+# Create yaml file using command
+
+## --dry-run -o yaml
+
+		kubectl run firstPod --generator=run-pod/v1 --image=coolgourav147/nginx-custom --dry-run -o yaml
+		
+		Output:
+		
+		apiVersion: v1
+		kind: Pod
+		metadata:
+		  creationTimestamp: null
+		  labels:
+		    run: firstPod
+		  name: firstPod
+		spec:
+		  containers:
+		  - image: coolgourav147/nginx-custom
+		    imagePullPolicy: IfNotPresent    
+		    name: firstPod
+		    resources: {}
+		  dnsPolicy: ClusterFirst
+		  restartPolicy: Always
+		status: {}
+
 # Deployment(s) in Kubernetes
 
 In Kubernetes, a deployment is a method of launching a pod with containerized applications and ensuring that the necessary number of replicas is always running on the cluster. 
