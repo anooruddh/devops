@@ -3423,9 +3423,9 @@ Affecting the cluster capacity as a whole, the **Cluster Autoscaler (CA)** adds 
 	    
 ![Screenshot](hpa-overview.png)	
 	    
-In simple terms, HPA works in a “check, update, check again” style loop. Here’s how each of the steps in that loop work.
-HPA continuously monitors the metrics server for resource usage.	    
-Based on the collected resource usage, HPA will calculate the desired number of replicas required.	    
-Then, HPA decides to scale up the application to the desired number of replicas.	    
-Finally, HPA changes the desired number of replicas.	    
-Since HPA is continuously monitoring, the process repeats from Step 1.    
+		In simple terms, HPA works in a “check, update, check again” style loop. Here’s how each of the steps in that loop work.
+		HPA continuously monitors the metrics server for resource usage.	    
+		Based on the collected resource usage, HPA will calculate the desired number of replicas required.	    
+		Then, HPA decides to scale up the application to the desired number of replicas.	    
+		Finally, HPA changes the desired number of replicas.	    
+		Since HPA is continuously monitoring, the process repeats from Step 1.    
