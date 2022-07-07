@@ -1268,3 +1268,16 @@ Create a file ./var.env, refer this in your docker/compose file
 		     - ./var.env
 	
 
+## Skip Build Stage ( --target )
+	
+		FROM golang:1.7.3 AS golang_builder 
+		WORKDIR /go/src/github.com/alexellis/href-counter/ 
+		RUN go get -d -v golang.org/x/net/html 
+		COPY app.go . RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app . 
+		
+		FROM alpine:latest 
+	        RUN apk --no-cache add ca-certificates WORKDIR /root/ 
+		COPY --from=golang_builder /go/src/github.com/alexellis/href-counter/app . CMD ["./app"]
+
+## Build Command	
+		$ docker build --target golang_builder -t alexellis2/href-counter:latest .
