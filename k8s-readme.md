@@ -3386,4 +3386,37 @@ Set-based selectors - Set-based selectors allow filtering of keys according to a
 		kubectl get pods -l 'environment,environment notin (staging)' --show-labels
 
 
-	
+# Auto-Scaling in Kubernetes
+	    
+### Autoscaling is one of the key features in Kubernetes cluster. It is a feature in which the cluster is capable of increasing the number of nodes as the demand for service response increases and decrease the number of nodes as the requirement decreases.
+	    
+# The three dimensions of Kubernetes autoscaling	    
+	    
+**vertical autoscaling** - Kubernetes can autoscale by adjusting the capacity .
+**horizontal autoscaling** - number (horizontal autoscaling) of pods.
+**cluster autoscaling** - and/or by adding or removing nodes in a cluster (cluster autoscaling).	    
+
+		Horizontal Pod Autoscaler (HPA):adjusts the number of replicas of an application.
+		Cluster Autoscaler:adjusts the number of nodes of a cluster.
+		Vertical Pod Autoscaler (VPA):adjusts the resource requests and limits of a container.
+	    
+## The different autoscalers work at one of two Kubernetes layers
+
+**Pod level**:The HPA and VPA methods take place at the pod level. Both HPA and VPA will scale the available resources or instances of the container.
+	    
+**Cluster level**:The Cluster Autoscaler falls under the Cluster level, where it scales up or down the number of nodes inside your cluster.	    
+# There are two types of pod autoscalers: 
+	    
+here are three types of K8s autoscalers, each serving a different purpose. They are:
+
+**Horizontal Pod Autoscaler (HPA)**: adjusts the number of replicas of an application. HPA scales the number of pods in a replication controller, deployment, replica set, or stateful set based on CPU utilization. HPA can also be configured to make scaling decisions based on custom or external metrics.
+
+**Cluster Autoscaler (CA)**: adjusts the number of nodes in a cluster. The Cluster Autoscaler automatically adds or removes nodes in a cluster when nodes have insufficient resources to run a pod (adds a node) or when a node remains underutilized, and its pods can be assigned to another node (removes a node).
+
+**Vertical Pod Autoscaler (VPA)**: adjusts the resource requests and limits (which we’ll define in this article) of containers in the cluster.
+	    
+**Vertical Pod Autoscaler (VPA)** can either increase or decrease the CPU and memory allocated to each pod, while the **Horizontal Pod Autoscaler (HPA)** can replicate or terminate pods, thus affecting the total pod count
+	 
+Affecting the cluster capacity as a whole, the **Cluster Autoscaler (CA)** adds or removes nodes dedicated to the cluster to provide the appropriate amount of computing resources needed to host the desired workloads	    
+	    
+	    
