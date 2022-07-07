@@ -3414,9 +3414,24 @@ here are three types of K8s autoscalers, each serving a different purpose. They 
 **Cluster Autoscaler (CA)**: adjusts the number of nodes in a cluster. The Cluster Autoscaler automatically adds or removes nodes in a cluster when nodes have insufficient resources to run a pod (adds a node) or when a node remains underutilized, and its pods can be assigned to another node (removes a node).
 
 **Vertical Pod Autoscaler (VPA)**: adjusts the resource requests and limits (which we’ll define in this article) of containers in the cluster.
-	    
+   
 **Vertical Pod Autoscaler (VPA)** can either increase or decrease the CPU and memory allocated to each pod, while the **Horizontal Pod Autoscaler (HPA)** can replicate or terminate pods, thus affecting the total pod count
 	 
 Affecting the cluster capacity as a whole, the **Cluster Autoscaler (CA)** adds or removes nodes dedicated to the cluster to provide the appropriate amount of computing resources needed to host the desired workloads	    
 	    
+# How does HPA work?
+	    
+![Screenshot](hpa-overview.png)	
+	    
+In simple terms, HPA works in a “check, update, check again” style loop. Here’s how each of the steps in that loop work.
+
+HPA continuously monitors the metrics server for resource usage.
+	    
+Based on the collected resource usage, HPA will calculate the desired number of replicas required.
+	    
+Then, HPA decides to scale up the application to the desired number of replicas.
+	    
+Finally, HPA changes the desired number of replicas.
+	    
+Since HPA is continuously monitoring, the process repeats from Step 1.
 	    
