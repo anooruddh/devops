@@ -68,9 +68,11 @@ Each compute node runs and manages container life cycles using a container runti
 
 Each compute node includes a kubelet, an agent that communicates with the master or control plane to ensure the containers in a pod are running. When the control plane requires a specific action happen in a node, the kubelet receives the pod specifications through the API server and executes the action. It then ensures the associated containers are healthy and running.
 
+
+
 ### Kubelet is an agent process that runs of each worker node
 
-Its job includes
+# Its job includes
 
 > Register a node as a worker node
 
@@ -118,6 +120,8 @@ The kube-proxy runs on each node to ensure that services are available to extern
 
 ### What is the job of kube-proxy?
 The main task of Kube-proxy is making configurations so that packets can reach their destination when you call a service and not routing the packets. This must be clear to you, in the very basic configuration, when you talk about kube-proxy it doesn’t route the packets, it makes configuration so that packet can reach the destination.
+
+# Kube-Proxy Redirects the traffic to the Pods that matches Service label selector
 
 ### What configuration does it make?
 
