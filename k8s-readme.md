@@ -3433,7 +3433,9 @@ Affecting the cluster capacity as a whole, the **Cluster Autoscaler (CA)** adds 
 # Colling Period in HPA (k8)
 
 3 mins scaling up ( from the last scaling up)
+	    
 5 mins for scaling down
+	    
 every 15 sec HPA checks the pod utilization
 
 ## scale in and scale out	    
@@ -3444,5 +3446,7 @@ Control loop checks HPA usage with a period controlled by the controller manager
 	    
     
 If “currentMetricValue/desiredMetricValue” is too close to 1, scaling doesn’t happen. This closeness can be set via the “--horizontal-pod-autoscaler-tolerance” flag (with a default value of 0.1 seconds). So, little spikes won't result in unnecessary scaling.
+	    
 If the result is a downscaling operation, then you can only downscale within a period controlled by the “--horizontal-pod-autoscaler-downscale-stabilization” flag (with a default value of 300 seconds). If this is a scale up operation then it can happen right away.
+	    
 Scaling happens. How this happens can be controlled by the “behavior” field with 1.18, v2beta2 API. We will discuss this later on.	    
