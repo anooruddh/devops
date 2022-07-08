@@ -3429,3 +3429,20 @@ Affecting the cluster capacity as a whole, the **Cluster Autoscaler (CA)** adds 
 		Then, HPA decides to scale up the application to the desired number of replicas.	    
 		Finally, HPA changes the desired number of replicas.	    
 		Since HPA is continuously monitoring, the process repeats from Step 1.    
+
+# Colling Period in HPA (k8)
+
+3 mins scaling up ( from the last scaling up)
+5 mins for scaling down
+every 15 sec HPA checks the pod utilization
+
+## scale in and scale out	    
+### One of the easiest ways to describe both of these methods is that scaling out generally means building horizontally, while scaling up means building vertically	    
+# This is what’s happening under the hood
+	    
+Control loop checks HPA usage with a period controlled by the controller manager's “--horizontal-pod-autoscaler-sync-period” flag (with a default value of 15 seconds).
+	    
+    
+If “currentMetricValue/desiredMetricValue” is too close to 1, scaling doesn’t happen. This closeness can be set via the “--horizontal-pod-autoscaler-tolerance” flag (with a default value of 0.1 seconds). So, little spikes won't result in unnecessary scaling.
+If the result is a downscaling operation, then you can only downscale within a period controlled by the “--horizontal-pod-autoscaler-downscale-stabilization” flag (with a default value of 300 seconds). If this is a scale up operation then it can happen right away.
+Scaling happens. How this happens can be controlled by the “behavior” field with 1.18, v2beta2 API. We will discuss this later on.	    
