@@ -3450,3 +3450,84 @@ If “currentMetricValue/desiredMetricValue” is too close to 1, scaling doesn�
 If the result is a downscaling operation, then you can only downscale within a period controlled by the “--horizontal-pod-autoscaler-downscale-stabilization” flag (with a default value of 300 seconds). If this is a scale up operation then it can happen right away.
 	    
 Scaling happens. How this happens can be controlled by the “behavior” field with 1.18, v2beta2 API. We will discuss this later on.	    
+
+	    
+# Using Private Registry
+	    
+Authenticating Kubernetes with the private Docker registry
+
+We’ll now create a Kubernetes secret of type docker-registry. The Kubernetes secret must be created in the same namespace as the pods we are 
+deploying and needs to include the credentials to authenticate against our Artifactory Docker registry.
+
+		➜  ~ kubectl create secret docker-registry regcred \
+		--docker-server=my-artifactory.jfrog.io \
+		--docker-username=read-only \
+		--docker-password=my-super-secret-pass \
+		--docker-email=johndoe@example.com \
+		-n my-app-ns
+
+		secret/regcred created
+
+Now we need to instruct Kubernetes to use the secret credentials we just created when pulling images for our pods in this namespace. 
+There are 2 options to do this:
+
+1.Add an imagePullSecrets section to the pod spec. For example
+		➜  ~ kubectl edit deployment my-app -n my-app-ns
+			apiVersion: apps/v1
+			kind: Deployment
+			...
+			spec:
+			  ...
+			  template:
+				spec:
+				  containers:
+				  - image: my-artifactory.jfrog.io/default-docker-virtual/my-app:1.0.1
+				  imagePullSecrets:
+				  - name: regcred
+			  
+2.Patch the default service account to include the imagePullSecrets section.
+	    
+By default a service account named default automatically gets created with each namespace and all workloads will automatically use it. 
+You can also patch a custom service account to include the imagePullSecrets section and configure your workload to use it instead of the default.
+
+		➜  ~ kubectl edit serviceaccount default -n my-app-ns
+			apiVersion: v1
+			kind: ServiceAccount
+			imagePullSecrets:
+			- name: regcred
+			...
+
+The second option is usually preferred. This way all workloads in that namespace that their image is pulled from the private Docker registry 
+(ex. my-artifactory.jfrog.io) will be able to do so without having to explicitly configure the imagePullSecrets for each workload.
+
+		kubectl create secret docker-registry imgpullcredentials --docker-username=sendtoanoo --docker-password=guddu1234 --docker-email=sendtoanoo@gmail.com
+		-n my-app-ns
+
+		PS D:\kubernetes\Project1> k describe secret imgpullcredentials
+		Name:         imgpullcredentials
+		Namespace:    default
+		Labels:       <none>
+		Annotations:  <none>
+
+		Type:  kubernetes.io/dockerconfigjson
+
+		Data
+		====
+		.dockerconfigjson:  159 bytes
+
+
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+		apiVersion: v1
+		data:
+		  .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJzZW5kdG9hbm9vIiwicGFzc3dvcmQiOiJndWRkdTEyMzQiLCJlbWFpbCI6InNlbmR0b2Fub29AZ21haWwuY29tIiwiYXV0aCI6ImMyVnVaSFJ2WVc1dmJ6cG5kV1JrZFRFeU16UT0ifX19
+		kind: Secret
+		metadata:
+		  creationTimestamp: "2022-07-11T15:25:59Z"
+		  name: imgpullcredentials
+		  namespace: default
+		  resourceVersion: "202012"
+		  uid: 73379959-57fa-4d99-9dcc-057dc4a68fa7
+		type: kubernetes.io/dockerconfigjson
