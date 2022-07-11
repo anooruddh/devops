@@ -105,6 +105,25 @@ Log in to the Docker public registry on your local machine.
 ----------------------------------
 		docker image ls
 ----------------------------------
+
+## Adding insecure registries
+
+If you want to connect to a private docker registry that is either
+* not configured for https
+* or configured for https using self-signed certificates
+
+then add these configuration to **/etc/docker/daemon.json**
+```
+{
+  "insecure-registries": ["<ip>:<port>"]
+}
+```
+And restart docker service
+```
+sudo systemctl restart docker
+```
+
+
 Publish the image
 
 Upload your tagged image to the repository:
