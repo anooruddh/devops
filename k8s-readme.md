@@ -3518,10 +3518,9 @@ The second option is usually preferred. This way all workloads in that namespace
 		.dockerconfigjson:  159 bytes
 
 
-# Please edit the object below. Lines beginning with a '#' will be ignored,
-# and an empty file will abort the edit. If an error occurs while saving this file will be
-# reopened with the relevant failures.
-#
+Please edit the object below. Lines beginning with a '#' will be ignored, and an empty file will abort the edit. If an error occurs while saving this file will be
+ reopened with the relevant failures.
+
 		apiVersion: v1
 		data:
 		  .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJzZW5kdG9hbm9vIiwicGFzc3dvcmQiOiJndWRkdTEyMzQiLCJlbWFpbCI6InNlbmR0b2Fub29AZ21haWwuY29tIiwiYXV0aCI6ImMyVnVaSFJ2WVc1dmJ6cG5kV1JrZFRFeU16UT0ifX19
