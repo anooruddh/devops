@@ -3469,10 +3469,12 @@ deploying and needs to include the credentials to authenticate against our Artif
 		secret/regcred created
 
 Now we need to instruct Kubernetes to use the secret credentials we just created when pulling images for our pods in this namespace. 
+	    
 There are 2 options to do this:
 
 1.Add an imagePullSecrets section to the pod spec. For example
-		➜  ~ kubectl edit deployment my-app -n my-app-ns
+		
+	    	➜  ~ kubectl edit deployment my-app -n my-app-ns
 			apiVersion: apps/v1
 			kind: Deployment
 			...
