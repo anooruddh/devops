@@ -3472,7 +3472,7 @@ Now we need to instruct Kubernetes to use the secret credentials we just created
 	    
 There are 2 options to do this:
 
-1.Add an imagePullSecrets section to the pod spec. For example
+## 1.Add an imagePullSecrets section to the pod spec. For example
 		
 	    	➜  ~ kubectl edit deployment my-app -n my-app-ns
 			apiVersion: apps/v1
@@ -3487,7 +3487,7 @@ There are 2 options to do this:
 				  imagePullSecrets:
 				  - name: regcred
 			  
-2.Patch the default service account to include the imagePullSecrets section.
+## 2.Patch the default service account to include the imagePullSecrets section.
 	    
 By default a service account named default automatically gets created with each namespace and all workloads will automatically use it. 
 You can also patch a custom service account to include the imagePullSecrets section and configure your workload to use it instead of the default.
