@@ -3366,10 +3366,6 @@ The resources, such as Job, Deployment, ReplicaSet, and DaemonSet, support match
 	
 **Exists**—Pod must include a label with the specified key (the value isn’t important). When using this operator, the values field should not be specified.
 	
-**NotIn**—Label’s value must not match any of the specified values.
-	
-**Exists**—Pod must include a label with the specified key (the value isn’t important). When using this operator, the values field should not be specified.
-	
 **DoesNotExist**—Pod must not include a label with the specified key. The values property must not be specified.
 
 ## Kubernetes supports two type of selectors −
