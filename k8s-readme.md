@@ -3646,8 +3646,13 @@ Please edit the object below. Lines beginning with a '#' will be ignored, and an
 	    
 	    	$ docker tag my-profile:v1 sendtoanoo/profile:latest
 
-## Docker push to registry	    
+## Docker push to registry	( perform docker login before push )    
 	    	
 	    	$ docker push sendtoanoo/profile:latest	
 
 Note -  ( you can pull any images from anyones repo in docker, and tag it agin to push into your own repo )	    
+
+	    docker pull coolgourav147/nginx-custom:latest ( other's repo)
+	    docker tag coolgourav147/nginx-custom:latest sendtoanoo/profile:v2 ( tag it again to push into your own repo)
+	    docker login
+	    docker push sendtoanoo/profile:v2
