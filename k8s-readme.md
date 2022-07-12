@@ -3452,7 +3452,7 @@ If the result is a downscaling operation, then you can only downscale within a p
 Scaling happens. How this happens can be controlled by the “behavior” field with 1.18, v2beta2 API. We will discuss this later on.	    
 
 	    
-# Using Private Registry
+# Using Private Registry ( imagePullSecrets )
 	    
 Authenticating Kubernetes with the private Docker registry
 
