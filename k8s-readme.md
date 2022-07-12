@@ -3504,7 +3504,7 @@ You can also patch a custom service account to include the imagePullSecrets sect
 The second option is usually preferred. This way all workloads in that namespace that their image is pulled from the private Docker registry 
 (ex. my-artifactory.jfrog.io) will be able to do so without having to explicitly configure the imagePullSecrets for each workload.
 
-		kubectl create secret docker-registry imgpullcredentials --docker-username=sendtoanoo --docker-password=guddu1234 --docker-email=sendtoanoo@gmail.com
+		kubectl create secret docker-registry imgpullcredentials --docker-username=sendtoanoo --docker-password=xxxxxxxxxxx --docker-email=sendtoanoo@gmail.com
 		-n my-app-ns
 
 		PS D:\kubernetes\Project1> k describe secret imgpullcredentials
@@ -3525,7 +3525,7 @@ Please edit the object below. Lines beginning with a '#' will be ignored, and an
 
 		apiVersion: v1
 		data:
-		  .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJzZW5kdG9hbm9vIiwicGFzc3dvcmQiOiJndWRkdTEyMzQiLCJlbWFpbCI6InNlbmR0b2Fub29AZ21haWwuY29tIiwiYXV0aCI6ImMyVnVaSFJ2WVc1dmJ6cG5kV1JrZFRFeU16UT0ifX19
+		  .dockerconfigjson: asdasdasdasdsaddasdasdasdasdasdasdasdasdsada
 		kind: Secret
 		metadata:
 		  creationTimestamp: "2022-07-11T15:25:59Z"
