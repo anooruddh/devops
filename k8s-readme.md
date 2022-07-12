@@ -3451,7 +3451,94 @@ If the result is a downscaling operation, then you can only downscale within a p
 	    
 Scaling happens. How this happens can be controlled by the “behavior” field with 1.18, v2beta2 API. We will discuss this later on.	    
 
+### Deployment
+			apiVersion: apps/v1
+			kind: Deployment
+			metadata:
+			  name: deployment-example
+			spec:
+			  replicas: 1
+			  strategy:
+			    type: RollingUpdate
+			  selector:
+			    matchLabels:
+			      application: deployment-example
+			  template:
+			    metadata:
+			      labels:
+				application: deployment-example
+			    spec: 
+			      containers:
+			      - name: deployment-example-pod
+				image: nginx
+				ports:
+				  - containerPort: 80
+				resources:
+				  requests:
+				    cpu: 100m
+				    memory: 100Mi
+
+### HPA	    
+
+			apiVersion: autoscaling/v1
+			kind: HorizontalPodAutoscaler
+			metadata:
+			  name: hpa-example
+			spec:
+			  scaleTargetRef:
+			    apiVersion: apps/v1
+			    kind: Deployment
+			    name: deployment-example
+			  minReplicas: 1
+			  maxReplicas: 5
+			  targetCPUUtilizationPercentage: 10
 	    
+### Load Test
+
+	    		docker run --rm --net=host loadimpact/loadgentest-wrk -c 100 -t 100 -d 5m http://127.0.0.1:8080
+			Running 5m test @ http://127.0.0.1:8080
+	    
+	    		kubectl run -i --tty load-generator --image=busybox /bin/sh
+	    		kubectl --generator=run-pod/v1 run -i --tty load-generator --image=busybox /bin/sh
+
+# Working with the Horizontal Pod Autoscaler
+	    
+Verify that the Kubernetes Metrics Server has been installed on a cluster.
+	    
+	    		kubectl -n kube-system get deployment/metrics-server
+	    
+Deploy a sample php-apache web server.
+	    
+	    		kubectl apply -f https://k8s.io/examples/application/php-apache.yaml
+	    
+Create a Horizontal Pod Autoscaler resource that will scale based on CPU utilization.
+	    
+	    		kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=10
+	    		kubectl get hpa
+	    
+Start generation of a sample load.
+	    
+	    		kubectl run -it --rm load-generator --image=busybox /bin/sh --generator=run-pod/v1		
+	    		while true; do wget -q -O- http://php-apache; done
+	    
+View the scaling operation in action.
+	    	
+	    		kubectl get hpa
+	    		kubectl get deployment php-apache
+	    		
+Stop the sample load generation.
+	    
+	    		exit
+	    		After another few minutes, view the reduced number of replicas by re-entering:
+	    		kubectl get hpa
+	    		Verify the deployment has been scaled in by entering:
+	    		kubectl get deployment php-apache
+	    
+Clean up, by removing the php-apache web server and the Horizontal Pod Autoscaler.	    
+	    
+	    		kubectl delete horizontalpodautoscaler.autoscaling/php-apache
+	    		kubectl delete deployment.apps/php-apache service/php-apache
+
 # Using Private Registry ( imagePullSecrets )
 	    
 Authenticating Kubernetes with the private Docker registry
