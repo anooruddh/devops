@@ -3619,3 +3619,35 @@ Please edit the object below. Lines beginning with a '#' will be ignored, and an
 		  resourceVersion: "202012"
 		  uid: 73379959-57fa-4d99-9dcc-057dc4a68fa7
 		type: kubernetes.io/dockerconfigjson
+
+	    
+## Dockerfile
+	    
+			FROM python:3.8-slim
+			RUN mkdir -p /opt/project
+			COPY . /opt/project
+			WORKDIR /opt/project
+			# set environment variables
+			ENV PYTHONDONTWRITEBYTECODE 1
+			ENV PYTHONUNBUFFERED 1
+
+			# install dependencies
+			RUN pip install --upgrade pip 
+			RUN pip install -r requirements.txt
+
+			EXPOSE 8000
+			CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+## Docker Build
+	    	
+	    	$ docker build -t my-profile:v1 .
+	    
+## Docker re-tag to push into private registry
+	    
+	    	$ docker tag my-profile:v1 sendtoanoo/profile:latest
+
+## Docker push to registry	    
+	    	
+	    	$ docker push sendtoanoo/profile:latest	
+
+Note -  ( you can pull any images from anyones repo in docker, and tag it agin to push into your own repo )	    
