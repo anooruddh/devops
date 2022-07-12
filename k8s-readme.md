@@ -3394,8 +3394,10 @@ Set-based selectors - Set-based selectors allow filtering of keys according to a
 	    
 # The three dimensions of Kubernetes autoscaling	    
 	    
-**vertical autoscaling** - Kubernetes can autoscale by adjusting the capacity .
-**horizontal autoscaling** - number (horizontal autoscaling) of pods.
+**vertical autoscaling** - Kubernetes can autoscale by adjusting the capacity ( increase or decrease CPU/Memory).
+	    
+**horizontal autoscaling** - number (horizontal autoscaling) of pods ( increase or decrease no. of POD instances).
+	    
 **cluster autoscaling** - and/or by adding or removing nodes in a cluster (cluster autoscaling).	    
 
 		Horizontal Pod Autoscaler (HPA):adjusts the number of replicas of an application.
