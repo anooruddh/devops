@@ -3072,6 +3072,8 @@ Under the hood , Istio uses five major tools:
 
 # Pod disruption budget	
 
+A pdb defines the budget of voluntary disruption. In essence, a human operator is letting the cluster aware of a minimum threshold in terms of available pods that the cluster needs to guarantee in order to ensure a baseline availability or performance. The word budget is used as in error budget, in the sense that any voluntary disruption within this budget should be acceptable.
+	    
 A typical pdb looks like
 
 	apiVersion: policy/v1
