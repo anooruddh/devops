@@ -621,12 +621,16 @@ Special Symbols Used for passing arguments:-
 The special syntax *args in function definitions in python is used to pass a variable number of arguments to a function. It is used to pass a non-key worded, variable-length argument list. 
 
 The syntax is to use the symbol * to take in a variable number of arguments; by convention, it is often used with the word args.
+
 What *args allows you to do is take in more arguments than the number of formal arguments that you previously defined. With *args, any number of extra arguments can be tacked on to your current formal parameters (including zero extra arguments).
+
 For example, we want to make a multiply function that takes any number of arguments and is able to multiply them all together. It can be done using *args.
+
 Using the *, the variable that we associate with the * becomes an iterable meaning you can do things like iterate over it, run some higher-order functions such as map and filter, etc.
 
 ### Python program to illustrate *args for a variable number of arguments
 
+## Example 1: 
                         def myFun(*argv):
                                     for arg in argv:
                                                 print(arg)
@@ -643,6 +647,7 @@ Using the *, the variable that we associate with the * becomes an iterable meani
                         
 ### Python program to illustrate *args with a first extra argument                        
 
+## Example 2: 
                         def myFun(arg1, *argv):
                                     print("First argument :", arg1)
                                     for arg in argv:
@@ -663,4 +668,89 @@ Using the *, the variable that we associate with the * becomes an iterable meani
 The special syntax **kwargs in function definitions in python is used to pass a keyworded, variable-length argument list. We use the name kwargs with the double star. The reason is that the double star allows us to pass through keyword arguments (and any number of them).
 
 A keyword argument is where you provide a name to the variable as you pass it into the function.
-One can think of the kwargs as being a dictionary that maps each keyword to the value that we pass alongside it. That is why when we iterate over the kwargs there doesn’t seem to be any order in which they were printed out.                        
+
+One can think of the kwargs as being a dictionary that maps each keyword to the value that we pass alongside it. That is why when we iterate over the kwargs there doesn’t seem to be any order in which they were printed out.               
+         
+## Example 1: 
+
+Python program to illustrate *kwargs for a variable number of keyword arguments. Here **kwargs accept keyworded variable-length argument passed by function call. for first=’Geeks’ first is key and ‘Geeks’ is a value. in simple words, what we assigning is value and to whom we assign is key. 
+
+                        def myFun(**kwargs):
+                                    for key, value in kwargs.items():
+                                                print("%s == %s" % (key, value))
+
+
+                        # Driver code
+                        myFun(first='Geeks', mid='for', last='Geeks')
+
+                        Output:
+
+                        first == Geeks
+                        mid == for
+                        last == Geeks
+                        
+## Example 2:
+
+Python program to illustrate  **kwargs for a variable number of keyword arguments with one extra argument. All the same but one change is we passing non keyword argument which acceptable by positional argument(arg1 in myFun). and kewword arguments we passing are acceptable by **kwargs. simple right?                        
+
+                        def myFun(arg1, **kwargs):
+                                    for key, value in kwargs.items():
+                                                print("%s == %s" % (key, value))
+
+
+                        # Driver code
+                        myFun("Hi", first='Geeks', mid='for', last='Geeks')
+
+                        Output:
+
+                        first == Geeks
+                        mid == for
+                        last == Geeks
+                        
+
+## Using both *args and **kwargs to call a function
+
+## Example 1:
+
+Here, we are passing *args and **kwargs as an argument in the myFun function. By passing *args to myFun simply means that we passing the positinoal and varibale length arguments which is contained by args. so, “geeks” pass to the arge1 , “for” pass to the arg2 and “geeks” pass to the arg3. when we passing **kwargs as an argument to the myFun it’s mean that it accepts key-word arguments. Here, “arg1 is key and value is “Geeks” which is pass to arge1, and just like that “for” and “Geeks” pass to arg2 and arg3 respectively .After passing all the data we are printing all the data in lines. 
+
+                        def myFun(arg1, arg2, arg3):
+                                    print("arg1:", arg1)
+                                    print("arg2:", arg2)
+                                    print("arg3:", arg3)
+
+
+                        # Now we can use *args or **kwargs to
+                        # pass arguments to this function :
+                        args = ("Geeks", "for", "Geeks")
+                        myFun(*args)
+
+                        kwargs = {"arg1": "Geeks", "arg2": "for", "arg3": "Geeks"}
+                        myFun(**kwargs)
+
+                        Output:
+
+                        arg1: Geeks
+                        arg2: for
+                        arg3: Geeks
+                        arg1: Geeks
+                        arg2: for
+                        arg3: Geeks
+                        
+## Example 2:
+
+Here, we are passing *args and **kwargs as an argument in the myFun function. where ‘geeks’, ‘for’, ‘geeks’ is passed as *args, and first=”Geeks”, mid=”for”, last=”Geeks”  is pased as **kwargs and printing in the same line.                        
+
+                        def myFun(*args, **kwargs):
+                                    print("args: ", args)
+                                    print("kwargs: ", kwargs)
+
+
+                        # Now we can use both *args ,**kwargs
+                        # to pass arguments to this function :
+                        myFun('geeks', 'for', 'geeks', first="Geeks", mid="for", last="Geeks")
+
+                        Output:
+
+                        args: ('geeks', 'for', 'geeks')
+                        kwargs {'first': 'Geeks', 'mid': 'for', 'last': 'Geeks'}                        
