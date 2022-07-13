@@ -3714,3 +3714,15 @@ Secrets are stored inside the Kubernetes data store (i.e., an etcd database) and
 	    			Environment:
       				USER:      <set to the key 'arg_username' in secret 'sec-arg'>  Optional: false
       				PASSWORD:  <set to the key 'arg_password' in secret 'sec-arg'>  Optional: false
+
+# Editing an existing docker image
+	    
+	    			sudo docker pull ubuntu
+	    			sudo docker images
+	    			sudo docker run -it cf0f3ca922e0 bin/bash
+	    			apt-get install nmap
+	    			nmap --version
+	    			exit
+	    			sudo docker commit [CONTAINER_ID] [new_image_name]
+	    			sudo docker commit deddd39fa163 ubuntu-nmap
+	    			sudo docker images
