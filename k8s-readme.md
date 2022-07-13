@@ -3710,3 +3710,7 @@ Secrets are stored inside the Kubernetes data store (i.e., an etcd database) and
 	    			kubectl logs -f pod/busybox
 	    			Username: anooruddh Password: TopSecret1$
 				      key: arg_password
+
+	    			Environment:
+      				USER:      <set to the key 'arg_username' in secret 'sec-arg'>  Optional: false
+      				PASSWORD:  <set to the key 'arg_password' in secret 'sec-arg'>  Optional: false
