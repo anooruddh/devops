@@ -3656,3 +3656,57 @@ Note -  ( you can pull any images from anyones repo in docker, and tag it agin t
 	    docker tag coolgourav147/nginx-custom:latest sendtoanoo/profile:v2 ( tag it again to push into your own repo)
 	    docker login
 	    docker push sendtoanoo/profile:v2
+
+# Secrets
+	    
+Secrets are Kubernetes resources used to configure your applications with sensitive data that can be made accessible to your container workloads at runtime.
+	    
+Secrets are stored inside the Kubernetes data store (i.e., an etcd database) and are created before they can be used inside a Pods manifest file. Furthermore, Secrets have a size limit of 1 MB. When it comes to implementation, you can either mount Secrets as volumes or expose them as environment variables inside the Pod manifest files.
+	    
+## There are a few different types of Secrets in Kubernetes:
+
+**Opaque**: The default Secret type if one isn’t specified in the manifest configuration file. It allows you to provide arbitrary configuration data in key-value pairs.
+	    
+**Service account token**: These store a token that identifies a specific service account. Of course, don’t forget to set the kubernetes.io/service-account.name annotation to an existing service account.
+	    
+**Docker config**: This stores the credentials for a specific Docker registry for container images.
+	    
+**Basic authentication**: These store basic authentication credentials. Note that their data fields need to include the username and password keys.
+	    
+**SSH authentication**: These store SSH credentials. You’ll have to specify an ssh-privatekey key-value pair in the data or stringData field.
+	    
+**TLS**: These Secrets store certificates and the associated keys used for TLS. You need to make sure the tls.key and the tls.crt keys are included in the data field of the Secret’s configuration.
+	    
+**Bootstrap token**: These are tokens used during the node bootstrap process, used to sign ConfigMaps.	    
+
+# Create a Secret 
+	    
+			kubectl create secret generic sec-arg --from-literal=arg_username=anooruddh --from-literal=arg_password=TopSecret1$	    
+
+			kubectl create secret docker-registry imgpullcredentials --docker-username=xxx --docker-password=xxx --docker-email=xxx -n my-app-ns	    
+	    
+# How to use secrets in manifest file
+	    
+			apiVersion: v1
+			kind: Pod
+			metadata:
+			  name: busybox
+			spec:
+			  containers:
+			  - image: busybox
+			    name: argbusybox
+			    command: ['sh', '-c', 'echo "Username: $USER" "Password: $PASSWORD"']
+			      env:
+				- name: USER
+				  valueFrom:
+				    secretKeyRef:
+				      name: sec-arg
+				      key: arg_username
+				- name: PASSWORD
+				  valueFrom:
+				    secretKeyRef:
+				      name: sec-arg
+### Output
+	    			kubectl logs -f pod/busybox
+	    			Username: anooruddh Password: TopSecret1$
+				      key: arg_password
