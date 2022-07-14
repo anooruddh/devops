@@ -3052,7 +3052,29 @@ Under the hood , Istio uses five major tools:
 4.	**Citadel**: Istio uses Citadel to provide policy-driven and secured communication between Envoy proxies. All the authentication and key-based credential management between sidecar proxies is managed by Citadel.
 	
 5.	**Galley**: Istio control plane also includes Galley, which is responsible for interpreting user-defined Kubernetes YAML files into a format that Istio understands. Galley stores the user configuration, validates it, and then sends it to Pilot for further action.	
-	
+
+# Install / Setup Istio
+	    
+	    	Download Istion	(https://istio.io/latest/docs/setup/getting-started/#download)
+	    	istioctl install
+	    	kubectl label namespace default istio-injection=enabled
+	    	verify
+	    	kubectl get pods --all-namespaces
+	    
+		NAME                                    READY   STATUS      RESTARTS   AGE
+		grafana-c4bcd89cb-c4cpw                 1/1     Running     0          5m13s
+		istio-citadel-79945f56f7-vs8n8          1/1     Running     0          5m13s
+		istio-galley-54c44fd84c-wgg2r           1/1     Running     0          5m13s
+		istio-ingressgateway-bdffcd464-sw2w4    1/1     Running     0          5m13s
+		istio-init-crd-10-1.4.2-pv2dc           0/1     Completed   0          7m34s
+		istio-init-crd-11-1.4.2-f2pfr           0/1     Completed   0          7m34s
+		istio-init-crd-14-1.4.2-hrch4           0/1     Completed   0          7m34s
+		istio-pilot-6f64485fb4-k57f4            2/2     Running     2          5m14s
+		istio-policy-58456b9855-jvj8s           2/2     Running     2          5m13s
+		istio-sidecar-injector-b8fb8497-v89sl   1/1     Running     0          5m14s
+		istio-telemetry-bb59599bd-bnzpv         2/2     Running     3          5m13s
+		prometheus-fcdfd6cb5-6cjz2              1/1     Running     0          5m13s
+	    	
 	
 # Service Mesh Common Capabilities
 	
