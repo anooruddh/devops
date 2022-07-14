@@ -3737,6 +3737,156 @@ Secrets are stored inside the Kubernetes data store (i.e., an etcd database) and
       				USER:      <set to the key 'arg_username' in secret 'sec-arg'>  Optional: false
       				PASSWORD:  <set to the key 'arg_password' in secret 'sec-arg'>  Optional: false
 
+	    
+# Using Kubernetes Secrets
+	    
+When you create a secret, it needs to be referenced by the pod that will use it. To make a secret available for a pod:
+
+1. Mount the secret as a file in a volume available to any number of containers in a pod.
+
+2. Import the secret as an environment variable to a container.
+
+3. Use kubelet, and the imagePullSecrets field.
+
+### Create Secret from file
+	    
+			kubectl create secret generic [secret-name] \  
+			--from-file=[file1] \
+			--from-file=[file2]
+
+			echo -n 'anooruddh' > ./username.txt
+			echo -n '123456789' > ./password.txt
+	    
+			kubectl create secret generic db_credentials \
+	    		-from-file=./username.txt
+			-from-file=./password.txt	    
+	    
+#  Kubernetes Secrets Store CSI (Container Storage Interface (CSI) Volume) Driver
+	    
+The Secrets Store CSI driver secrets-store.csi.k8s.io allows Kubernetes to mount multiple secrets, keys, and certs stored in enterprise-grade external secrets stores into their pods as a volume. Once the Volume is attached, the data in it is mounted into the container's file system.
+	    
+# Define a SecretProviderClass resource
+	    
+The Kubernetes Secrets Store CSI Driver Helm chart creates a definition for a SecretProviderClass resource. This resource describes the parameters that are given to the Vault CSI provider. To configure it requires the address of the Vault server, the name of the Vault Kubernetes authentication role, and the secrets.	    
+
+Secrets Store CSI Driver for Kubernetes secrets - Integrates secrets stores with Kubernetes via a Container Storage Interface (CSI) volume.
+
+The Secrets Store CSI Driver secrets-store.csi.k8s.io allows Kubernetes to mount multiple secrets, keys, and certs stored in enterprise-grade external secrets stores into their pods as a volume. Once the Volume is attached, the data in it is mounted into the container’s file system.
+	    
+Define a SecretProviderClass named vault-database.
+	    
+			cat > spc-vault-database.yaml <<EOF
+			apiVersion: secrets-store.csi.x-k8s.io/v1
+			kind: SecretProviderClass
+			metadata:
+			  name: vault-database
+			spec:
+			  provider: vault
+			  parameters:
+			    vaultAddress: "http://vault.default:8200"
+			    roleName: "database"
+			    objects: |
+			      - objectName: "db-password"
+				secretPath: "secret/data/db-pass"
+				secretKey: "password"
+			EOF
+	    
+# Create a pod with secret mounted	    
+	    
+Create a service account named webapp-sa.
+	    
+	    		kubectl create serviceaccount webapp-sa
+
+Define the webapp pod that mounts the secrets volume.
+	    
+			cat > webapp-pod.yaml <<EOF
+			kind: Pod
+			apiVersion: v1
+			metadata:
+			  name: webapp
+			spec:
+			  serviceAccountName: webapp-sa
+			  containers:
+			  - image: jweissig/app:0.0.1
+			    name: webapp
+			    volumeMounts:
+			    - name: secrets-store-inline
+			      mountPath: "/mnt/secrets-store"
+			      readOnly: true
+			  volumes:
+			    - name: secrets-store-inline
+			      csi:
+				driver: secrets-store.csi.k8s.io
+				readOnly: true
+				volumeAttributes:
+				  secretProviderClass: "vault-database"
+			EOF
+	    
+## Sync to a Kubernetes Secret
+	    
+The Secrets Store CSI Driver also supports syncing to Kubernetes secret objects. Kubernetes secrets are populated with the contents of files from your CSI volume, and their lifetime is closely tied to the lifetime of the pod they are created for.
+
+To add secret syncing for your webapp pod, update the SecretProviderClass to add a secretObjects entry:
+	    
+				cat > spc-vault-database.yaml <<EOF
+				apiVersion: secrets-store.csi.x-k8s.io/v1
+				kind: SecretProviderClass
+				metadata:
+				  name: vault-database
+				spec:
+				  provider: vault
+				  secretObjects:
+				  - data:
+				    - key: password
+				      objectName: db-password
+				    secretName: dbpass
+				    type: Opaque
+				  parameters:
+				    vaultAddress: "http://vault.default:8200"
+				    roleName: "database"
+				    objects: |
+				      - objectName: "db-password"
+					secretPath: "secret/data/db-pass"
+					secretKey: "password"
+				EOF
+	    
+When a pod references this SecretProviderClass, the CSI driver will create a Kubernetes secret called "dbpass" with the "password" field set to the contents of the "db-password" object from the parameters. The pod will wait for the secret to be created before starting, and the secret will be deleted when the pod stops.
+
+Next, update the pod to reference the new secret:	    
+	    
+	    
+			cat > webapp-pod.yaml <<EOF
+			kind: Pod
+			apiVersion: v1
+			metadata:
+			  name: webapp
+			spec:
+			  serviceAccountName: webapp-sa
+			  containers:
+			  - image: jweissig/app:0.0.1
+			    name: webapp
+			    env:
+			    - name: DB_PASSWORD
+			      valueFrom:
+				secretKeyRef:
+				  name: dbpass
+				  key: password
+			    volumeMounts:
+			    - name: secrets-store-inline
+			      mountPath: "/mnt/secrets-store"
+			      readOnly: true
+			  volumes:
+			    - name: secrets-store-inline
+			      csi:
+				driver: secrets-store.csi.k8s.io
+				readOnly: true
+				volumeAttributes:
+				  secretProviderClass: "vault-database"
+			EOF
+
+The Kubernetes Container Storage Interface (CSI) is an extensible approach to the management of storage alongside the lifecycle of containers
+	    
+	    
 # Editing an existing docker image
 	    
 	    			sudo docker pull ubuntu
