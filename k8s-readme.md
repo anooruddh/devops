@@ -2339,25 +2339,35 @@ The min section will set up the minimum Requests that a container in a Pod can s
 
 # Readiness and Liveness Probes in Kubernetes
 
+# By using a readiness probe, Kubernetes will wait untill the application is fully started before allows the service to send traffic pod
+
 Kubernetes automatically checks if a pod is healthy and also when it is ready to accept traffic. These checks are done using a readiness probe and liveness probe respectively.
 
-# Liveness Probe
+# 3 TYPES OF PROBE 
+	    
+### HTTP	( ( exit http response code between 200-300 means healthy) 
+### COMMAND	( exit code 0 means healthy) 
+### TCP	        ( tries to establish tcp connection on the specified port, if connection is established means healthy )
+	    
+# Liveness Probe ( is your application alive or Dead )
 
 Kubernetes regularly checks whether a pod is still alive or not. To check that, Kubernetes sends a request to the URL and port configured in the liveness section of the deployment. If the request returns an HTTP code greater or equal to 200 but less than 400, the pod is considered healthy. In every other case, the pod is considered dead and will be restarted. A liveness probe looks as follows:
 
     livenessProbe:
       httpGet:
         path: /health
-        port: http
+        port: 80
+	scheme: HTTP
 
-# Readiness Probe
+# Readiness Probe ( is your application ready to take live traffic )  
 
 The readiness probe works the same way as the liveness probe except that it is only executed to determine whether a pod is ready to receive traffic after startup. A readiness probe looks as follows:
 
     readinessProbe:
       httpGet:
         path: /health
-        port: http
+        port: 80
+	scheme: HTTP
         
 ![Screenshot](pod-health-check.png)        
 
