@@ -221,7 +221,52 @@ kube-system
 kube-public
 kube-node-lease ( heartbeat of nodes, checks the availablity of nodes )
 
+**You can set access (user access/permissions ) and resource( CPU,Memory ) limit on Namespace**
+**You can not set namespaces for few resources like volume,nodes as they live globally and you can not isolate them**
 
+λ kubectl api-resources --namespaced=false
+NAME                              SHORTNAMES   APIVERSION                             NAMESPACED   KIND
+componentstatuses                 cs           v1                                     false        ComponentStatus
+namespaces                        ns           v1                                     false        Namespace
+nodes                             no           v1                                     false        Node
+persistentvolumes                 pv           v1                                     false        PersistentVolume
+mutatingwebhookconfigurations                  admissionregistration.k8s.io/v1        false        MutatingWebhookConfiguration
+validatingwebhookconfigurations                admissionregistration.k8s.io/v1        false        ValidatingWebhookConfiguration
+customresourcedefinitions         crd,crds     apiextensions.k8s.io/v1                false        CustomResourceDefinition
+apiservices                                    apiregistration.k8s.io/v1              false        APIService
+tokenreviews                                   authentication.k8s.io/v1               false        TokenReview
+selfsubjectaccessreviews                       authorization.k8s.io/v1                false        SelfSubjectAccessReview
+selfsubjectrulesreviews                        authorization.k8s.io/v1                false        SelfSubjectRulesReview
+subjectaccessreviews                           authorization.k8s.io/v1                false        SubjectAccessReview
+certificatesigningrequests        csr          certificates.k8s.io/v1                 false        CertificateSigningRequest
+flowschemas                                    flowcontrol.apiserver.k8s.io/v1beta2   false        FlowSchema
+prioritylevelconfigurations                    flowcontrol.apiserver.k8s.io/v1beta2   false        PriorityLevelConfiguration
+nodes                                          metrics.k8s.io/v1beta1                 false        NodeMetrics
+ingressclasses                                 networking.k8s.io/v1                   false        IngressClass
+runtimeclasses                                 node.k8s.io/v1                         false        RuntimeClass
+podsecuritypolicies               psp          policy/v1beta1                         false        PodSecurityPolicy
+clusterrolebindings                            rbac.authorization.k8s.io/v1           false        ClusterRoleBinding
+clusterroles                                   rbac.authorization.k8s.io/v1           false        ClusterRole
+priorityclasses                   pc           scheduling.k8s.io/v1                   false        PriorityClass
+csidrivers                                     storage.k8s.io/v1                      false        CSIDriver
+csinodes                                       storage.k8s.io/v1                      false        CSINode
+storageclasses                    sc           storage.k8s.io/v1                      false        StorageClass
+volumeattachments                              storage.k8s.io/v1                      false        VolumeAttachment
+
+## change the default namespace or switch to different namespace
+
+kubectl config set-context NAME [--cluster=cluster_nickname] [--user=user_nickname] [--namespace=namespace]
+kubectl config set-context --current --namespace=dev-namespace 
+
+λ kubectl config set-context --current --namespace=default
+Context "docker-desktop" modified.
+
+## Get current default namespace
+
+			$ kubectl config view | grep namespace
+			namespace: default
+			kubectl config view --minify -o jsonpath='{..namespace}'
+			kubectl config view --minify | grep namespace
 
 ## KUBERNETES CLI-COMMANDS
 
