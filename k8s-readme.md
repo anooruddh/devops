@@ -116,7 +116,11 @@ Each compute node contains a network proxy called a kube-proxy that facilitates 
 
 The kube-proxy runs on each node to ensure that services are available to external parties and deal with individual host subnetting. It serves as a network proxy and service load balancer on its node, managing the network routing for UDP and TCP packets. In fact, the kube-proxy routes traffic for all service endpoints.
 
-### Kube-proxy runs in three modes: userspace, iptables, and ipvs. (Userspace is old, slow and not recommended.)
+### Kube-proxy runs in three modes: 
+
+userspace, 
+iptables, 
+and ipvs. (Userspace is old, slow and not recommended.)
 
 ### What is the job of kube-proxy?
 The main task of Kube-proxy is making configurations so that packets can reach their destination when you call a service and not routing the packets. This must be clear to you, in the very basic configuration, when you talk about kube-proxy it doesn’t route the packets, it makes configuration so that packet can reach the destination.
@@ -207,6 +211,16 @@ Service Discovery and load balancing: Kubernetes has a feature which assigns the
 - [x] Batch execution: Kubernetes manages both batch and CI workloads along with replacing containers that fail.
 - [x] Deployments and Automatic Rollbacks: During the configuration changes for the application hosted on the Kubernetes, progressively monitors the health to ensure that it does not terminate all the instances at once, it makes an automatic rollback only in the case of failure.
 - [x] Configuration Management and Secrets: All classifies information like keys and passwords are stored under module called Secrets in Kubernetes. These Secrets are used especially while configuring the application without having to reconstruct the image.
+
+## Namespaces - Virtual cluster within Kubernetes cluster ( you can a new namespace as per your requirement ) 
+
+### Create - kubectl create namespace test 
+
+default
+kube-system
+kube-public
+kube-node-lease ( heartbeat of nodes, checks the availablity of nodes )
+
 
 
 ## KUBERNETES CLI-COMMANDS
