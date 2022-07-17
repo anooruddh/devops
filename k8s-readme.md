@@ -3898,3 +3898,11 @@ The Kubernetes Container Storage Interface (CSI) is an extensible approach to th
 	    			sudo docker commit [CONTAINER_ID] [new_image_name]
 	    			sudo docker commit deddd39fa163 ubuntu-nmap
 	    			sudo docker images
+
+# Revision History Limit
+	    
+RevisionHistoryLimit (with default value of two) is the maximum number of revisions that will be maintained in the StatefulSet’s revision history. The revision history consists of all revisions not represented by a currently applied StatefulSetSpec version. The default value is 10.
+	    
+Its ideal value depends on the frequency and stability of new deployments. All old Replica Sets will be kept by default, consuming resources in etcd and crowding the output of kubectl get rs, if this field is not set. The configuration of each Deployment revision is stored in its Replica Sets; therefore, once an old Replica Set is deleted, you lose the ability to rollback to that revision of Deployment.
+
+More specifically, setting this field to zero means that all old replica sets with 0 replica will be cleaned up. In this case, a new deployment rollout cannot be undone, since its revision history is cleaned up.	    
