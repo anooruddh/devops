@@ -3905,4 +3905,37 @@ RevisionHistoryLimit (with default value of two) is the maximum number of revisi
 	    
 Its ideal value depends on the frequency and stability of new deployments. All old Replica Sets will be kept by default, consuming resources in etcd and crowding the output of kubectl get rs, if this field is not set. The configuration of each Deployment revision is stored in its Replica Sets; therefore, once an old Replica Set is deleted, you lose the ability to rollback to that revision of Deployment.
 
+			apiVersion: apps/v1
+			kind: Deployment
+			metadata:
+			  labels:
+			    app: nginx
+			  name: nginx
+			  namespace: default
+			spec:
+			  progressDeadlineSeconds: 600
+			  replicas: 3
+			  revisionHistoryLimit: 10
+			  selector:
+			    matchLabels:
+			      app: nginx
+			  strategy:
+			    rollingUpdate:
+			      maxSurge: 25%
+			      maxUnavailable: 25%
+			    type: RollingUpdate
+			  template:
+			    metadata:
+			      labels:
+				app: nginx
+			    spec:
+			      containers:
+			      - image: nginx
+				imagePullPolicy: Always
+				name: nginx-hostname
+			      dnsPolicy: ClusterFirst
+			      restartPolicy: Always
+			      schedulerName: default-scheduler
+			      terminationGracePeriodSeconds: 30
+	    
 More specifically, setting this field to zero means that all old replica sets with 0 replica will be cleaned up. In this case, a new deployment rollout cannot be undone, since its revision history is cleaned up.	    
