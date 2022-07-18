@@ -216,13 +216,13 @@ Service Discovery and load balancing: Kubernetes has a feature which assigns the
 
 ### Create - kubectl create namespace test 
 
-default
+			default
 
-kube-system
+			kube-system
 
-kube-public
+			kube-public
 
-kube-node-lease ( heartbeat of nodes, checks the availablity of nodes )
+			kube-node-lease ( heartbeat of nodes, checks the availablity of nodes )
 
 **You can set access (user access/permissions ) and resource( CPU,Memory ) limit on Namespace**
 
