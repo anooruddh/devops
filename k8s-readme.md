@@ -3860,6 +3860,44 @@ When you create a secret, it needs to be referenced by the pod that will use it.
 	    		-from-file=./username.txt
 			-from-file=./password.txt	    
 	    
+# Container Storage Interface (CSI)
+	    
+Container Storage Interface (CSI) is an initiative to unify the storage interface of Container Orchestrator Systems (COs) like Kubernetes, Mesos, Docker swarm, cloud foundry, etc. combined with storage vendors like Ceph, Portworx, NetApp etc. This means, implementing a single CSI for a storage vendor is guaranteed to work with all COs.
+	    
+A Kubernetes StorageClass is a Kubernetes storage mechanism that lets you dynamically provision persistent volumes (PV) in a Kubernetes cluster. Kubernetes administrators define classes of storage, and then pods can dynamically request the specific type of storage they need.
+	    
+			Cloud Provider			Default StorageClass Name	Default Provisioner
+			Amazon Web Services		gp2				aws-ebs
+			Microsoft Azure			standard			azure-disk
+			Google Cloud Platform		standard			gce-pd
+			OpenStack			standard			cinder
+			VMware vSphere			thin				vsphere-volume
+	    
+## Adding  storage classes
+	    
+			kind: StorageClass
+			apiVersion: storage.k8s.io/v1
+			metadata:
+			 name: gold
+			provisioner: kubernetes.io/gce-pd
+			parameters:
+			 type: pd-ssd		
+	    
+# Using storage classes
+	    
+			apiVersion: v1
+			kind: PersistentVolumeClaim
+			metadata:
+			 name: mypvc
+			 namespace: testns
+			spec:
+			 accessModes:
+			 - ReadWriteOnce
+			 resources:
+			   requests:
+			     storage: 100Gi
+			 storageClassName: gold	    
+	    
 #  Kubernetes Secrets Store CSI (Container Storage Interface (CSI) Volume) Driver
 	    
 The Secrets Store CSI driver secrets-store.csi.k8s.io allows Kubernetes to mount multiple secrets, keys, and certs stored in enterprise-grade external secrets stores into their pods as a volume. Once the Volume is attached, the data in it is mounted into the container's file system.
