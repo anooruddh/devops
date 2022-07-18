@@ -3810,6 +3810,67 @@ Secrets are stored inside the Kubernetes data store (i.e., an etcd database) and
 	    
 **Bootstrap token**: These are tokens used during the node bootstrap process, used to sign ConfigMaps.	    
 
+# What is ConfigMap
+	    
+ConfigMaps are APIs that store configuration data in key-value pairs. Their primary function is to keep the configuration separate from the container image. It can represent the entire configuration file or individual properties.	    
+
+If you are working with Kubernetes, you want to keep your image light and portable. To do this, you should keep the configuration settings separate from the application code. Using ConfigMaps you can add different configuration data on pods to suit the environment they are running in.
+	    
+## How to Create a ConfigMap?
+	    
+	    		 kubectl create configmap arg-config-map --from-literal=firstname=Anooruddh --from-literal=lastname=Gajbhiye --dry-run=client -o yaml
+	    
+			apiVersion: v1
+			kind: ConfigMap
+			metadata:
+			  name: arg-config-map
+			data:
+			  firstname: Anooruddh
+			  lastname: Gajbhiye
+
+## How to use ConfigMap in manifest file
+	    
+			apiVersion: v1
+			kind: Pod
+			metadata:
+			  name: myapp
+			  labels:
+			    name: myapp
+			spec:
+			  containers:
+			  - name: myapp
+			    image: nginx:latest
+			    env:
+			      - name: firstname
+				valueFrom: 
+				  configMapKeyRef:
+				       key: firstname
+				       name: arg-config-map
+			      - name: lastname
+				valueFrom: 
+				  configMapKeyRef:
+				       key: lastname
+				       name: arg-config-map
+			    resources:
+			      limits:
+				memory: "128Mi"
+				cpu: "500m"
+			    ports:
+			      - containerPort: 80
+
+			    envFrom:
+			      - configMapRef:
+				  name: arg-config-map
+
+
+## Verify ConfigMap values inside container
+	    
+	    		kubectl exec -it pod/myapp bash
+	    		root@myapp:/# env|grep firstname
+			firstname=Anooruddh
+			root@myapp:/# env|grep lastname
+			lastname=Gajbhiye
+	    
 # Create a Secret 
 	    
 			kubectl create secret generic sec-arg --from-literal=arg_username=anooruddh --from-literal=arg_password=TopSecret1$	    
