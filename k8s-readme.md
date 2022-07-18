@@ -268,6 +268,29 @@ Context "docker-desktop" modified.
 			kubectl config view --minify -o jsonpath='{..namespace}'
 			kubectl config view --minify | grep namespace
 
+
+# Accessing service from another namespace
+
+### <service_name>.<namespace_name>.svc.cluster.local
+
+			kubectl exec -it dep-profile-698794cd67-lghd9 bash
+			root@dep-profile-698794cd67-lghd9:/#
+			root@dep-profile-698794cd67-lghd9:/# curl http://tracing.istio-system.svc.cluster.local       ( from default namespace, access tracing service hosted in istio-system namespace) 
+			Output:
+			
+			<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="cache-control" content="max-age=0"/><meta http-equiv="cache-control" content="no-cache"/><meta http-equiv="expires" content="0"/><meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT"/><meta http-equiv="pragma" content="no-cache"/><base href="/jaeger/" data-inject-target="BASE_URL"/><link rel="shortcut icon" href="./favicon.ico"><title>Jaeger UI</title><script>// Jaeger UI config data is embedded by the query-service via search-replace.
+			      // This is later merged with defaults into the redux `state.config` via
+			      // src/utils/config/get-config.js.
+			      // JAEGER_CONFIG_JS
+			      // the line above may be replaced by user-provided JS file that should define a UIConfig function.
+			      function getJaegerUiConfig() {
+				if(typeof window.UIConfig === 'function') {
+				  return UIConfig();
+				}
+			
+			
+
+
 ## KUBERNETES CLI-COMMANDS
 
 ### install hyperhit and minikube
