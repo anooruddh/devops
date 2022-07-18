@@ -3818,6 +3818,11 @@ If you are working with Kubernetes, you want to keep your image light and portab
 	    
 ## How to Create a ConfigMap?
 	    
+Depending on the source, the attribute will be:
+
+--from file (if the source is a file/directory)
+--from-literal (if the source is a key-value pair)	    
+	    
 	    		 kubectl create configmap arg-config-map --from-literal=firstname=Anooruddh --from-literal=lastname=Gajbhiye --dry-run=client -o yaml
 	    
 			apiVersion: v1
