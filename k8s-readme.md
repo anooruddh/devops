@@ -3174,7 +3174,17 @@ Under the hood , Istio uses five major tools:
 		istio-telemetry-bb59599bd-bnzpv         2/2     Running     3          5m13s
 		prometheus-fcdfd6cb5-6cjz2              1/1     Running     0          5m13s
 	    	
-	
+		$ kubectl get svc -n istio-system                                                                                           
+		NAME                   TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                                      AGE       
+		grafana                ClusterIP      10.108.140.30    <none>        3000/TCP                                     7d1h      
+		istio-ingressgateway   LoadBalancer   10.107.218.78    localhost     15021:30317/TCP,80:30324/TCP,443:32599/TCP   7d2h      
+		istiod                 ClusterIP      10.109.251.145   <none>        15010/TCP,15012/TCP,443/TCP,15014/TCP        7d2h      
+		jaeger-collector       ClusterIP      10.99.113.194    <none>        14268/TCP,14250/TCP,9411/TCP                 7d1h      
+		kiali                  ClusterIP      10.102.220.152   <none>        20001/TCP,9090/TCP                           7d1h      
+		prometheus             ClusterIP      10.100.140.244   <none>        9090/TCP                                     7d1h      
+		tracing                ClusterIP      10.100.169.170   <none>        80/TCP,16685/TCP                             7d1h      
+		zipkin                 ClusterIP      10.103.27.6      <none>        9411/TCP                                     7d1h      
+
 # Service Mesh Common Capabilities
 	
 	* API (Kubernetes Custom Resource Definitions (CRD), programmable interface)
