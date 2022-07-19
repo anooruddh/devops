@@ -928,21 +928,63 @@ A Kubernetes service is a logical abstraction for a deployed group of pods in a 
 
 Since pods are ephemeral, a service enables a group of pods, which provide specific functions (web services, image processing, etc.) to be assigned a name and unique IP address (clusterIP). As long as the service is running that IP address, it will not change. Services also define policies for their acces
 
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: mongo-express-service
-    spec:
-      selector:
-        app: mongo-express
-      type: LoadBalancer  
-      ports:
-        - protocol: TCP
-          port: 8081
-          targetPort: 8081
-          nodePort: 30000
+	    apiVersion: v1
+	    kind: Service
+	    metadata:
+	      name: mongo-express-service
+	    spec:
+	      selector:
+		app: mongo-express
+	      type: LoadBalancer  
+	      ports:
+		- protocol: TCP
+		  port: 8081
+		  targetPort: 8081
+		  nodePort: 30000
 
 
+## Service creates a resource name 'EndPoint"
+	
+		λ kubectl get ep svc-profile
+		NAME          ENDPOINTS                                   AGE
+		svc-profile   10.1.0.211:80,10.1.0.212:80,10.1.0.213:80   37h
+
+		apiVersion: v1
+		kind: Endpoints
+		metadata:
+		  creationTimestamp: "2022-07-17T18:16:10Z"
+		  name: svc-profile
+		  namespace: default
+		  resourceVersion: "383028"
+		  uid: 75da8923-e1d9-42c7-a45b-442631a8b930
+		subsets:
+		- addresses:
+		  - ip: 10.1.0.211
+		    nodeName: docker-desktop
+		    targetRef:
+		      kind: Pod
+		      name: dep-profile-77fbcf45ff-pnq9n
+		      namespace: default
+		      uid: c274ed9a-7ef2-447e-9df0-b65f04897421
+		  - ip: 10.1.0.212
+		    nodeName: docker-desktop
+		    targetRef:
+		      kind: Pod
+		      name: dep-profile-77fbcf45ff-f8mmw
+		      namespace: default
+		      uid: ff42f1bd-3e26-483c-9499-e78791d8e195
+		  - ip: 10.1.0.213
+		    nodeName: docker-desktop
+		    targetRef:
+		      kind: Pod
+		      name: dep-profile-77fbcf45ff-mgb8n
+		      namespace: default
+		      uid: 05d7aa69-abf6-49e8-8efc-2ce3f8cb721f
+		  ports:
+		  - port: 80
+		    protocol: TCP
+
+	
 # In Kubernetes, what is the difference between a service and a deployment?
 
 ![Screenshot](deployment-service.png)
