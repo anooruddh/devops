@@ -18,3 +18,5 @@ Google Cloud includes a combination of services available over the internet that
 
 :point_right: Cloud Key Management
 
+:point_right: Google Container registry
+
