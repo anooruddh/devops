@@ -4202,3 +4202,53 @@ More specifically, setting this field to zero means that all old replica sets wi
 # maxUnavailable 
 	    
 **The maximum number of pods that can be unavailable during the update.** Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%). Absolute number is calculated from percentage by rounding down. This can not be 0 if MaxSurge is 0. Defaults to 25%. Example: when this is set to 30%, the old ReplicaSet can be scaled down to 70% of desired pods immediately when the rolling update starts. Once new pods are ready, old ReplicaSet can be scaled down further, followed by scaling up the new ReplicaSet, ensuring that the total number of pods available at all times during the update is at least 70% of desired pods.	    
+
+	    
+# What is Pod priority in Kubernetes?	    
+	    
+Pod priority is a Kubernetes scheduling feature that allows Kubernetes to make scheduling decisions comparing other pods based on priority number. Let’s look at the following two main concepts in pod priority.
+	    
+	    		Pod Preemption
+			Pod Priority Class
+
+## Pod Preemption
+	    
+Pod preemption feature allows Kubernetes to preempt (evict) lower priority pods from nodes when higher priority pods are in the scheduling queue and no node resources are available.
+
+## Kubernetes Pod Priority Class
+	    
+To assign a pod certain priority, you need a priority class.
+
+You can set a priority for a Pod using the PriorityClass object (non-namespaced) with a Value.
+
+The value determines the priority. It can be 1,000,000,000 (one billion) or lower. Larger the number, the higher the priority.	    
+	    
+The name of the priorityclass (priorityClassName) will be used in the pod specification to set the priority.
+	    
+If you don’t want the priority class to preempt the pods, you can set PreemptionPolicy: Never. By default, Priorityclasss use PreemptLowerPriority policy.
+	    
+## Pod PriorityClass Example
+	    
+			apiVersion: scheduling.k8s.io/v1
+			kind: PriorityClass
+			metadata:
+			  name: high-priority-apps
+			value: 1000000
+			preemptionPolicy: PreemptLowerPriority
+			globalDefault: false
+			description: "Mission Critical apps."
+			---
+			apiVersion: v1
+			kind: Pod
+			metadata:
+			  name: nginx
+			  labels:
+			    env: dev
+			spec:
+			  containers:
+			  - name: web
+			    image: nginx:latest
+			    imagePullPolicy: IfNotPresent
+			  priorityClassName: high-priority-apps	    
+
+	    
