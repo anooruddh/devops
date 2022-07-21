@@ -9,7 +9,12 @@ Google Cloud includes a combination of services available over the internet that
 # Google Cloud API's or Services
 
 :point_right: Compute Engine
+
 :point_right: Kubernetes Engine
+
 :point_right: Cloud Storage
+
 :point_right: Cloud Build
+
 :point_right: Cloud Key Management
+
