@@ -224,9 +224,30 @@ Service Discovery and load balancing: Kubernetes has a feature which assigns the
 
 			kube-node-lease ( heartbeat of nodes, checks the availablity of nodes )
 
+## Kubernetes starts with four initial namespaces:
+
+default The default namespace for objects with no other namespace
+
+kube-system The namespace for objects created by the Kubernetes system
+
+kube-public This namespace is created automatically and is readable by all users (including those not authenticated). This namespace is mostly reserved for cluster usage, in case that some resources should be visible and readable publicly throughout the whole cluster. The public aspect of this namespace is only a convention, not a requirement.
+
+kube-node-lease This namespace holds Lease objects associated with each node. Node leases allow the kubelet to send heartbeats so that the control plane can detect node failure
+
+## Not All Objects are in a Namespace
+
+			To see which Kubernetes resources are and aren't in a namespace:
+
+			# In a namespace
+			kubectl api-resources --namespaced=true
+
+			# Not in a namespace
+			kubectl api-resources --namespaced=false
+
 **You can set access (user access/permissions ) and resource( CPU,Memory ) limit on Namespace**
 
 **You can not set namespaces for few resources like volume,nodes as they live globally and you can not isolate them**
+
 
 			λ kubectl api-resources --namespaced=false
 
@@ -3793,7 +3814,137 @@ Please edit the object below. Lines beginning with a '#' will be ignored, and an
 		  uid: 73379959-57fa-4d99-9dcc-057dc4a68fa7
 		type: kubernetes.io/dockerconfigjson
 
+
+## Secret as file (stored in volume)
+
+Create a secret
 	    
+		    apiVersion: v1
+			kind: Secret
+			metadata:
+			  name: mysecret
+			type: Opaque
+			data:
+			  username: bXl1c2VybmFtZQo= #Base64 encoded value of "myusername"
+			  password: bXlwYXNzd29yZAo= #Base64 encoded value of "mypassword"	    
+
+Create a pod
+
+			apiVersion: v1
+			kind: Pod
+			metadata:
+			  name: secret-as-file
+			spec:
+			  containers:
+			  - name: secret-as-file
+			    image: nginx
+			    volumeMounts:
+			    - name: mysecretvol
+			      mountPath: "/etc/mysecret"
+			      readOnly: true
+			  volumes:
+			  - name: mysecretvol
+			    secret:
+			      secretName: mysecret	    
+			
+	    		Output	    
+
+			$ kubectl exec secret-as-file -- ls /etc/mysecret
+
+			password
+			username
+
+			$ kubectl exec secret-as-file -- cat /etc/mysecret/username
+
+			myusername
+
+## Secret as environment variable
+
+			apiVersion: v1
+			kind: Pod
+			metadata:
+			  name: secret-as-env
+			spec:
+			  containers:
+			  - name: secret-as-env
+			    image: nginx
+			    env:
+			    - name: SECRET_USERNAME
+			      valueFrom:
+				secretKeyRef:
+				  name: mysecret
+				  key: username
+			    - name: SECRET_PASSWORD
+			      valueFrom:
+				secretKeyRef:
+				  name: mysecret
+				  key: password	    
+	    
+# Service Accounts
+	    
+When you interact directly with Kubernetes, using kubectl for example, you’re using a user account. When processes in pods need to interact with Kubernetes though, they use a service account, which describes the set of permissions they have within Kubernetes. The good news is that out of the box, all pods are given the default service account. Unless your Kubernetes administrator has changed the default service account though, the permissions are limited. If you run kubectl in a container on Kubernetes, it will automatically know where to find the cluster that it’s running on
+	    
+ create a new service account with a wider set of permissions. This is demonstrated in the following YAML:
+
+			apiVersion: rbac.authorization.k8s.io/v1
+			kind: Role
+			metadata:
+			  namespace: default
+			  name: pod-read-role
+			rules:
+			- apiGroups: [""] # "" indicates the core API group
+			  resources: ["pods"]
+			  verbs: ["get", "watch", "list"]
+
+			---
+			apiVersion: v1
+			kind: ServiceAccount
+			metadata:
+			  name: pod-read-sa
+
+			---
+			kind: RoleBinding
+			apiVersion: rbac.authorization.k8s.io/v1
+			metadata:
+			  name: pod-read-rolebinding
+			  namespace: default
+			subjects:
+			- kind: ServiceAccount
+			  name: pod-read-sa
+			  apiGroup: ""
+			roleRef:
+			  kind: Role
+			  name: pod-read-role
+			  apiGroup: ""	    
+	    
+
+# Note: If you need to check if you ha
+	    ve permission to run a command before actually running it, you can use the kubectl auth can-i command:
+
+			$ kubectl auth can-i get pods
+			no	    
+	    
+# Processes that are run inside a container use service account tokens to communicate with the Kubernetes API server.
+
+# Obtaining the service account token from the pod	    
+	    
+A long-running service account is mounted in the /var/run/secrets/kubernetes.io/serviceaccount directory. The following three files are stored in this mounted directory:
+
+			ca.crt - the certificate file that is needed for HTTPS access.
+			namespace - the namespace scope of the associated token. In IBM Cloud Pak for Multicloud Management, non-admin users are authorized to access only the resources that are in their own namespace.
+			token - the service account token that is used for authentication.
+
+	    
+			root@dep-profile-7fd796f7c5-w8n4x:/var/run/secrets/kubernetes.io/serviceaccount# ls -lrt
+			total 0
+			lrwxrwxrwx 1 root root 12 Jul 21 04:12 token -> ..data/token
+			lrwxrwxrwx 1 root root 16 Jul 21 04:12 namespace -> ..data/namespace
+			lrwxrwxrwx 1 root root 13 Jul 21 04:12 ca.crt -> ..data/ca.crt
+			root@dep-profile-7fd796f7c5-w8n4x:/var/run/secrets/kubernetes.io/serviceaccount#	    
+	    
+# UIDs / UUIDs - 
+	    
+A Kubernetes systems-generated string to uniquely identify objects.	Every object created over the whole lifetime of a Kubernetes cluster has a distinct UID. It is intended to distinguish between historical occurrences of similar entities.Kubernetes UIDs are universally unique identifiers (also known as UUIDs).    
 ## Dockerfile
 	    
 			FROM python:3.8-slim
