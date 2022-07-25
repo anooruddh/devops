@@ -4304,6 +4304,24 @@ The Kubernetes Container Storage Interface (CSI) is an extensible approach to th
 	    			sudo docker commit [CONTAINER_ID] [new_image_name]
 	    			sudo docker commit deddd39fa163 ubuntu-nmap
 	    			sudo docker images
+	    
+	    
+
+				docker exec -it 3769b186c1de39f2 bash
+				docker commit 3769b186c1de39f2 nginx-arg
+				docker images | grep nginx-arg
+				docker tag nginx-arg:latest sendtoanoo/profile:nginxarg
+
+				λ docker push sendtoanoo/profile:nginxarg
+				The push refers to repository [docker.io/sendtoanoo/profile]
+				3730d23c1cb7: Pushed
+				abc66ad258e9: Mounted from library/nginx
+				243243243ee2: Mounted from library/nginx
+				f931b78377da: Mounted from library/nginx
+				d7783033d823: Mounted from library/nginx
+				4553dc754574: Mounted from library/nginx
+				43b3c4e3001c: Mounted from library/nginx
+				nginxarg: digest: sha256:asdsadsewqewqewqewqewqe3432432432432rewrwerewrewr324324 size: 1779docker push sendtoanoo/profile:nginxarg	    			
 
 # Revision History Limit
 	    
