@@ -4295,6 +4295,8 @@ The Kubernetes Container Storage Interface (CSI) is an extensible approach to th
 	    
 # Editing an existing docker image
 	    
+### Pull nginx:latest, go inside its container,modify nginx html file located at /usr/share/nginx/html/index.html, come out of container, runit commit on container to a new image, tag new image to push into your own docker repository.	    
+	    
 	    			sudo docker pull ubuntu
 	    			sudo docker images
 	    			sudo docker run -it cf0f3ca922e0 bin/bash
