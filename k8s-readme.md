@@ -4105,6 +4105,52 @@ Depending on the source, the attribute will be:
       				USER:      <set to the key 'arg_username' in secret 'sec-arg'>  Optional: false
       				PASSWORD:  <set to the key 'arg_password' in secret 'sec-arg'>  Optional: false
 
+---------	    
+			apiVersion: apps/v1
+			kind: Deployment
+			metadata:
+			  labels:
+			    app: mariadb
+			  name: mariadb-deployment
+			spec:
+			  replicas: 1
+			  selector:
+			    matchLabels:
+			      app: mariadb
+			  template:
+			    metadata:
+			      labels:
+				app: mariadb
+			    spec:
+			      containers:
+			      - image: docker.io/mariadb:10.4
+				name: mariadb
+				env:
+				  - name: MYSQL_ROOT_PASSWORD
+				    valueFrom:
+				      secretKeyRef:
+					name: mariadb-root-password
+					key: password
+				envFrom:
+				- secretRef:
+				    name: mariadb-user-creds
+				ports:
+				- containerPort: 3306
+				  protocol: TCP
+				volumeMounts:
+				- mountPath: /var/lib/mysql
+				  name: mariadb-volume-1
+				- mountPath: /etc/mysql/conf.d
+				  name: mariadb-config-volume
+			      volumes:
+			      - emptyDir: {}
+				name: mariadb-volume-1
+			      - configMap:
+				  name: mariadb-config
+				  items:
+				    - key: max_allowed_packet.cnf
+				      path: max_allowed_packet.cnf
+				name: mariadb-config-volume	    
 	    
 # Using Kubernetes Secrets
 	    
