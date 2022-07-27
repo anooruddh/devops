@@ -3733,7 +3733,7 @@ Clean up, by removing the php-apache web server and the Horizontal Pod Autoscale
 	    		kubectl delete horizontalpodautoscaler.autoscaling/php-apache
 	    		kubectl delete deployment.apps/php-apache service/php-apache
 
-# Using Private Registry ( imagePullSecrets )
+# Using Private Registry ( **imagePullSecrets** )
 	    
 Authenticating Kubernetes with the private Docker registry
 
@@ -3753,7 +3753,7 @@ Now we need to instruct Kubernetes to use the secret credentials we just created
 	    
 There are 2 options to do this:
 
-## 1.Add an imagePullSecrets section to the pod spec. For example
+## 1.Add an **imagePullSecrets** section to the pod spec. For example
 		
 	    	➜  ~ kubectl edit deployment my-app -n my-app-ns
 			apiVersion: apps/v1
@@ -3781,7 +3781,7 @@ You can also patch a custom service account to include the imagePullSecrets sect
 			...
 
 The second option is usually preferred. This way all workloads in that namespace that their image is pulled from the private Docker registry 
-(ex. my-artifactory.jfrog.io) will be able to do so without having to explicitly configure the imagePullSecrets for each workload.
+(ex. my-artifactory.jfrog.io) will be able to do so without having to explicitly configure the **imagePullSecrets** for each workload.
 
 		kubectl create secret docker-registry imgpullcredentials --docker-username=sendtoanoo --docker-password=xxxxxxxxxxx --docker-email=sendtoanoo@gmail.com
 		-n my-app-ns
@@ -4160,7 +4160,7 @@ When you create a secret, it needs to be referenced by the pod that will use it.
 
 2. Import the secret as an environment variable to a container.
 
-3. Use kubelet, and the imagePullSecrets field.
+3. Use kubelet, and the **imagePullSecrets** field.
 
 ### Create Secret from file
 	    
