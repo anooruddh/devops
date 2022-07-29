@@ -4503,3 +4503,73 @@ If you don’t want the priority class to preempt the pods, you can set Preempti
 		Do not run containers with privileged modes or high capabilities.
 		Create Pod Security Policy rules, defining a set of security conditions that a pod must run with in order to be accepted into the cluster.
 		Create Network Policies to preventing your pods from accessing the API server.	    
+
+# RBAC - In Kubernetes
+
+## Users in Kubernetes
+
+All Kubernetes clusters have two categories of users: service accounts managed by Kubernetes, and normal users. Kubernetes does not have objects which represent normal user accounts. Normal users cannot be added to a cluster through an API call.
+
+## So how we choud create an user account?
+
+Any user that presents a valid certificate signed by the cluster’s certificate authority (CA) is considered authenticated. So you need to create a certificate for you username.
+
+
+## Why I need a user account insted of service account?
+
+A service account is wisible and its token can be mounted in to a pod so theat pod has the same privileges as you.
+
+Create a namespace Dev
+			kubectl create nsg Dev
+create a folder John ( master node)
+			mkdir John && cd John
+Create a private key for the user John
+			openssl genrsa -out John.key 2048
+Create a certificate signing request (CSR). CN is the username and O the group
+			openssl req -new -key John.key -out John.csr  -subj "/CN=John/O=Dev"
+Sign the CSR with the Kubernetes CA. We have to use the CA cert and key which are normally in /etc/kubernetes/pki/  ( valid for 500 days)
+			openssl x509 -req -in John.csr  -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key   -CAcreateserial -out John.crt -days 500
+Create the user inside Kubernetes.
+			kubectl config set-credentials John --client-certificate=/home/John/.certs/John.crt --client-key=/home/John/.certs/John.key
+Create a context for the user.
+			kubectl config set-context John-context   --cluster=kubernetes --user=John --namespace=Dev
+kubectl config get-contexts
+			CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+					  John-context                  kubernetes   John                Dev
+			*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   instavote			
+			kubectl config view			
+
+			kubectl config use-context John-context
+
+			kubectl get pods --as John
+
+			No resources found.
+			Error from server (Forbidden): pods is forbidden: User "John" cannot list pods in the namespace "Dev"
+
+Since there are authorization rules set, the user can not make any api calls. Thats when you would create some roles and bind it to the users
+
+			apiVersion: rbac.authorization.k8s.io/v1beta1
+			kind: Role
+			metadata:
+			  namespace: Dev
+			  name: readonly
+			rules:
+			- apiGroups: ["*"]
+			  resources: ["*"]
+			  verbs: ["get", "list", "watch"]
+
+			---
+
+			kind: RoleBinding
+			apiVersion: rbac.authorization.k8s.io/v1
+			metadata:
+			  name: readonly
+			  namespace: Dev
+			subjects:
+			- kind: Group
+			  name: dev
+			  apiGroup: rbac.authorization.k8s.io
+			roleRef:
+			  kind: Role
+			  name: readonly
+			  apiGroup: rbac.authorization.k8s.io
