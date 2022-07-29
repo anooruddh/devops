@@ -4517,7 +4517,7 @@ Any user that presents a valid certificate signed by the cluster’s certificate
 
 ## Why I need a user account insted of service account?
 
-A service account is wisible and its token can be mounted in to a pod so theat pod has the same privileges as you.
+A service account is visible and its token can be mounted in to a pod so theat pod has the same privileges as you.
 
 Create a namespace Dev
 	    
