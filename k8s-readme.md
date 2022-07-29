@@ -4511,6 +4511,7 @@ If you don’t want the priority class to preempt the pods, you can set Preempti
 All Kubernetes clusters have two categories of users: service accounts managed by Kubernetes, and normal users. Kubernetes does not have objects which represent normal user accounts. Normal users cannot be added to a cluster through an API call.
 
 **Kubernetes does not have API Objects for User Accounts. Of the available ways to manage authentication**
+** service account provides the process running in a pod to authenticate and communicate with the API server.**	    
 	    
 ## So how we choud create an user account?
 
