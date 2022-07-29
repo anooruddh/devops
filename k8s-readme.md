@@ -4493,3 +4493,13 @@ If you don’t want the priority class to preempt the pods, you can set Preempti
 			  priorityClassName: high-priority-apps	    
 
 	    
+
+### These are some security best-practices to prevent this type of attack:
+
+		Run the Kubelet service with --anonymous-auth false and enable a secure authorization mode.
+		Do not expose the Kubelet API port (10250/TCP) to the outside world.
+		Only publicly expose the kube-apiserver API (6443/TCP) when needed.
+		Ensure the Service Accounts have the least privileges needed for their tasks.
+		Do not run containers with privileged modes or high capabilities.
+		Create Pod Security Policy rules, defining a set of security conditions that a pod must run with in order to be accepted into the cluster.
+		Create Network Policies to preventing your pods from accessing the API server.	    
