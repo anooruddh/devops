@@ -4510,6 +4510,8 @@ If you don’t want the priority class to preempt the pods, you can set Preempti
 
 All Kubernetes clusters have two categories of users: service accounts managed by Kubernetes, and normal users. Kubernetes does not have objects which represent normal user accounts. Normal users cannot be added to a cluster through an API call.
 
+**Kubernetes does not have API Objects for User Accounts. Of the available ways to manage authentication**
+	    
 ## So how we choud create an user account?
 
 Any user that presents a valid certificate signed by the cluster’s certificate authority (CA) is considered authenticated. So you need to create a certificate for you username.
@@ -4531,11 +4533,13 @@ Create a private key for the user John
 	    
 			openssl genrsa -out John.key 2048
 	    
-Create a certificate signing request (CSR). CN is the username and O the group
+Create a certificate signing request (CSR). CN is the username and O the group (Make sure you specify your username and group in the -subj section (CN is for the username and O for the group)
 	    
 			openssl req -new -key John.key -out John.csr  -subj "/CN=John/O=Dev"
 	    
 Sign the CSR with the Kubernetes CA. We have to use the CA cert and key which are normally in /etc/kubernetes/pki/  ( valid for 500 days)
+
+Locate your Kubernetes cluster certificate authority (CA). This will be responsible for approving the request and generating the necessary certificate to access the cluster API. Its location is normally /etc/kubernetes/pki/. In the case of Minikube, it would be ~/.minikube/. Check that the files ca.crt and ca.key exist in the location.
 	    
 			openssl x509 -req -in John.csr  -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key   -CAcreateserial -out John.crt -days 500
 	    
