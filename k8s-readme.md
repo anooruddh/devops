@@ -3780,6 +3780,30 @@ You can also patch a custom service account to include the imagePullSecrets sect
 			- name: regcred
 			...
 
+Note -  a pod is associated with a service account, and a credential (token) for that service account is placed into the filesystem tree of each container in that pod, at /var/run/secrets/kubernetes.io/serviceaccount/token
+	    
+			/var/run/secrets/kubernetes.io/serviceaccount
+			ls -lrt
+			root@dep-profile-77fbcf45ff-jpbjp:/var/run/secrets/kubernetes.io/serviceaccount# ls -lrt
+			total 0
+			lrwxrwxrwx 1 root root 12 Jul 29 03:16 token -> ..data/token
+			lrwxrwxrwx 1 root root 16 Jul 29 03:16 namespace -> ..data/namespace
+			lrwxrwxrwx 1 root root 13 Jul 29 03:16 ca.crt -> ..data/ca.crt
+	    
+	    
+			$ export TOKEN="token-value"
+			# Accesing API server from outside
+			# Minikube exposes apiserver on 8443 insted of 6443
+			$ kubectl --insecure-skip-tls-verify=true  \
+				  --server="https://${IP_ADDRESS}:8443" \
+				  --token="${TOKEN}"                \
+				  get secrets --all-namespaces
+			NAMESPACE         NAME                                             TYPE                                  DATA   AGE
+			default           default-token-j5h9r                              kubernetes.io/service-account-token   3      25h
+			kube-node-lease   default-token-5z6w9                              kubernetes.io/service-account-token   3      25h
+			kube-public       default-token-p6q2c                              kubernetes.io/service-account-token   3      25h
+			kube-system       attachdetach-controller-token-66xpl              kubernetes.io/service-account-token   3      25h	    		
+	    
 The second option is usually preferred. This way all workloads in that namespace that their image is pulled from the private Docker registry 
 (ex. my-artifactory.jfrog.io) will be able to do so without having to explicitly configure the **imagePullSecrets** for each workload.
 
