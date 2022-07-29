@@ -4520,6 +4520,12 @@ Any user that presents a valid certificate signed by the cluster’s certificate
 ## Why I need a user account insted of service account?
 
 A service account is visible and its token can be mounted in to a pod so theat pod has the same privileges as you.
+	    
+## User Account vs Service Account
+
+			1.User accounts are for humans. Service accounts are for processes, which run in pods.
+
+			2.User accounts are intended to be global. Names must be unique across all namespaces of a cluster. Service accounts are namespaced.	    
 
 Create a namespace Dev
 	    
