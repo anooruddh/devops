@@ -4607,6 +4607,8 @@ Since there are authorization rules set, the user can not make any api calls. Th
 ------------------------------------------------------------------------------------------------------------------------------------------------
 # Setup RBAC in kubernetes
 	    
+### Kubernetes doesn’t have an API for creating users. Though, it can authenticate and authorize users.
+	    
 ## 1. Create a client certificate
 	    
 We’ll be creating a key and certificate sign request (CSR) needed to create the certificate. Let’s create a directory where to save the certificates. I’ll call it cert:
