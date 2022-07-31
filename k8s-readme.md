@@ -4734,4 +4734,7 @@ $ kubectl get pods # this will succeed !
 	    
 At the end, we have created a user with limited access to k8s resources. User1 will be authenticated through his certificate and will be granted access through the Role and RoleBinding.
 
- 
+
+#  Deployments vs StatefulSets vs DaemonSets
+	    
+	    
