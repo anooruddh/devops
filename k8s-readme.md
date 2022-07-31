@@ -4544,6 +4544,8 @@ Create a certificate signing request (CSR). CN is the username and O the group (
 	    
 			openssl req -new -key John.key -out John.csr  -subj "/CN=John/O=Dev"
 	    
+**Note - The common name (CN) of the subject will be used as username for authentication request. The organization field (O) will be used to indicate group membership of the user.**
+	    
 Sign the CSR with the Kubernetes CA. We have to use the CA cert and key which are normally in /etc/kubernetes/pki/  ( valid for 500 days)
 
 Locate your Kubernetes cluster certificate authority (CA). This will be responsible for approving the request and generating the necessary certificate to access the cluster API. Its location is normally /etc/kubernetes/pki/. In the case of Minikube, it would be ~/.minikube/. Check that the files ca.crt and ca.key exist in the location.
