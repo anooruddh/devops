@@ -4608,19 +4608,25 @@ Since there are authorization rules set, the user can not make any api calls. Th
 # Setup RBAC in kubernetes
 	    
 ## 1. Create a client certificate
+	    
 We’ll be creating a key and certificate sign request (CSR) needed to create the certificate. Let’s create a directory where to save the certificates. I’ll call it cert:
 
 			$ mkdir cert && cd cert
+	    
 1.1. Generate a key using OpenSSL:
 
 			$ openssl genrsa -out user1.key 2048
+	    
 1.2. Generate a Client Sign Request (CSR)
 
 			$ openssl req -new -key user1.key -out user1.csr -subj “/CN=user1/O=group1”
+	    
 ls ~/.minikube/ # check that the files ca.crt and ca.key exists in this location.
 
 1.3. Generate the certificate (CRT)
-			$ openssl x509 -req -in user1.csr -CA ~/.minikube/ca.crt -CAkey ~/.minikube/ca.key -CAcreateserial -out user1.crt -days 500
+		
+	    		$ openssl x509 -req -in user1.csr -CA ~/.minikube/ca.crt -CAkey ~/.minikube/ca.key -CAcreateserial -out user1.crt -days 500
+	    
 Now, that we have the .key and the .crt, we can create a user.	   
 	    
 ## 2. Create a user
@@ -4651,6 +4657,7 @@ But, now, user1 doesn’t have any access privileges to the cluster. For that we
 			Error from server (Forbidden): namespaces is forbidden: User "user1" cannot create resource "namespaces" in API group "" at the cluster scope
 	    
 ## 3. Grant access to the user
+	    
 To give access to manage k8s resources to user1, we need to create a Role and a BindingRole.
 
 3.1. Create a Role
@@ -4705,9 +4712,11 @@ We check that the Role and BindingRole was created successfully:
 			$ kubectl get rolebindings
 			NAME        AGE
 			read-pods   2m
+	    
 We used Role to scope the rules to only one namespace, but we can also use ClusterRole to define more than one namespace. RoleBinding is used to bind to Role and ClusterRoleBinding is used to bind to ClusterRole.
 
 4. Testing the allowed operations for user
+	    
 Switch again to user1 and try one of the non allowed operations like to create a namespace. This will fail, because user1 is not allowed to do so.
 
 			$ kubectl config use-context user1-context
@@ -4718,6 +4727,7 @@ But, when try one of the allowed operations, like getting the pods:
 $ kubectl get pods # this will succeed !
 	    
 ## Summary
+	    
 At the end, we have created a user with limited access to k8s resources. User1 will be authenticated through his certificate and will be granted access through the Role and RoleBinding.
 
  
