@@ -4744,6 +4744,7 @@ Create a user directory
 			controlplane $ kubectl get ns
 	    
 Create a new namespace	    
+	    
 			NAME              STATUS   AGE
 			default           Active   83d
 			kube-node-lease   Active   83d
@@ -4781,7 +4782,7 @@ Create a user certificate csr ( certificate signing request)
 
 Sign the .key and .csr created with Kubernetes Admin CA
 	    	    
-			ontrolplane $ openssl x509 -req -in John.csr  -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key   -CAcreateserial -out John.crt -days 500
+			controlplane $ openssl x509 -req -in John.csr  -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key   -CAcreateserial -out John.crt -days 500
 			Signature ok
 			subject=CN = John, O = dev
 			Getting CA Private Key
