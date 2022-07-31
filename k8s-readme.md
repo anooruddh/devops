@@ -4736,11 +4736,13 @@ At the end, we have created a user with limited access to k8s resources. User1 w
 
 # Hands-on RBAC
 
-Create a user directory	    
+Create a user directory
+	    
 			controlplane $ mkdir John && cd John
 			controlplane $ pwd
 			/tmp/John
 			controlplane $ kubectl get ns
+	    
 Create a new namespace	    
 			NAME              STATUS   AGE
 			default           Active   83d
