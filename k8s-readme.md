@@ -4734,6 +4734,243 @@ $ kubectl get pods # this will succeed !
 	    
 At the end, we have created a user with limited access to k8s resources. User1 will be authenticated through his certificate and will be granted access through the Role and RoleBinding.
 
+# Hands-on RBAC
+
+Create a user directory	    
+			controlplane $ mkdir John && cd John
+			controlplane $ pwd
+			/tmp/John
+			controlplane $ kubectl get ns
+Create a new namespace	    
+			NAME              STATUS   AGE
+			default           Active   83d
+			kube-node-lease   Active   83d
+			kube-public       Active   83d
+			kube-system       Active   83d
+
+			controlplane $ kubectl create ns dev
+			namespace/dev created
+			controlplane $ ls
+			controlplane $ ls -lrt
+			total 0
+
+Create a user certificate key
+	    
+	    		controlplane $ openssl genrsa -out John.key 2048
+			Generating RSA private key, 2048 bit long modulus (2 primes)
+			.........................................+++++
+			............................+++++
+			e is 65537 (0x010001)
+			controlplane $ pwd
+			/tmp/John
+			controlplane $ ls -lrt
+			total 4
+			-rw------- 1 root root 1679 Jul 31 17:40 John.key
+
+Create a user certificate csr ( certificate signing request)
+	        
+	    
+			controlplane $ openssl req -new -key John.key -out John.csr  -subj "/CN=John/O=dev"
+			controlplane $ ls -lrt
+			total 8
+			-rw------- 1 root root 1679 Jul 31 17:40 John.key
+			-rw-r--r-- 1 root root  903 Jul 31 17:40 John.csr
+			controlplane $ 
+
+Sign the .key and .csr created with Kubernetes Admin CA
+	    	    
+			ontrolplane $ openssl x509 -req -in John.csr  -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key   -CAcreateserial -out John.crt -days 500
+			Signature ok
+			subject=CN = John, O = dev
+			Getting CA Private Key
+
+List contexts
+	    
+			controlplane $ kubectl config get-contexts
+			CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+			*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
+
+Set user context
+	    
+			controlplane $ kubectl config set-credentials John --client-certificate=/tmp/John/John.crt --client-key=/tmp/John/John.key
+			User "John" set.
+			controlplane $ kubectl config get-contexts
+
+			CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+			*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin  
+
+			controlplane $ kubectl config set-context John-context   --cluster=kubernetes --user=John --namespace=dev
+			Context "John-context" created.
+			controlplane $ kubectl config get-contexts
+
+			CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+				  John-context                  kubernetes   John               dev
+			*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
+			controlplane $ 
+			controlplane $ kubectl config view
+			apiVersion: v1
+			clusters:
+			- cluster:
+			    certificate-authority-data: DATA+OMITTED
+			    server: https://172.30.1.2:6443
+			  name: kubernetes
+			contexts:
+			- context:
+			    cluster: kubernetes
+			    namespace: dev
+			    user: John
+			  name: John-context
+			- context:
+			    cluster: kubernetes
+			    user: kubernetes-admin
+			  name: kubernetes-admin@kubernetes
+			current-context: kubernetes-admin@kubernetes
+			kind: Config
+			preferences: {}
+			users:
+			- name: John
+			  user:
+			    client-certificate: /tmp/John/John.crt
+			    client-key: /tmp/John/John.key
+			- name: kubernetes-admin
+			  user:
+			    client-certificate-data: REDACTED
+			    client-key-data: REDACTED
+			controlplane $ 
+
+Switch to user context
+	    
+			controlplane $ kubectl config get-contexts
+			CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+				  John-context                  kubernetes   John               dev
+			*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
+			controlplane $ kubectl config use-context John-context
+			Switched to context "John-context".
+			controlplane $ 
+			controlplane $ kubectl config get-contexts
+			CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+			*         John-context                  kubernetes   John               dev
+				  kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
+			controlplane $ 
+
+Test user access
+	    
+			controlplane $ kubectl get pods --as John
+			Error from server (Forbidden): users "John" is forbidden: User "John" cannot impersonate resource "users" in API group "" at the cluster scope
+			controlplane $ 
+
+Switch to Kuberntes-admin context to create a Role and RoleBinding
+
+			controlplane $ kubectl config use-context kubernetes-admin@kubernetes
+			Switched to context "kubernetes-admin@kubernetes".
+			controlplane $ kubectl config get-contexts
+			CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+				  John-context                  kubernetes   John               dev
+			*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
+			controlplane $ 
+
+Create Role and RoleBinding manifest file
+
+			controlplane $ cat rb.yml              
+			apiVersion: rbac.authorization.k8s.io/v1
+			kind: Role
+			metadata:
+			  namespace: dev
+			  name: readonly
+			rules:
+			- apiGroups: ["*"]
+			  resources: ["*"]
+			  verbs: ["get", "list", "watch"] 
+
+			---
+
+			kind: RoleBinding
+			apiVersion: rbac.authorization.k8s.io/v1
+			metadata:
+			  name: readonly
+			  namespace: dev
+			subjects:
+			- kind: User
+			  name: John
+			  apiGroup: rbac.authorization.k8s.io
+			roleRef:
+			  kind: Role
+			  name: readonly
+			  apiGroup: rbac.authorization.k8s.io
+
+
+Apply to create Role and RoleBinding
+	    
+			controlplane $ kubectl apply -f rb.yml 
+			role.rbac.authorization.k8s.io/readonly created
+			rolebinding.rbac.authorization.k8s.io/readonly created
+			controlplane $   
+Now test if the user have access to resources of dev namespace/group	    
+
+			controlplane $ kubectl get pods -n dev --as John
+			No resources found in dev namespace.
+			controlplane $ 
+	    
+			controlplane $ kubectl config use-context John-context
+			Switched to context "John-context".
+			controlplane $ 
+			controlplane $ kubectl config get-contexts
+			CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+			*         John-context                  kubernetes   John               dev
+				  kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
+			controlplane $ 
+
+			Dry run; print the corresponding API objects without creating them
+			kubectl run nginx --image=nginx --dry-run=client
+
+Newly created has view access, hence he cant not create any resource in dev
+	    
+			controlplane $ kubectl run nginx --image=nginx -n dev                  
+			Error from server (Forbidden): pods is forbidden: User "John" cannot create resource "pods" in API group "" in the namespace "dev"
+			controlplane $ 
+			controlplane $ kubectl get all
+			No resources found in dev namespace.
+			controlplane $ kubectl get po 
+			No resources found in dev namespace.
+			controlplane $ \
+	    
+Switch to Admin user, and create few pods, We will see if the new user can view these pods or not
+	    
+			controlplane $ kubectl config get-contexts
+			CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+				  John-context                  kubernetes   John               dev
+			*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
+			controlplane $ 
+			controlplane $ kubectl run nginx --image=nginx -n dev
+			pod/nginx created
+			controlplane $ kubectl get po
+			No resources found in default namespace.
+			controlplane $ kubectl get po -n dev
+			NAME    READY   STATUS    RESTARTS   AGE
+			nginx   1/1     Running   0          10s
+	    
+Switch again the context to newly created user, to see if he can view the pods now	    
+	    
+			controlplane $ 
+			controlplane $ kubectl config get-contexts
+
+			CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+				  John-context                  kubernetes   John               dev
+			*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
+			controlplane $ kubectl config use-context John-context
+			Switched to context "John-context".
+			controlplane $ kubectl get po
+			NAME    READY   STATUS    RESTARTS   AGE
+			nginx   1/1     Running   0          97s
+			controlplane $ kubectl get po -n default
+			Error from server (Forbidden): pods is forbidden: User "John" cannot list resource "pods" in API group "" in the namespace "default"
+			controlplane $ kubectl get po -n dev    
+			NAME    READY   STATUS    RESTARTS   AGE
+			nginx   1/1     Running   0          118s
+			controlplane $ 
+	    
+	    
+	    
 
 #  Deployments vs StatefulSets vs DaemonSets
 	    
