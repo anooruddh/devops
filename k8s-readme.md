@@ -1933,6 +1933,52 @@ If you want to just create some resource for troubleshooting, learning or intera
         deployment.apps "dep-web" deleted
         
 
+Note - To create a pod imperatively, execute the kubectl run command set in a terminal window:
+			    
+			    kubectl run nicepod --image=nginx
+
+			    Execute the command set kubectl get pods, and you’ll see the following result which indicates the pod has been created and is running.
+
+				NAME      READY   STATUS    RESTARTS   AGE
+				nicepod   1/1     Running   0          26s
+			    
+To create a pod declaratively, you create a manifest file, either in JSON or YAML. Once the file is created, execute the command set
+			    
+			    kubectl apply -f <FILENAME>
+	
+				The command above essentially says, “Apply this declaration defined in the file nicepod.yaml to create the resource within the Kubernetes cluster.”
+	
+## Imperative Way
+	
+		kubectl create deploy cooldeploy --image nginx
+		kubectl scale --replicas=3 deployment/cooldeploy
+
+## Declarative Way
+	
+		apiVersion: apps/v1
+		kind: Deployment
+		metadata:
+		  name: cooldeploy
+		  labels:
+		    app: nginx
+		spec:
+		  replicas: 3
+		  selector:
+		    matchLabels:
+		      app: nginx
+		  template:
+		    metadata:
+		      labels:
+			app: nginx
+		    spec:
+		      containers:
+		      - name: nginx
+			image: nginx:1.14.2
+			ports:
+			- containerPort: 80	
+	
+		kubectl apply -f mydeployment.yaml
+		
     --------------------------------------------------------------------------------------------------------------------------------------------------------------
     
 # Port-Forwarding
