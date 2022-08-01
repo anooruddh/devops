@@ -5104,4 +5104,50 @@ Switch again the context to newly created user, to see if he can view the pods n
 
 #  Deployments vs StatefulSets vs DaemonSets
 	    
+In Kubernetes we find different resources for deploying applications such as
+
+			Deployment
+			Statefulset
+			daemonset	    
+
+# Deployment
+	    
+Deployment is the easiest and most familiar resource for deploying your application, Deployment is largely used for stateless applications. However, you can save the state of deployment by attaching a Persistent Volume to it and making it stateful, but all the pods of deployment will be sharing the same Volume, and data across all of them will be the same.
+	    
+## Deployment Component in kubernetes
+	    
+The following are the major components of deployment :
+
+			Deployment template
+			Persistent volumes
+			Service.
+	    
+# StatefulSet
+	    
+StatefulSet is a Kubernetes resource used to manage stateful applications. It manages the deployment and scaling of a set of Pods and provides guarantees about the ordering and uniqueness of these Pods. StatefulSet is also a Controller but unlike deployments, it doesn’t create ReplicaSet rather it creates the Pod with a unique naming convention.
+	    
+for e.g.
+
+If you create a StatefulSet with name counter, it will create a pod with name counter-0, counter-1, counter-2, etc
+
+Every replica of a stateful set will have its own state, and each of the pods will be creating its own PVC. So a statefulset with 3 replicas will create 3 pods, each having its own Volume, i.e 3 PVCs.	    
+	    
+## Statefulset Component in kubernetes
+	    
+The following are the major components of StatefulSets :
+
+			StatefulSet
+			PersistentVolume
+			Headless Service	
+	    
+## Key differences
+	    
+Here are some main differences between Deployments and StatefulSets:	    
+	    
+			Deployments are used for stateless applications whereas StatefulSets for stateful applications
+			The pods in a deployment are interchangeable whereas the pods in a StatefulSet are not.
+			In statefulset pod`s names are in sequential order on the other hand in deployment pod`s names are unique.
+			A headless service handles the pods’ network ID in StatefulSets, while deployments require a service to enable interaction with pods
+			In a deployment, the replicas all share a volume and PVC, while in a StatefulSet each pod has its own volume and PVC.	   
+
 	    
