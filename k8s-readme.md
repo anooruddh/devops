@@ -5155,4 +5155,32 @@ Here are some main differences between Deployments and StatefulSets:
 			A headless service handles the pods’ network ID in StatefulSets, while deployments require a service to enable interaction with pods
 			In a deployment, the replicas all share a volume and PVC, while in a StatefulSet each pod has its own volume and PVC.	   
 
+# Daemonset Not provisioning pod on Master Node
 	    
+The  node-role.kubernetes.io/master: NoSchedule toleration is needed in k8s 1.6 or later to schedule daemonsets on master nodes.
+	    
+			apiVersion: apps/v1
+			kind: DaemonSet
+			metadata:
+			  name: fluentd-elasticsearch
+			  namespace: kube-system
+			  labels:
+			    k8s-app: fluentd-logging
+			spec:
+			  selector:
+			    matchLabels:
+			      name: fluentd-elasticsearch
+			  template:
+			    metadata:
+			      labels:
+				name: fluentd-elasticsearch
+			    spec:
+			      tolerations:
+			      # these tolerations are to have the daemonset runnable on control plane nodes
+			      # remove them if your control plane nodes should not run pods
+			      - key: node-role.kubernetes.io/control-plane
+				operator: Exists
+				effect: NoSchedule
+			      - key: node-role.kubernetes.io/master
+				operator: Exists
+				effect: NoSchedule
