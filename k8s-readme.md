@@ -4082,8 +4082,17 @@ As being an API object kubernetes secrets can not be shared between the namespac
 		$ kubectl get secret test-secret-1 --namespace=testns1 -oyaml | grep -v ^\s*namespace:\s' |kubectl apply --namespace=testns2 -f -
 
 		secret/test-secret-1 created	    
+	    
+		kubectl get secret my-user-pass \
+		--namespace=namespace1 \
+		--export -o yaml | \
+		kubectl apply --namespace=namespace2 -f -
 
-Create the same secret is other namespaces ( passing -n <namespace_name> with create secret command OR kubectl apply -f secret.yml -n <namespace_name>	    
+Create the same secret is other namespaces ( passing -n <namespace_name> with create secret command OR kubectl apply -f secret.yml -n <namespace_name>	 
+	    
+		kubectl create secret generic my-user-pass --from-literal='username=admin' --from-literal='password=Password' -n namespace-1	    
+		kubectl create secret generic my-user-pass --from-literal='username=admin' --from-literal='password=Password' -n namespace-2
+
 # What is ConfigMap
 	    
 ConfigMaps are APIs that store configuration data in key-value pairs. Their primary function is to keep the configuration separate from the container image. It can represent the entire configuration file or individual properties.	    
