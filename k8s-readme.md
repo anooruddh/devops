@@ -5158,6 +5158,11 @@ Here are some main differences between Deployments and StatefulSets:
 # Daemonset Not provisioning pod on Master Node
 	    
 The  node-role.kubernetes.io/master: NoSchedule toleration is needed in k8s 1.6 or later to schedule daemonsets on master nodes.
+
+		tolerations:
+		- key: node-role.kubernetes.io/master
+		  effect: NoSchedule	    
+	    
 	    
 			apiVersion: apps/v1
 			kind: DaemonSet
