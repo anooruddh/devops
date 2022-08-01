@@ -4073,6 +4073,17 @@ Secrets are stored inside the Kubernetes data store (i.e., an etcd database) and
 	    
 **Bootstrap token**: These are tokens used during the node bootstrap process, used to sign ConfigMaps.	    
 
+# Sharing secret between namespaces is not allowed
+	    
+As being an API object kubernetes secrets can not be shared between the namespaces,so the other way would be to copy the Kubernetes secrets from one namespace to another namespace and we can achieve this by using the pipe “|” operator.
+	
+		Now we have two namespace - testns1, testns2 and secret test-secret-1. Let’s try to copy the secret from testns1 to testns2.
+
+		$ kubectl get secret test-secret-1 --namespace=testns1 -oyaml | grep -v ^\s*namespace:\s' |kubectl apply --namespace=testns2 -f -
+
+		secret/test-secret-1 created	    
+
+Create the same secret is other namespaces ( passing -n <namespace_name> with create secret command OR kubectl apply -f secret.yml -n <namespace_name>	    
 # What is ConfigMap
 	    
 ConfigMaps are APIs that store configuration data in key-value pairs. Their primary function is to keep the configuration separate from the container image. It can represent the entire configuration file or individual properties.	    
