@@ -5120,7 +5120,9 @@ The following are the major components of deployment :
 
 			Deployment template
 			Persistent volumes
-			Service.
+			Service
+	    .
+### Use case - any microservice	that doesnt need to store state of the application    
 	    
 # StatefulSet
 	    
@@ -5129,6 +5131,9 @@ StatefulSet is a Kubernetes resource used to manage stateful applications. It ma
 for e.g.
 
 If you create a StatefulSet with name counter, it will create a pod with name counter-0, counter-1, counter-2, etc
+
+### User case -  DB,MQs	    
+	    
 
 Every replica of a stateful set will have its own state, and each of the pods will be creating its own PVC. So a statefulset with 3 replicas will create 3 pods, each having its own Volume, i.e 3 PVCs.	    
 	    
