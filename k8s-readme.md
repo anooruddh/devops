@@ -5018,7 +5018,88 @@ Switch again the context to newly created user, to see if he can view the pods n
 			nginx   1/1     Running   0          118s
 			controlplane $ 
 	    
-	    
+# Commands
+
+			mkdir John && cd John
+			pwd
+			kubectl create ns dev
+			openssl genrsa -out John.key 2048
+			openssl req -new -key John.key -out John.csr  -subj "/CN=John/O=dev"
+			ls -lrt
+			openssl x509 -req -in John.csr  -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key   -CAcreateserial -out John.crt -days 500
+			kubectl config get-contexts
+			kubectl config set-credentials John --client-certificate=/tmp/John/John.crt --client-key=/tmp/John/John.key
+			kubectl config get-contexts
+			kubectl config set-context John-context   --cluster=kubernetes --user=John --namespace=dev
+			kubectl config get-contexts
+			kubectl config use-context John-context
+			kubectl get po -as John
+			kubectl get po --as John
+			kubectl config use-context kubernetes-admin@kubernetes
+			vi rb.yml
+
+			ontrolplane $ cat rb.yml 
+			apiVersion: rbac.authorization.k8s.io/v1
+			kind: Role
+			metadata:
+			  namespace: dev
+			  name: readonly
+			rules:
+			- apiGroups: ["*"]
+			  resources: ["*"]
+			  verbs: ["get", "list", "watch"] 
+
+			---
+
+			kind: RoleBinding
+			apiVersion: rbac.authorization.k8s.io/v1
+			metadata:
+			  name: readonly
+			  namespace: dev
+			subjects:
+			- kind: User
+			  name: John
+			  apiGroup: rbac.authorization.k8s.io
+			roleRef:
+			  kind: Role
+			  name: readonly
+			  apiGroup: rbac.authorization.k8s.io
+			controlplane $ 
+
+			kubectl apply -f rb.yml 
+			kubectl get pods -n dev --as John
+			kubectl get Roles 
+			kubectl get Roles -n dev
+			kubectl get Rolesbinding -n dev
+			kubectl get rb -n dev
+			kubectl get rolebindings -n dev
+			kubectl get rolebindings -n dev -o wide
+			kubectl get Roles -n dev -o wide
+			kubectl config get-contexts
+			kubectl config get-contexts
+
+			controlplane $ kubectl config get-contexts
+			CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+				  John-context                  kubernetes   John               dev
+			*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin  
+
+			kubectl config use-context kubernetes-admin@kubernetes
+			kubectl get pods -n dev --as John
+			kubectl run nginx --image=nginx -n dev
+			kubectl get pods -n dev --as John
+			kubectl get pods -n dev 
+			kubectl config get-context
+			kubectl config get-contexts
+			kubectl config use-context John-context
+			kubectl config use-context John-context
+			controlplane $ kubectl config get-contexts
+			CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+			*         John-context                  kubernetes   John               dev
+				  kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
+			controlplane $ 
+			controlplane $ kubectl get all
+			NAME        READY   STATUS    RESTARTS   AGE
+			pod/nginx   1/1     Running   0          66s	    
 	    
 
 #  Deployments vs StatefulSets vs DaemonSets
