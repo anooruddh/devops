@@ -3508,6 +3508,18 @@ The output shows that Kubernetes gave the Pod a QoS class of BestEffort.
 		  qosClass: BestEffort	
 
 # The lifecycle of a Kubernetes Pod
+
+		kubectl or any other API client submits the Pod spec to the API server.
+		The API server writes the Pod object to the etcd data store. Once the write is successful, an acknowledgment is sent back to API server and to the client.
+		The API server now reflects the change in state of etcd.
+		All Kubernetes components use watches to keep checking API server for relevant changes.
+		In this case, the kube-scheduler (via its watcher) sees that a new Pod object is created on API server but is not bound to any node.
+		kube-scheduler assigns a node to the pod and updates the API server.
+		This change is then propagated to the etcd data store. The API server also reflects this node assignment on its Pod object.
+		Kubelet on every node also runs watchers who keep watching API server. Kubelet on the destination node sees that a new Pod is assigned to it.
+		Kubelet starts the pod on its node by calling Docker and updates the container state back to the API server.
+		The API server persists the pod state into etcd.
+		Once etcd sends the acknowledgment of a successful write, the API server sends an acknowledgment back to kubelet indicating that the event is accepted.	    
 	
 At the end of the day, these resources requests are used by the Kubernetes scheduler to run your workloads. It is important to understand how this works so you can tune your containers correctly.
 Let’s say you want to run a Pod on your Cluster. Assuming the Pod specifications are valid, the Kubernetes scheduler will use round-robin load balancing to pick a Node to run your workload.
