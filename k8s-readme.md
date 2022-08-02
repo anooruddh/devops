@@ -2749,6 +2749,164 @@ Here, the POD will be in PENDING state, because we have only one worker node, an
 	
 If you see logs of the Nginx pod, it says nodes are NOT available, which means both the Master and Worker nodes are Tainted so the Nginx POD cannot be placed in either of them.
 Note: By default, Kubernetes Master node will be tainted with the “NoSchedule” effect.
+	    
+# Hands on Taint
+	    
+		controlplane $ kubectl get no
+		NAME           STATUS   ROLES           AGE   VERSION
+		controlplane   Ready    control-plane   85d   v1.24.0
+		node01         Ready    <none>          85d   v1.24.0
+		controlplane $ kubectl describe no controlplane
+	    
+		Name:               controlplane
+		Roles:              control-plane
+		Labels:             beta.kubernetes.io/arch=amd64
+				    beta.kubernetes.io/os=linux
+				    kubernetes.io/arch=amd64
+				    kubernetes.io/hostname=controlplane
+				    kubernetes.io/os=linux
+				    node-role.kubernetes.io/control-plane=
+				    node.kubernetes.io/exclude-from-external-load-balancers=
+		Annotations:        flannel.alpha.coreos.com/backend-data: {"VNI":1,"VtepMAC":"6e:dc:18:64:10:d0"}
+				    flannel.alpha.coreos.com/backend-type: vxlan
+				    flannel.alpha.coreos.com/kube-subnet-manager: true
+				    flannel.alpha.coreos.com/public-ip: 172.30.1.2
+				    kubeadm.alpha.kubernetes.io/cri-socket: unix:///var/run/containerd/containerd.sock
+				    node.alpha.kubernetes.io/ttl: 0
+				    projectcalico.org/IPv4Address: 172.30.1.2/24
+				    projectcalico.org/IPv4IPIPTunnelAddr: 192.168.0.1
+				    volumes.kubernetes.io/controller-managed-attach-detach: true
+		CreationTimestamp:  Sun, 08 May 2022 19:32:23 +0000
+		Taints:             <none>
+		Unschedulable:      false
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		controlplane $ kubectl get all
+		NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+		service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   85d
+	    
+		controlplane $ kubectl create deploy dep-nginx --image=nginx --replicas=2
+		deployment.apps/dep-nginx created
+	    
+		controlplane $ kubectl get all
+		NAME                            READY   STATUS              RESTARTS   AGE
+		pod/dep-nginx-bf4959f48-g55xk   0/1     ContainerCreating   0          5s
+		pod/dep-nginx-bf4959f48-xpwrt   0/1     ContainerCreating   0          5s
+
+		NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+		service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   85d
+
+		NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
+		deployment.apps/dep-nginx   0/2     2            0           5s
+
+		NAME                                  DESIRED   CURRENT   READY   AGE
+		replicaset.apps/dep-nginx-bf4959f48   2         2         0       5s
+	    
+		controlplane $ kubectl get po -o wide
+		NAME                        READY   STATUS    RESTARTS   AGE   IP            NODE           NOMINATED NODE   READINESS GATES
+		dep-nginx-bf4959f48-g55xk   1/1     Running   0          25s   192.168.1.4   node01         <none>           <none>
+		dep-nginx-bf4959f48-xpwrt   1/1     Running   0          25s   192.168.0.6   controlplane   <none>           <none>
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+## NO TAINTS, SO POD GET PROVISION ON ALL NODES (INCLUDING MASTER/CONTROL PLANE NODE)
+
+
+		Events:
+		  Type    Reason     Age   From               Message
+		  ----    ------     ----  ----               -------
+		  Normal  Scheduled  56s   default-scheduler  Successfully assigned default/dep-nginx-bf4959f48-g55xk to node01
+		  Normal  Pulling    56s   kubelet            Pulling image "nginx"
+		  Normal  Pulled     47s   kubelet            Successfully pulled image "nginx" in 8.48471847s
+		  Normal  Created    47s   kubelet            Created container nginx
+		  Normal  Started    47s   kubelet            Started container nginx
+		controlplane $ 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+## NOW WE WILL TAIN MASTER NODE, SO THAT POD SHOULD GET PROVISION / SCHEDULE ON IT.
+
+		controlplane $ kubectl taint no controlplane taint=taint:NoSchedule
+		node/controlplane tainted
+		controlplane $ kubectl describe no controlplane
+		Name:               controlplane
+		Roles:              control-plane
+		Labels:             beta.kubernetes.io/arch=amd64
+				    beta.kubernetes.io/os=linux
+				    kubernetes.io/arch=amd64
+				    kubernetes.io/hostname=controlplane
+				    kubernetes.io/os=linux
+				    node-role.kubernetes.io/control-plane=
+				    node.kubernetes.io/exclude-from-external-load-balancers=
+		Annotations:        flannel.alpha.coreos.com/backend-data: {"VNI":1,"VtepMAC":"6e:dc:18:64:10:d0"}
+				    flannel.alpha.coreos.com/backend-type: vxlan
+				    flannel.alpha.coreos.com/kube-subnet-manager: true
+				    flannel.alpha.coreos.com/public-ip: 172.30.1.2
+				    kubeadm.alpha.kubernetes.io/cri-socket: unix:///var/run/containerd/containerd.sock
+				    node.alpha.kubernetes.io/ttl: 0
+				    projectcalico.org/IPv4Address: 172.30.1.2/24
+				    projectcalico.org/IPv4IPIPTunnelAddr: 192.168.0.1
+				    volumes.kubernetes.io/controller-managed-attach-detach: true
+		CreationTimestamp:  Sun, 08 May 2022 19:32:23 +0000
+		Taints:             taint=taint:NoSchedule
+		Unschedulable:      false
+
+
+
+		controlplane $ kubectl create deploy dep-nginx --image=nginx --replicas=2
+		deployment.apps/dep-nginx created
+	    
+		controlplane $ kubectl get po -o wide 
+		NAME                        READY   STATUS    RESTARTS   AGE   IP            NODE     NOMINATED NODE   READINESS GATES
+		dep-nginx-bf4959f48-66228   1/1     Running   0          22s   192.168.1.5   node01   <none>           <none>
+		dep-nginx-bf4959f48-zjxvj   1/1     Running   0          22s   192.168.1.6   node01   <none>           <none>
+		controlplane $ 
+
+## AFTER TAINT MASTER NODE, WE SAW THAT THE PODS DIDNT SCHEDULED ON MASTER NODE.
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+## REMOVE TAINT AND INSTALL POD AGAIN
+
+		controlplane $ kubectl taint no controlplane taint=taint:NoSchedule-
+		node/controlplane untainted
+	    
+		controlplane $ kubectl describe no controlplane
+		Name:               controlplane
+		Roles:              control-plane
+		Labels:             beta.kubernetes.io/arch=amd64
+				    beta.kubernetes.io/os=linux
+				    kubernetes.io/arch=amd64
+				    kubernetes.io/hostname=controlplane
+				    kubernetes.io/os=linux
+				    node-role.kubernetes.io/control-plane=
+				    node.kubernetes.io/exclude-from-external-load-balancers=
+		Annotations:        flannel.alpha.coreos.com/backend-data: {"VNI":1,"VtepMAC":"6e:dc:18:64:10:d0"}
+				    flannel.alpha.coreos.com/backend-type: vxlan
+				    flannel.alpha.coreos.com/kube-subnet-manager: true
+				    flannel.alpha.coreos.com/public-ip: 172.30.1.2
+				    kubeadm.alpha.kubernetes.io/cri-socket: unix:///var/run/containerd/containerd.sock
+				    node.alpha.kubernetes.io/ttl: 0
+				    projectcalico.org/IPv4Address: 172.30.1.2/24
+				    projectcalico.org/IPv4IPIPTunnelAddr: 192.168.0.1
+				    volumes.kubernetes.io/controller-managed-attach-detach: true
+		CreationTimestamp:  Sun, 08 May 2022 19:32:23 +0000
+		Taints:             <none>
+
+		controlplane $ kubectl delete deploy dep-nginx
+		deployment.apps "dep-nginx" deleted
+	    
+		controlplane $ kubectl get all
+		NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+		service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   85d
+		controlplane $ kubectl get po
+		No resources found in default namespace.
+	    
+		controlplane $ kubectl create deploy dep-nginx --image=nginx --replicas=2
+		deployment.apps/dep-nginx created
+	    
+		controlplane $ kubectl get po -o wide
+		NAME                        READY   STATUS    RESTARTS   AGE   IP            NODE           NOMINATED NODE   READINESS GATES
+		dep-nginx-bf4959f48-7rcgv   1/1     Running   0          17s   192.168.0.7   controlplane   <none>           <none>
+		dep-nginx-bf4959f48-sb9z5   1/1     Running   0          17s   192.168.1.7   node01         <none>           <none>
+		controlplane $ 
+
+## YOU SEE AFTER REMOVING TAINT ON MASTER NODE, POD IS SCHEDULED ON MASTER NODE	    
 
 ### How to set Toleration?
 
