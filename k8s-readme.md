@@ -155,7 +155,31 @@ Achieve scaling in pods at runtime by creating replica sets, which deliver avail
 
 Services associate specific criteria with pods to enable their discovery. Pods and services are associated through key-value pairs called selectors and labels. Any new match between a pod label and selector will be discovered automatically by the service.
 
-# PodStatus - Pending, ContainerCreating, Running
+# PodStatus - Pending, ContainerCreating, ErrImagePull, ImagePullBackOff, Running
+# Events With No Error
+
+		Events:
+		  Type    Reason     Age   From               Message
+		  ----    ------     ----  ----               -------
+		  Normal  Scheduled  15m   default-scheduler  Successfully assigned default/dep-nginx-bf4959f48-7rcgv to controlplane
+		  Normal  Pulling    15m   kubelet            Pulling image "nginx"
+		  Normal  Pulled     15m   kubelet            Successfully pulled image "nginx" in 1.474871233s
+		  Normal  Created    15m   kubelet            Created container nginx
+		  Normal  Started    15m   kubelet            Started container nginx
+		controlplane $ 
+
+# Events With Error
+
+		Events:
+		Type     Reason     Age                From               Message
+		----     ------     ----               ----               -------
+		Normal   Scheduled  83s                default-scheduler  Successfully assigned default/my-redis to node01
+		Normal   Pulling    32s (x3 over 84s)  kubelet            Pulling image "redis:123"
+		Warning  Failed     26s (x3 over 78s)  kubelet            Failed to pull image "redis:123": rpc error: code = NotFound desc = failed to pull and unpack image "docker.io/library/redis:123": failed to resolve reference "docker.io/library/redis:123": docker.io/library/redis:123: not found
+		Warning  Failed     26s (x3 over 78s)  kubelet            Error: ErrImagePull
+		Normal   BackOff    11s (x3 over 78s)  kubelet            Back-off pulling image "redis:123"
+		Warning  Failed     11s (x3 over 78s)  kubelet            Error: ImagePullBackOff
+		controlplane $ 
 
 # PodConditions - PodScheduled, ContainersReady, Initialized, and Ready (Each condition can be either True, False, or Unknown)
 
