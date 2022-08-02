@@ -5412,3 +5412,34 @@ The  node-role.kubernetes.io/master: NoSchedule toleration is needed in k8s 1.6 
 			      - key: node-role.kubernetes.io/master
 				operator: Exists
 				effect: NoSchedule
+
+# Service Account
+	    
+When you (a human) access the cluster (for example, using kubectl), you are authenticated by the apiserver as a particular User Account (currently this is usually admin, unless your cluster administrator has customized your cluster). Processes in containers inside pods can also contact the apiserver. When they do, they are authenticated as a particular Service Account (for example, default)
+
+## What Is Service Account in Kubernetes?
+	    
+There are two types of account in Kubernetes
+
+**User Account**: It is used to allow us, humans, to access the given Kubernetes cluster. Any user needs to get authenticated by the API server to do so. A user account can be an admin or a developer who is trying to access the cluster level resources.
+	    
+**Service Account**: It is used to authenticate machine level processes to get access to our Kubernetes cluster. The API server is responsible for such authentication to the processes running in the pod	    
+	    
+## Service Account :
+	    
+In the Kubernetes cluster, any processes or applications in the container which resides within the pod can access the cluster by getting authenticated by the API server, using a service account.	    
+	    
+		A service account is an identity that is attached to the processes running within a pod.	
+
+Note - When you create a pod, if you do not specify a service account, it is automatically assigned the default service account in the same namespace.	
+	    
+# Path of the service account inside a pod
+
+		root@my-nginx:/var/run/secrets/kubernetes.io/serviceaccount# pwd
+		/var/run/secrets/kubernetes.io/serviceaccount
+		root@my-nginx:/var/run/secrets/kubernetes.io/serviceaccount# ls -lrt
+		total 0
+		lrwxrwxrwx 1 root root 12 Aug  2 07:16 token -> ..data/token
+		lrwxrwxrwx 1 root root 16 Aug  2 07:16 namespace -> ..data/namespace
+		lrwxrwxrwx 1 root root 13 Aug  2 07:16 ca.crt -> ..data/ca.crt
+		root@my-nginx:/var/run/secrets/kubernetes.io/serviceaccount# 	    
