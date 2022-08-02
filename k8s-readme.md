@@ -155,6 +155,10 @@ Achieve scaling in pods at runtime by creating replica sets, which deliver avail
 
 Services associate specific criteria with pods to enable their discovery. Pods and services are associated through key-value pairs called selectors and labels. Any new match between a pod label and selector will be discovered automatically by the service.
 
+# PodStatus - Pending, ContainerCreating, Running
+
+# PodConditions - PodScheduled, ContainersReady, Initialized, and Ready (Each condition can be either True, False, or Unknown)
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## The Control plane (master)
