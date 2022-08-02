@@ -2675,10 +2675,15 @@ Taints and Toleration will tell what pods can be placed on what nodes.
 
 ### Applying Taints and Tolerations
 
-Taints are applied to a node using kubectl, for example:
+## Taints are applied to a node using kubectl, for example:
 
-	kubectl taint nodes machineLearningNode1=computer-vision:NoSchedule
+	kubectl taint nodes controlplane taint=test:NoSchedule
 
+## Remove a taint from a node ( is similar to remove label from an object (use - (minus) at the end of label))
+	    
+	controlplane $ kubectl taint node controlplane  taint=test:NoSchedule-
+	node/controlplane untainted
+	    
 ### Node taints are key-value pairs associated with an effect. Here are the available effects/types:
 
 **NoSchedule**: Pods that do not tolerate this taint are not scheduled on the node; existing Pods are not evicted from the node.(PODs will not be scheduled on the node.)
