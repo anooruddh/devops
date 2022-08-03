@@ -27,8 +27,11 @@ Reliance on internet connectivity. No network, no VDI session. VDI's reliance on
 # Components of VDI
 
 **Virtualization** - Virtualization is creation of virtual version of desktop,os,server,storage.
+
 **Hypervisor** -  Hypervisor is a software which seprate operating system with the underlying operating system to create a virtual environment.
+
 **Connection Broker** - Connection Broker is a software which help end user to connect to the remote virtual desktop.
+
 **Desktop Pools** -  Desktop Pool is a group of virtual desktops with the indentical configuration such as OS,Softwares,Applications,Storage.
 
 
