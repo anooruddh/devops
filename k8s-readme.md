@@ -187,21 +187,21 @@ Services associate specific criteria with pods to enable their discovery. Pods a
 
 Before we deploy any pods in the Kubernetes cluster, first we need to build the docker image that the pod will use.
 
-**Step1)** Admin/developer will build a container image of the application that needs to be deployed in the cluster.
+**Step1) Admin/developer will build a container image of the application that needs to be deployed in the cluster.**
 
 Once the image is ready they push that to the container repository such as Docker Hub.
 
-**Step2)** Then developer writes the object configuration in the YAML or JSON format.
+**Step2) Then developer writes the object configuration in the YAML or JSON format.**
 
 This YAML file includes specifications of the container image and its configuration, once it is ready, it is submitted to the Kube API server through kubectl command.
 
 Kube API validates the object configuration by checking the user credential, whether he/she has permissions to perform this operation and other things.
 
-**Step3)** If all checks are passed, then all configurations of the pods will save the configuration in the ETCD database then the API server will notify the scheduler to check the healthy node, here the scheduler may check memory, CPU, node capacity, labels, and more.
+**Step3) If all checks are passed, then all configurations of the pods will save the configuration in the ETCD database then the API server will notify the scheduler to check the healthy node, here the scheduler may check memory, CPU, node capacity, labels, and more.**
 
-**Step4)** Once the scheduler finds the correct worker node, then the scheduler respective worker node to pods in the ETCD database through the Kube API server.
+**Step4) Once the scheduler finds the correct worker node, then the scheduler respective worker node to pods in the ETCD database through the Kube API server.**
 
-**Step5)** API server informs the kubelet running on the specific node and kubenet running on that worker node informs the container runtime interface ie. docker to start downloading the corresponding docker image and deploy pod on that node.
+**Step5) API server informs the kubelet running on the specific node and kubenet running on that worker node informs the container runtime interface ie. docker to start downloading the corresponding docker image and deploy pod on that node.**
 
 So far, they are no involvement of the control manager and Kube proxy.
 
