@@ -5548,7 +5548,7 @@ Note - When you create a pod, if you do not specify a service account, it is aut
 
 ## Kustomization Build	    
 
-
+	Dev
 		controlplane $ kustomize build overlay/dev/
 		apiVersion: apps/v1
 		kind: Deployment
@@ -5575,7 +5575,9 @@ Note - When you create a pod, if you do not specify a service account, it is aut
 		      containers:
 		      - image: nginx
 			name: nginx
-		controlplane $ kustomize build overlay/prod/
+	Prod
+	    
+	    controlplane $ kustomize build overlay/prod/
 		apiVersion: apps/v1
 		kind: Deployment
 		metadata:
