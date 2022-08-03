@@ -5674,4 +5674,71 @@ kustomization
 			resources
 			secretGenerator
 			vars	    
+
+# Patching
+	    
+	    Patch no of pod instances
+	    	
+	    	dev
+
+	    		cat overlay/dev/kustomization.yaml 
+			bases:
+			  - ../../base
+			namePrefix: dev-
+			commonLabels:
+			  env: dev
+			  author: Anooruddh_Gajbhiye
+			patches:
+			- path: patch.yaml
+			  target:
+			    kind: Deployment	    		
+
+			controlplane $ cat overlay/dev/patch.yaml         
+			apiVersion: apps/v1
+			kind: Deployment
+			metadata:
+			  name: dep-nginx
+			spec:
+			  replicas: 2
+			controlplane $ 
+	    	
+	    	prod
+	    	
+			controlplane $ cat overlay/prod/kustomization.yaml 
+			bases:
+			  - ../../base
+			namePrefix: prod-
+			commonLabels:
+			  env: prod
+			  author: Neeraj_Singh
+			patches:
+			- path: patch.yaml
+			  target:
+			    kind: Deployment
+
+			controlplane $ cat overlay/prod/patch.yaml 
+			apiVersion: apps/v1
+			kind: Deployment
+			metadata:
+			  name: dep-nginx
+			spec:
+			  replicas: 5
+			controlplane $ 	 
+	    
+			controlplane $ kubectl get all
+			NAME                                  READY   STATUS    RESTARTS   AGE
+			pod/dev-dep-nginx-69b744fd55-5smd7    1/1     Running   0          9m13s
+			pod/dev-dep-nginx-69b744fd55-qhzjs    1/1     Running   0          6m49s
+			pod/prod-dep-nginx-789c59bb8b-5nw9m   1/1     Running   0          3m49s
+			pod/prod-dep-nginx-789c59bb8b-c7gtj   1/1     Running   0          3m49s
+			pod/prod-dep-nginx-789c59bb8b-gzb69   1/1     Running   0          3m49s
+			pod/prod-dep-nginx-789c59bb8b-sch7k   1/1     Running   0          3m49s
+			pod/prod-dep-nginx-789c59bb8b-spc8g   1/1     Running   0          3m49s
+
+			NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+			service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   86d
+
+			NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
+			deployment.apps/dev-dep-nginx    2/2     2            2           9m14s
+			deployment.apps/prod-dep-nginx   5/5     5            5           3m49s	    
 	    
