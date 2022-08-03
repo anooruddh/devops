@@ -5448,6 +5448,7 @@ Note - When you create a pod, if you do not specify a service account, it is aut
 
 ## Kubernetes native configuration management	    
 	    
+![Screenshot](kustomize.png)	    
 	    
 ## Installation
 	    
