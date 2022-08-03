@@ -19,3 +19,18 @@ The VDI user experience is equal to or better than the physical workstation due 
 **Scalability**. When an organization expands temporarily, such as seasonal call center agent contractors, it can quickly expand the VDI environment. By enabling these workers to access an enterprise virtual desktop workload and its respective apps, these contractors can be fully functional within minutes, compared with days or weeks to procure endpoint devices and configure apps.
 
 **Mobility**. Other benefits of VDI include the ability to more easily support remote and mobile workers. Mobile workers comprise a significant percentage of the workforce, and remote workers are becoming more common. Whether these individuals are field engineers, sales representatives, onsite project teams or executives, they all need remote access to their apps while traveling. By presenting a virtual desktop to these remote users, they cab work as efficiently as if they were in the office.
+
+# Drawbacks of VDI
+
+Reliance on internet connectivity. No network, no VDI session. VDI's reliance on network connectivity presents another challenge.
+
+# Components of VDI
+
+**Virtualization** - Virtualization is creation of virtual version of desktop,os,server,storage.
+**Hypervisor** -  Hypervisor is a software which seprate operating system with the underlying operating system to create a virtual environment.
+**Connection Broker** - Connection Broker is a software which help end user to connect to the remote virtual desktop.
+**Desktop Pools** -  Desktop Pool is a group of virtual desktops with the indentical configuration such as OS,Softwares,Applications,Storage.
+
+
+
+
