@@ -5443,3 +5443,163 @@ Note - When you create a pod, if you do not specify a service account, it is aut
 		lrwxrwxrwx 1 root root 16 Aug  2 07:16 namespace -> ..data/namespace
 		lrwxrwxrwx 1 root root 13 Aug  2 07:16 ca.crt -> ..data/ca.crt
 		root@my-nginx:/var/run/secrets/kubernetes.io/serviceaccount# 	    
+
+# Kustomize in Kubernetes
+
+## Kubernetes native configuration management	    
+	    
+	    
+Installation
+	    
+		mkdir nginx
+		cd nginx/
+		pwd
+		curl --silent --location --remote-name "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v3.2.3/kustomize_kustomize.v3.2.3_linux_amd64" && chmod a+x kustomize_kustomize.v3.2.3_linux_amd64 && sudo mv kustomize_kustomize.v3.2.3_linux_amd64 /usr/local/bin/kustomize
+		controlplane $ kustomize
+
+		Manages declarative configuration of Kubernetes.
+		See https://sigs.k8s.io/kustomize
+
+		Usage:
+		  kustomize [command]
+
+		Available Commands:
+		  build       Print configuration per contents of kustomization.yaml
+		  config      Config Kustomize transformers
+		  create      Create a new kustomization in the current directory
+		  edit        Edits a kustomization file
+		  help        Help about any command
+		  version     Prints the kustomize version
+
+		Flags:
+		  -h, --help   help for kustomize
+
+		Use "kustomize [command] --help" for more information about a command.
+		controlplane $ 
+		 mkdir base overlay
+		 touch deployment.yaml kustomization.yaml base/
+		 touch overlay/dev/kustomization.yaml
+		 mkdir overlay/dev overlay/prod
+		 touch overlay/dev/kustomization.yaml
+		 touch overlay/prod/kustomization.yaml		
+		
+		controlplane $ tree
+		.
+		|-- base
+		|-- deployment.yaml
+		|-- kustomization.yaml
+		`-- overlay
+		    |-- dev
+		    |   `-- kustomization.yaml
+		    `-- prod
+			`-- kustomization.yaml
+
+		4 directories, 4 files
+		controlplane $ 	    	
+
+## Kustomization Code			    
+
+## Base
+		controlplane $ cat base/deployment.yaml 
+		apiVersion: apps/v1
+		kind: Deployment
+		metadata:
+		  labels:
+		    app: dep-nginx
+		  name: dep-nginx
+		spec:
+		  replicas: 1
+		  selector:
+		    matchLabels:
+		      app: dep-nginx
+		  template:
+		    metadata:
+		      labels:
+			app: dep-nginx
+		    spec:
+		      containers:
+		      - image: nginx
+			name: nginx
+		controlplane $ cat base/kustomization.yaml 
+		apiVersion: kustomize.config.k8s.io/v1beta1
+		kind: Kustomization
+
+		resources:
+		  - deployment.yaml
+	
+## Overlay
+	    
+		controlplane $ cat overlay/dev/kustomization.yaml 
+		bases:
+		  - ../../base
+		namePrefix: dev-
+		commonLabels:
+		  env: dev
+		  author: Anooruddh_Gajbhiye
+
+
+		controlplane $ cat overlay/prod/kustomization.yaml 
+		bases:
+		  - ../../base
+		namePrefix: prod-
+		commonLabels:
+		  env: prod
+		  author: Neeraj_Singh
+
+## Kustomization Build	    
+
+
+		controlplane $ kustomize build overlay/dev/
+		apiVersion: apps/v1
+		kind: Deployment
+		metadata:
+		  labels:
+		    app: dep-nginx
+		    author: Anooruddh_Gajbhiye
+		    env: dev
+		  name: dev-dep-nginx
+		spec:
+		  replicas: 1
+		  selector:
+		    matchLabels:
+		      app: dep-nginx
+		      author: Anooruddh_Gajbhiye
+		      env: dev
+		  template:
+		    metadata:
+		      labels:
+			app: dep-nginx
+			author: Anooruddh_Gajbhiye
+			env: dev
+		    spec:
+		      containers:
+		      - image: nginx
+			name: nginx
+		controlplane $ kustomize build overlay/prod/
+		apiVersion: apps/v1
+		kind: Deployment
+		metadata:
+		  labels:
+		    app: dep-nginx
+		    author: Neeraj_Singh
+		    env: prod
+		  name: prod-dep-nginx
+		spec:
+		  replicas: 1
+		  selector:
+		    matchLabels:
+		      app: dep-nginx
+		      author: Neeraj_Singh
+		      env: prod
+		  template:
+		    metadata:
+		      labels:
+			app: dep-nginx
+			author: Neeraj_Singh
+			env: prod
+		    spec:
+		      containers:
+		      - image: nginx
+			name: nginx
+		controlplane $ 	    
+	    
