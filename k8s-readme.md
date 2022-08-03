@@ -5629,3 +5629,31 @@ Note - When you create a pod, if you do not specify a service account, it is aut
 		NAME             READY   UP-TO-DATE   AVAILABLE   AGE     CONTAINERS   IMAGES   SELECTOR                                          LABELS	
 		prod-dep-nginx   1/1     1            1           18s     nginx        nginx    app=dep-nginx,author=Neeraj_Singh,env=prod        app=dep-nginx,author=Neeraj_Singh,env=prod
 		controlplane $ 	    
+
+# Attributes inside kustomization.yaml File
+	    
+kustomization
+			bases
+			buildMetadata
+			commonAnnotations
+			commonLabels
+			components
+			configMapGenerator
+			crds
+			generatorOptions
+			helmCharts
+			images
+			labels
+			namePrefix
+			namespace
+			nameSuffix
+			openapi
+			patches
+			patchesJson6902
+			patchesStrategicMerge
+			replacements
+			replicas
+			resources
+			secretGenerator
+			vars	    
+	    
