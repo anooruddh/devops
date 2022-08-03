@@ -5448,6 +5448,10 @@ Note - When you create a pod, if you do not specify a service account, it is aut
 
 ## Kubernetes native configuration management	    
 	    
+# What is Kustomize?
+	    
+Kustomize is a configuration management solution that leverages layering to preserve the base settings of your applications and components by overlaying declarative yaml artifacts (called patches) that selectively override default settings without actually changing the original files.
+	    
 ![Screenshot](kustomize.png)	    
 	    
 ## Installation
