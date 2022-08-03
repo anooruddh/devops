@@ -5628,7 +5628,25 @@ Note - When you create a pod, if you do not specify a service account, it is aut
 		controlplane $ kubectl get deploy -o wide --show-labels
 		NAME             READY   UP-TO-DATE   AVAILABLE   AGE     CONTAINERS   IMAGES   SELECTOR                                          LABELS	
 		prod-dep-nginx   1/1     1            1           18s     nginx        nginx    app=dep-nginx,author=Neeraj_Singh,env=prod        app=dep-nginx,author=Neeraj_Singh,env=prod
-		controlplane $ 	    
+		controlplane $ 	   
+	
+	    Observer the prefix
+	    
+		controlplane $ kubectl get all
+		NAME                                  READY   STATUS    RESTARTS   AGE
+		pod/dev-dep-nginx-69b744fd55-7s26s    1/1     Running   0          12m
+		pod/prod-dep-nginx-789c59bb8b-cklq7   1/1     Running   0          10m
+
+		NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+		service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   86d
+
+		NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
+		deployment.apps/dev-dep-nginx    1/1     1            1           12m
+		deployment.apps/prod-dep-nginx   1/1     1            1           10m
+
+		NAME                                        DESIRED   CURRENT   READY   AGE
+		replicaset.apps/dev-dep-nginx-69b744fd55    1         1         1       12m
+		replicaset.apps/prod-dep-nginx-789c59bb8b   1         1         1       10m	    
 
 # Attributes inside kustomization.yaml File
 	    
