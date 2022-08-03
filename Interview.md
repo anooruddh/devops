@@ -20,6 +20,12 @@ The VDI user experience is equal to or better than the physical workstation due 
 
 **Mobility**. Other benefits of VDI include the ability to more easily support remote and mobile workers. Mobile workers comprise a significant percentage of the workforce, and remote workers are becoming more common. Whether these individuals are field engineers, sales representatives, onsite project teams or executives, they all need remote access to their apps while traveling. By presenting a virtual desktop to these remote users, they cab work as efficiently as if they were in the office.
 
+**No IT staff is required**
+**No maintenance cost**
+**No software upgrade cost**
+**Pay as per the requirements**
+
+
 # Drawbacks of VDI
 
 Reliance on internet connectivity. No network, no VDI session. VDI's reliance on network connectivity presents another challenge.
@@ -34,6 +40,12 @@ Reliance on internet connectivity. No network, no VDI session. VDI's reliance on
 
 **Desktop Pools** -  Desktop Pool is a group of virtual desktops with the indentical configuration such as OS,Softwares,Applications,Storage.
 
+**Application Virtulization** - Application Virtulization is the technology used to create a virtulized application image and replicate to all the virtual desktop in desktop pools.
 
+# How VDI works.
+
+> User sends login request to their endpoint device
+> Connection Broker accepts the request
+> Now the user can use the desktop according to their process
 
 
