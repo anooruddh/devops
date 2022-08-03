@@ -5655,30 +5655,29 @@ Kustomize is a configuration management solution that leverages layering to pres
 
 # Attributes inside kustomization.yaml File
 	    
-kustomization
-		bases
-		buildMetadata
-		commonAnnotations
-		commonLabels
-		components
-		configMapGenerator
-		crds
-		generatorOptions
-		helmCharts
-		images
-		labels
-		namePrefix
-		namespace
-		nameSuffix
-		openapi
-		patches
-		patchesJson6902
-		patchesStrategicMerge
-		replacements
-		replicas
-		resources
-		secretGenerator
-		vars	    
+ - [x] bases
+ - [x] buildMetadata
+ - [x] commonAnnotations
+ - [x] commonLabels
+ - [x] components
+ - [x] configMapGenerator
+ - [x] crds
+ - [x] generatorOptions
+ - [x] helmCharts
+ - [x] images
+ - [x] labels
+ - [x] namePrefix
+ - [x] namespace
+ - [x] nameSuffix
+ - [x] openapi
+ - [x] patches
+ - [x] patchesJson6902
+ - [x] patchesStrategicMerge
+ - [x] replacements
+ - [x] replicas
+ - [x] resources
+ - [x] secretGenerator
+ - [x] vars	    
 
 # Patching
 	    
