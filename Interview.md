@@ -45,7 +45,9 @@ Reliance on internet connectivity. No network, no VDI session. VDI's reliance on
 # How VDI works.
 
 > User sends login request to their endpoint device
+> 
 > Connection Broker accepts the request
+> 
 > Now the user can use the desktop according to their process
 
 
