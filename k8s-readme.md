@@ -5605,3 +5605,27 @@ Note - When you create a pod, if you do not specify a service account, it is aut
 			name: nginx
 		controlplane $ 	    
 	    
+	    Apply / Create (Dev)
+
+		controlplane $ kubectl apply -k overlay/dev/
+		deployment.apps/dev-dep-nginx created
+		controlplane $ 
+		controlplane $ kubectl get po -o wide --show-labels
+		NAME                             READY   STATUS    RESTARTS   AGE   IP            NODE     NOMINATED NODE   READINESS GATES   LABELS
+		dev-dep-nginx-69b744fd55-7s26s   1/1     Running   0          15s   192.168.1.4   node01   <none>           <none>            app=dep-nginx,author=Anooruddh_Gajbhiye,env=dev,pod-template-hash=69b744fd55	 
+	    
+		controlplane $ kubectl get deploy -o wide --show-labels
+		NAME            READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR                                          LABELS
+		dev-dep-nginx   1/1     1            1           29s   nginx        nginx    app=dep-nginx,author=Anooruddh_Gajbhiye,env=dev   app=dep-nginx,author=Anooruddh_Gajbhiye,env=dev	    
+	    
+	    Apply / Create (Prod)
+
+		controlplane $ kubectl apply -k overlay/prod/
+		deployment.apps/prod-dep-nginx created
+		controlplane $ kubectl get po -o wide --show-labels
+		NAME                              READY   STATUS    RESTARTS   AGE    IP            NODE     NOMINATED NODE   READINESS GATES   LABELS		
+		prod-dep-nginx-789c59bb8b-cklq7   1/1     Running   0          3s     192.168.1.5   node01   <none>           <none>            app=dep-nginx,author=Neeraj_Singh,env=prod,pod-template-hash=789c59bb8b
+		controlplane $ kubectl get deploy -o wide --show-labels
+		NAME             READY   UP-TO-DATE   AVAILABLE   AGE     CONTAINERS   IMAGES   SELECTOR                                          LABELS	
+		prod-dep-nginx   1/1     1            1           18s     nginx        nginx    app=dep-nginx,author=Neeraj_Singh,env=prod        app=dep-nginx,author=Neeraj_Singh,env=prod
+		controlplane $ 	    
