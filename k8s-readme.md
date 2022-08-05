@@ -6115,6 +6115,8 @@ With both deployments set up, you monitor the canary behavior to see whether any
 	    
 		---
 	    
+	        # If there is no issue with the version: v2, then label the service to version: v2.So that the service send the traffic to Deployment-2 only
+	    
 		apiVersion: v1
 		kind: Service
 		metadata:
