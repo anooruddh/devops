@@ -29,3 +29,35 @@ Authentication in PowerShell remoting relies on Active Directory. By default, on
     Set-Item WSMan:\localhost\Client\TrustedHosts -Value "10.0.2.33" -Force
     
 You also have to ensure that Windows Firewall is opened for Windows Remote Management on the remote computer. On the remote computer, type "firewall" after clicking **Start**, and click **Advanced settings** in the Control Panel **firewall app**. Right-click Inbound Rules and then select New Rule. In the Predefined field select Windows Remote Management and then follow the wizard.    
+
+To enable PowerShell remoting with PsExec, open a command prompt with admin rights in the folder where you copied PsExec and then execute this command:
+    
+        psexec.exe \\RemoteComputerName -s powershell Enable-PSRemoting -Force
+        
+# Via PowerShell Direct        
+
+If you want to enable remoting in virtual machine on a Hyper-V host, you can also use PowerShell Direct if the guest OS is Windows 10, Windows Server 2016 or Windows Server 2019 (see comment below). This is the PowerShell command for the task:
+
+        Invoke-Command -VMName <VM name> -ScriptBlock {Enable-PSRemoting -Force} -Credential Administrator
+        
+# Testing PowerShell remoting        
+
+To test you have enabled PowerShell remoting correctly, you can enter this command
+
+        Enter-PSSession -ComputerName <hostname>
+        
+This will open an interactive session with a remote computer where you can then enter PowerShell commands to execute on the remote machine.
+
+If you want to connect with a different account than the one you logged on the local machine with, you can use this command:
+
+        Enter-PSSession -Computername "host" –Credential "host\administrator"
+        
+We can now start the SSH service (sshd) with this PowerShell command:
+
+        Start-Service sshd
+        
+To automatically star the OpenSSH service sshd, you need this command
+
+        Set-Service sshd -StartupType Automatic
+        
+**To connect to the remote host, you have to use the HostName parameter instead of  ComputerName parameter:**        
