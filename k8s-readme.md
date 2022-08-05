@@ -6008,3 +6008,130 @@ After a user-defined amount of time, the Kubernetes service is switched and now 
 		</html>
 
 		D:\kubernetes\Project1\Blue-Green	    
+
+# Canary deployment in Kubernetes
+	    
+When you add the canary deployment to a Kubernetes cluster, it is managed by a service through selectors and labels. The service routes traffic to the pods that have the specified label. This allows you to add or remove deployments easily.
+
+The amount of traffic that the canary gets corresponds to the number of pods it spins up. In most cases, you start by routing a smaller percentage of traffic to the canary and increase the number over time.
+
+With both deployments set up, you monitor the canary behavior to see whether any issues arise. Once you are happy with the way it is handling requests, you can upgrade all the deployments to the latest version.
+	    
+**Note:** Canary deployments got their name from an old British mining practice. Back in the day, miners used canaries to test coal mines’ safety before they went in. If the canaries returned unharmed, the miners felt safe to enter. However, if something did happen to the birds, they knew that the mines were filled with toxic gases.	    
+	    
+# In short, in canary deployment we do this
+	    
+	    1.Create 2 deployment with the same label selector ( Deployment-1  app: nginx,version:1, Deployment-2  app: nginx,version:2)
+	    2.Create a service "Service-1" using the deployment,which select the deployment based on the selected labels, Here we take lables as app: nginx,version:1)
+	    3. When you hit the service it will show the pods exposed by Deployment-1 as these both labels are present only in Deployment-1.
+	    4. We deployed Deployment-2 , However we didnt expose this deployment to any service,As no service exists which use the label selector app: nginx,version:2)
+	    5. Now, when you delete lable "version:1" from Service-1, the service selects the deployment which has "app: nginx" lable in it.
+	    6. And lable "app: nginx" is present in both the deployment, Hence service will push the traffic to both deployment and pods within them.
+	    7. Just make sure to keep the replica instance of Deployment-2  low (eg --replicas=1), as this deployment is still in testing phase.
+	    8. Once you see logs from the pods from Deployment-2 looks good, you can labels app: nginx,version:2 to service, in create the number of replicas as required,and delete the Deployment-1
+	    
+# Canary Deployment Menifest
+
+		apiVersion: apps/v1
+		kind: Deployment
+		metadata:
+		  labels:
+		    app: dep-nginx-a
+		  name: dep-nginx-a
+		spec:
+		  replicas: 2
+		  selector:
+		    matchLabels:
+		      app: dep-nginx
+		      version: "v1"
+		  template:
+		    metadata:
+		      labels:
+			app: dep-nginx
+			version: "v1"
+		    spec:
+		      containers:
+		      - image: sendtoanoo/profile:nginxarg
+			name: profile
+
+		---
+
+		apiVersion: v1
+		kind: Service
+		metadata:
+		  labels:
+		    app: service-nginx
+		  name: service-nginx
+		spec:
+		  ports:
+		  - port: 80
+		    protocol: TCP
+		    nodePort: 30001
+		  selector:
+		    app: dep-nginx
+		    version: v1
+		  type: NodePort
+
+		---
+
+		apiVersion: apps/v1
+		kind: Deployment
+		metadata:
+		  labels:
+		    app: dep-nginx-b
+		  name: dep-nginx-b
+		spec:
+		  replicas: 1
+		  selector:
+		    matchLabels:
+		      app: dep-nginx
+		      version: "v2"
+		  template:
+		    metadata:
+		      labels:
+			app: dep-nginx
+			version: "v2"
+		    spec:
+		      containers:
+		      - image: sendtoanoo/profile:v3
+			name: profile	    
+	    
+	       ---
+	    
+		apiVersion: v1
+		kind: Service
+		metadata:
+		  labels:
+		    app: service-nginx
+		  name: service-nginx
+		spec:
+		  ports:
+		  - port: 80
+		    protocol: TCP
+		    nodePort: 30001
+		  selector:
+		    app: dep-nginx
+		  type: NodePort	    
+	    
+		---
+	    
+		apiVersion: v1
+		kind: Service
+		metadata:
+		  labels:
+		    app: service-nginx
+		  name: service-nginx
+		spec:
+		  ports:
+		  - port: 80
+		    protocol: TCP
+		    nodePort: 30001
+		  selector:
+		    app: dep-nginx
+	            version: v2
+		  type: NodePort		  
+	    
+		kubectl delete -f setup.yaml
+		deployment.apps "dep-nginx-a" deleted
+		service "service-nginx" deleted
+		deployment.apps "dep-nginx-b" deleted
