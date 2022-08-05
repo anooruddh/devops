@@ -61,3 +61,5 @@ To automatically star the OpenSSH service sshd, you need this command
         Set-Service sshd -StartupType Automatic
         
 **To connect to the remote host, you have to use the HostName parameter instead of  ComputerName parameter:**        
+
+        Enter-PSsession -HostName <computer name>
