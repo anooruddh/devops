@@ -3405,7 +3405,8 @@ Custom Resource allows you to extend Kubernetes capabilities by adding any kind 
 
 # How to create a CRD
 The manifest below shows an example CRD crd.yaml
-	
+
+## CRD-1	    
 		apiVersion: apiextensions.k8s.io/v1beta1
 		kind: CustomResourceDefinition
 		metadata:
@@ -3424,6 +3425,80 @@ The manifest below shows an example CRD crd.yaml
 		shortNames:
 		- ac	
 
+## CRD-2
+	    
+		apiVersion: apiextensions.k8s.io/v1
+		kind: CustomResourceDefinition
+		metadata:
+		  name: crontabs.stable.example.com
+		spec:
+		  group: stable.example.com
+		  versions:
+		    - name: v1
+		      served: true
+		      storage: true
+		      schema:
+			openAPIV3Schema:
+			  type: object
+			  properties:
+			    spec:
+			      type: object
+			      properties:
+				cronSpec:
+				  type: string
+				image:
+				  type: string
+				replicas:
+				  type: integer
+		  scope: Namespaced
+		  names:
+		    plural: crontabs
+		    singular: crontab
+		    kind: CronTab
+		    shortNames:
+		      - ct	    
+	    
+Let’s try to break down the definitions of each field so that you can better understand the CRD since most of them look different when you compare them with built-in Kubernetes objects.
+
+**apiVersion**: specifies that you’ll use the apiextensions.k8s.io/v1 API.
+	    
+**kind**: specifies that you want to create a CustomResourceDefinition.
+	    
+**name**: specifies the name of the resource, which should be in <plural>.<group> form.
+	    
+**group**: mentions the group name for the API.
+	    
+**versions**: mentions the version to be used in the API URL. It can have values like v2 or v1aplha.
+	    
+**served**: controls whether this version should be enabled or disabled. You can only mark one version as storage.
+	    
+**schema**: specifies a structural schema that you want to validate the CRD of using the openAPIV3Schema validation before you send it to the API server. Then you are also specifying that custom object fields spec.cronSpec and spec.image must be a string. The field spec.replicas must be an integer.
+	    
+**scope**: specifies whether the custom object is namespaced or available cluster-wide. You’ve used the Namespaced scope, so it’s only available to the namespace that you’ll use during the creation of the CRD. The default is cluster-scoped.
+	    
+**plural and singular**: specify the plural and singular name of the CRD.
+	    
+**kind**: specifies the type of the custom object.
+	    
+**shortNames**: specifies the short string that you can use in the CLI.
+	    
+The next step is to create the CRD using the kubectl apply -f crd.yaml kubectl command. You’ll get the following response after the CRD creation:
+
+
+	customresourcedefinition.apiextensions.k8s.io/crontabs.stable.example.com created
+	search this custom resource in api-resources
+	kubectl api-resources | grep crontab
+	    
+# Create a Custom Object
+	    
+	apiVersion: 'stable.example.com/v1'
+	kind: CronTab
+	metadata:
+	  name: my-cron-object
+	spec:
+	  cronSpec: '* * * * */5'
+	  image: my-cron-image	    
+	    
 # CRDs expand Kubernetes
 CRD is a way to extend kubernetes allowing us to create a custom resource of our choice and making it declarative with the help of a custom controller.	
 
