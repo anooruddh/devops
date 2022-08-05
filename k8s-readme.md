@@ -6135,3 +6135,19 @@ With both deployments set up, you monitor the canary behavior to see whether any
 		deployment.apps "dep-nginx-a" deleted
 		service "service-nginx" deleted
 		deployment.apps "dep-nginx-b" deleted
+
+## Monitor the Canary Behavior
+	    
+With both deployments up and running, monitor the behavior of the new deployment. Depending on the results, you can roll back the deployment or upgrade to the newer version.
+
+## Roll Back Canary Deployment
+	    
+If you notice the canary is not performing as expected, you can roll back the deployment and delete the upgraded pods	    
+	    
+## Roll Out Upgraded Deployment
+	    
+If you conclude the canary deployment is performing as expected, you can route all incoming traffic to the upgraded version	   
+	    
+1.1. Upgrade the first version by modifying the Docker image and building a new deployment. Then, remove the canaries
+1.2  You can keep the upgraded pods and remove the ones with the version 1 label
+1.3  Alternatively, you can even modify the service.yaml file and add the version specifier to the selector label. This instructs the load balancer to only route traffic to version 2 pods	    
