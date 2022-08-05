@@ -5792,3 +5792,216 @@ Kustomize is a configuration management solution that leverages layering to pres
 	    
 	    kubectl set env deployment dep-nginx-blue DEPLOY_DATE="$(date)"
 	    deployment.apps/dep-nginx-blue env updated
+
+# Blue-Green Deployment
+
+# Blue/Green Deployments in Kubernetes: A General Process
+	    
+The current version of the application is marked with a color (e.g blue)
+	    
+A new deployment is performed with brand new pods and is marked with the new color (i.e. green)
+	    
+Both versions exist at the same but the Kubernetes service is still pointing at the existing/blue version and thus not all users of the system can see the change yet
+	    
+Different types of tests (e.g. smoke tests) can be performed on the new version with no impact to existing users
+	    
+After a user-defined amount of time, the Kubernetes service is switched and now points to the new version. All live users can now use the new functionality without any downtime
+	    
+ - [x] If the new version works as expected, the old version is destroyed. The new version becomes the “current version” and the Kubernetes service stays as is
+ - [x] If the new version has issues, the Kubernetes service is switched back to the previous version. This has minimal impact on users. The new version is destroyed and everything is back to the original state
+	    
+## Code
+	    
+		Blue Deployment
+
+		apiVersion: apps/v1
+		kind: Deployment
+		metadata:
+		  labels:
+		    app: dep-nginx-blue
+		  name: dep-nginx-blue
+		spec:
+		  replicas: 1
+		  selector:
+		    matchLabels:
+		      app: dep-nginx
+		      version: "v1"
+		  template:
+		    metadata:
+		      labels:
+			app: dep-nginx
+			version: "v1"
+		    spec:
+		      containers:
+		      - image: sendtoanoo/profile:nginxarg
+			name: profile	    
+
+	        Green Deployment
+	    
+		apiVersion: apps/v1
+		kind: Deployment
+		metadata:
+		  labels:
+		    app: dep-nginx-green
+		  name: dep-nginx-green
+		spec:
+		  replicas: 1
+		  selector:
+		    matchLabels:
+		      app: dep-nginx
+		      version: "v2"
+		  template:
+		    metadata:
+		      labels:
+			app: dep-nginx
+			version: "v2"
+		    spec:
+		      containers:
+		      - image: sendtoanoo/profile:v3
+			name: profile	    
+
+		Service menifest
+	    
+		apiVersion: v1
+		kind: Service
+		metadata:
+		  labels:
+		    app: service-nginx
+		  name: service-nginx
+		spec:
+		  ports:
+		  - port: 80
+		    protocol: TCP
+		    nodePort: 30001
+		  selector:
+		    app: dep-nginx
+		    version: v1
+		  type: NodePort
+	    
+	    
+## Output
+		D:\kubernetes\Project1\Blue-Green
+		λ kubectl get po -o wide --show-labels
+		NAME                              READY   STATUS    RESTARTS   AGE     IP           NODE             NOMINATED NODE   READINESS GATES   LABELS
+		dep-nginx-blue-6b96fb7db8-lxxmq   1/1     Running   0          10m     10.1.1.101   docker-desktop   <none>           <none>            app=dep-nginx,pod-template-hash=6b96fb7db8,version=v1
+		dep-nginx-green-d7c7f897b-vk679   1/1     Running   0          5m27s   10.1.1.103   docker-desktop   <none>           <none>            app=dep-nginx,pod-template-hash=d7c7f897b,version=v2
+
+		D:\kubernetes\Project1\Blue-Green
+		λ kubectl get deploy -o wide
+		NAME              READY   UP-TO-DATE   AVAILABLE   AGE     CONTAINERS   IMAGES                        SELECTOR
+		dep-nginx-blue    1/1     1            1           11m     profile      sendtoanoo/profile:nginxarg   app=dep-nginx,version=v1
+		dep-nginx-green   1/1     1            1           5m34s   profile      sendtoanoo/profile:v3         app=dep-nginx,version=v2
+
+		D:\kubernetes\Project1\Blue-Green
+		λ kubectl get svc -o wide
+		NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE   SELECTOR
+		kubernetes      ClusterIP   10.96.0.1       <none>        443/TCP        29d   <none>
+		service-nginx   NodePort    10.106.91.153   <none>        80:30001/TCP   11m   app=dep-nginx,version=v1
+
+		D:\kubernetes\Project1\Blue-Green
+		λ curl http://localhost:30001/
+		<!DOCTYPE html>
+		<html>
+		<head>
+		<title>Welcome to nginx!</title>
+		<style>
+		html { color-scheme: light dark; }
+		body { width: 35em; margin: 0 auto;
+		font-family: Tahoma, Verdana, Arial, sans-serif; }
+		</style>
+		</head>
+		<body>
+		<h1>Anooruddh, Welcome to nginx!</h1>
+		<p>If you see this page, the nginx web server is successfully installed and
+		working. Further configuration is required.</p>
+
+		<p>For online documentation and support please refer to
+		<a href="http://nginx.org/">nginx.org</a>.<br/>
+		Commercial support is available at
+		<a href="http://nginx.com/">nginx.com</a>.</p>
+
+		<p>This is a custom docker image of nginx created by ANOORUDDH GAJBHIYE</p>
+
+		<p>Learn Kubernetes with Anooruddh Ramesh Gajbhiye.</p>
+		</body>
+		</html>
+
+		D:\kubernetes\Project1\Blue-Green
+		λ kubectl edit svc service-nginx
+		service/service-nginx edited
+
+		D:\kubernetes\Project1\Blue-Green
+		λ kubectl get svc -o wide
+		NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE   SELECTOR
+		kubernetes      ClusterIP   10.96.0.1       <none>        443/TCP        29d   <none>
+		service-nginx   NodePort    10.106.91.153   <none>        80:30001/TCP   11m   app=dep-nginx,version=v2
+
+		D:\kubernetes\Project1\Blue-Green
+		λ curl http://localhost:30001/
+
+		<!DOCTYPE html>
+		<html>
+		<head>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<style>
+		.card {
+		  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+		  max-width: 300px;
+		  margin: auto;
+		  text-align: center;
+		  font-family: arial;
+		}
+
+		.title {
+		  color: grey;
+		  font-size: 18px;
+		}
+
+		button {
+		  border: none;
+		  outline: 0;
+		  display: inline-block;
+		  padding: 8px;
+		  color: white;
+		  background-color: #000;
+		  text-align: center;
+		  cursor: pointer;
+		  width: 100%;
+		  font-size: 18px;
+		}
+
+		a {
+		  text-decoration: none;
+		  font-size: 22px;
+		  color: black;
+		}
+
+		button:hover, a:hover {
+		  opacity: 0.7;
+		}
+		</style>
+		<title>Anooruddh Gajbhiye</title>
+		</head>
+		<body>
+
+		<!-- <h2 style="text-align:center">User Profile Card-latest</h2> -->
+
+		<div class="card">
+		  <img src="https://media-exp2.licdn.com/dms/image/C5103AQFUvewfs6bU3w/profile-displayphoto-shrink_400_400/0/1557387004013?e=1663200000&v=beta&t=J0TvhehmBB1-90V98QRMrjUeEY5Gt0lQ_YrlfgNDncA" alt="Anooruddh Gajbhiye" style="width:100%">
+		  <h1>Anooruddh Gajbhiye</h1>
+		  <p class="title">Sr Operation Specialist</p>
+		  <p>Pune, Maharashtra</p>
+		  <div style="margin: 24px 0;">
+		    <a href="https://www.linkedin.com/in/anooruddh-ramesh-06839317/" target="_blank"><i class="fa fa-linkedin"></i></a>
+		    <a href="https://www.facebook.com/anooruddh.gajbhiye" target="_blank"><i class="fa fa-facebook"></i></a>
+		    <a href="https://www.youtube.com/anooruddh.gajbhiye" target="_blank"><i class="fa fa-youtube"></i></a>
+		    <a href="https://t.me/anooruddh.gajbhiye" target="_blank"><i class="fa fa-telegram"></i></a>
+		    <a href="skype:anooruddh.gajbhiye?chat" target="_blank"><i class="fa fa-skype"></i></a>
+		  </div>
+		  <p><button>Contact</button></p>
+		</div>
+
+		</body>
+		</html>
+
+		D:\kubernetes\Project1\Blue-Green	    
