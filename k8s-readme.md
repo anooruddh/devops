@@ -3489,6 +3489,10 @@ The next step is to create the CRD using the kubectl apply -f crd.yaml kubectl c
 	search this custom resource in api-resources
 	kubectl api-resources | grep crontab
 	    
+	NAME	SHORTNAMES	APIVERSION	NAMESPACED	KIND
+	crontabs	ct	stable.example.com/v1	true	CronTab
+	    
+	    
 # Create a Custom Object
 	    
 	apiVersion: 'stable.example.com/v1'
