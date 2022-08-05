@@ -5809,7 +5809,8 @@ After a user-defined amount of time, the Kubernetes service is switched and now 
 	    
  - [x] If the new version works as expected, the old version is destroyed. The new version becomes the “current version” and the Kubernetes service stays as is
  - [x] If the new version has issues, the Kubernetes service is switched back to the previous version. This has minimal impact on users. The new version is destroyed and everything is back to the original state
-	    
+
+### Note - Rolling updates are useful but the problem is that it’s difficult to roll back if something is wrong with the new version. Also, it doesn’t support running both versions in parallel as required by the blue/green pattern.	    
 ## Code
 	    
 		Blue Deployment
