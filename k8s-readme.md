@@ -6149,5 +6149,7 @@ If you notice the canary is not performing as expected, you can roll back the de
 If you conclude the canary deployment is performing as expected, you can route all incoming traffic to the upgraded version	   
 	    
 1.1. Upgrade the first version by modifying the Docker image and building a new deployment. Then, remove the canaries
+	    
 1.2  You can keep the upgraded pods and remove the ones with the version 1 label
+	    
 1.3  Alternatively, you can even modify the service.yaml file and add the version specifier to the selector label. This instructs the load balancer to only route traffic to version 2 pods	    
