@@ -5779,7 +5779,9 @@ Kustomize is a configuration management solution that leverages layering to pres
 	    
 	    kubectl scale deployment shop --replicas=0 -n service
 	    
-### Change replicas in ReplicaSet	    
+### Change replicas in ReplicaSet	
+	    
+### Using rollout restart command on deployment	    	    
 	    
 	    kubectl rollout restart deploy dep-nginx-blue
 	    deployment.apps/dep-nginx-blue restarted
