@@ -5772,3 +5772,23 @@ Kustomize is a configuration management solution that leverages layering to pres
 			deployment.apps/dev-dep-nginx    2/2     2            2           9m14s
 			deployment.apps/prod-dep-nginx   5/5     5            5           3m49s	    
 	    
+
+# Restarting Kubernetes Pods Using kubectl
+	    
+### scale to 0, then scale to 1 or more
+	    
+	    kubectl scale deployment shop --replicas=0 -n service
+	    
+### Change replicas in ReplicaSet	    
+	    
+	    kubectl rollout restart deploy dep-nginx-blue
+	    deployment.apps/dep-nginx-blue restarted
+	    
+### delete pod , RS will create it again
+	    
+	    kubectl delete pod, ReplicationSet will create it again.
+	    
+### Set env DEPLOY_DATE to current time
+	    
+	    kubectl set env deployment dep-nginx-blue DEPLOY_DATE="$(date)"
+	    deployment.apps/dep-nginx-blue env updated
