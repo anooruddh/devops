@@ -4051,6 +4051,8 @@ Scaling happens. How this happens can be controlled by the “behavior” field 
 
 # Working with the Horizontal Pod Autoscaler
 	    
+**Note - Horizontal pod autoscaling does not apply to objects that can't be scaled (for example: a DaemonSet.)**
+	    
 Verify that the Kubernetes Metrics Server has been installed on a cluster.
 	    
 	    		kubectl -n kube-system get deployment/metrics-server
