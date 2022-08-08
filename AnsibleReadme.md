@@ -1790,6 +1790,8 @@ By default Ansible runs tasks synchronously, holding the connection to the remot
 		async: 60
 		poll: 10
 		async:
+
+### async
 Async indicates the Total time to complete the task or its maximum runtime of the task.
 	
 If you want to run multiple tasks in a playbook concurrently, use async with poll set to 0. When you set poll: 0, Ansible starts the task and immediately moves on to the next task without waiting for a result. Each async task runs until it either completes, fails or times out (runs longer than its async value). The playbook run ends without checking back on async tasks.
