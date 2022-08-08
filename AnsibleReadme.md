@@ -1870,6 +1870,53 @@ Next run of playbook process on 2 nodes (nodeC, nodeD) simultaneously, then Seco
 	
 **Setting the batch size with serial changes the scope of the Ansible failures to the batch size, not the entire host list.**	
 	
+	
+### wait_for module
+	
+In Ansible, we face many situations where a task is dependent on a service, port or system’s state. But that state is expected to occur after some time due to a connection reset, server reboot, execution time taken by a code or time taken to start a service. So we need to wait for it to happen. Now Ansible is so rich in its module treasure that it has a module named wait_for which enables our playbook to wait for a state or task completion on remote target machines. Using this module we will wait for a condition to occur before continuing with next tasks our playbook.
+	
+**Given below is a list of parameters:**
+
+1. timeout: Default is 300 seconds. Maximum number of seconds to wait for. This shouldn’t be used with other conditions, because then it will fail.
+
+2. state: Below are the acceptable states:
+
+		started: whether port is open.
+		stopped: whether port is closed.
+		drained: Whether connection is active.
+		present: Whether a string is present in a file or string.
+		absent: whether file is removed or absent.
+	
+3. sleep: Default is 1 second. This is to sleep between checks.
+
+4. search_regex: To check a string in file or socket connection.
+
+5. port: Port number to check.
+
+6. path: Path of a file which must be existing before continuing.
+	
+
+		# Same as above but you normally have ansible_connection set in inventory, which overrides 'connection'
+		- name: Wait 300 seconds for port 22 to become open and contain "OpenSSH"
+		  ansible.builtin.wait_for:
+		    port: 22
+		    host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
+		    search_regex: OpenSSH
+		    delay: 10
+		  vars:
+		    ansible_connection: local	
+	
+7. msg: This is the message which will be printing instead of normal error message in case of failures.
+
+8. host: The IP or hostname to wait for.
+
+9. exclude_hosts: The list of hosts, not to check when looking for active connections (TCP).
+
+10. delay: Default is 0. This represents the number of seconds to wait for next polling.
+
+11. connect_timeout: Default is 5 seconds. This is to specify the time to wait for a connection to establish before closing and try again.
+
+12. active_connection_states: This is the list of connections (TCP) which can be counted as active session. Default values are “TIME_WAIT”, “FIN_WAIT2, “FIN_WAIT1”, “ESTABLISHED”, “SYN_SENT”, “SYN_RECV”.	
 # --start-at-task	
 	
 The --start-at-task option allows you to start the execution of a playbook from a specific task. It takes an argument about the name of the task at which to start. You can see the below command.
