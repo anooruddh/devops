@@ -1837,7 +1837,39 @@ Ansible uses batches for task execution, which are controlled by a parameter cal
 	
 		ansible-playbook site.yaml --forks 50
 	
+### serial
+	
+Setting the batch size with serial
+	
+By default, Ansible runs in parallel against all the hosts in the pattern you set in the hosts: field of each play. If you want to manage only a few machines at a time, for example during a rolling update, you can define how many hosts Ansible should manage at a single time using the serial keyword:
+	
+		---
+		- name: test play
+		  hosts: webservers
+		  serial: 3
+		  gather_facts: False
 
+		  tasks:
+		    - name: first task
+		      command: hostname
+		    - name: second task
+		      command: hostname	
+
+ou can also specify a percentage with the serial keyword. Ansible applies the percentage to the total number of hosts in a play to determine the number of hosts per pass:
+
+		---
+		- name: test play
+		  hosts: webservers
+		  serial: "30%"
+
+**Story 3:** Suppose you have 4 nodes (nodeA, nodeB, nodeC, nodeD) in inventory, 2 tasks in playbook, forks =5 and serial = 2.
+
+First task process on 2 nodes (nodeA, nodeB) simultaneously (should process on 4 nodes, but due to serial configuration it process on 2 nodes only) and then jump into Second task. Second task process on 2 nodes (nodeA, nodeB) simultaneously. Once both tasks completed, it again run playbook for rest of 2 nodes.
+
+Next run of playbook process on 2 nodes (nodeC, nodeD) simultaneously, then Second task process on 2 nodes (nodeC, nodeD) simultaneously. After that playbook run get completed.
+	
+**Setting the batch size with serial changes the scope of the Ansible failures to the batch size, not the entire host list.**	
+	
 # --start-at-task	
 	
 The --start-at-task option allows you to start the execution of a playbook from a specific task. It takes an argument about the name of the task at which to start. You can see the below command.
