@@ -1837,7 +1837,7 @@ Ansible uses batches for task execution, which are controlled by a parameter cal
 	
 		ansible-playbook site.yaml --forks 50
 	
-### serial
+### serial (Rolling Update)
 	
 Setting the batch size with serial
 	
