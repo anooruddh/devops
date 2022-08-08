@@ -1824,6 +1824,20 @@ Ansible provides the option to get the task status in any time. Using ansible as
 			retries: 30
 			retries how many attempts before failing.	
 
+	
+### forks
+	
+Ansible uses batches for task execution, which are controlled by a parameter called forks . The default value for forks is 5, which means Ansible executes a task on the first five hosts, waits for the task to complete, and then takes the next batch of five hosts, and so on
+	
+		/etc/ansible/ansible.cfg
+	
+		[defaults]
+		inventory = ./hosts
+		forks=50	
+	
+		ansible-playbook site.yaml --forks 50
+	
+
 # --start-at-task	
 	
 The --start-at-task option allows you to start the execution of a playbook from a specific task. It takes an argument about the name of the task at which to start. You can see the below command.
