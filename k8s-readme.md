@@ -3803,7 +3803,7 @@ The output shows that Kubernetes gave the Pod a QoS class of BestEffort.
 		status:
 		  qosClass: BestEffort	
 	    
-**QoS Class: Guaranteed**
+**QoS Class: Guaranteed** ( HIGH PRIORITY )
 
 	Limits:
 		cpu:     500m
@@ -3812,14 +3812,14 @@ The output shows that Kubernetes gave the Pod a QoS class of BestEffort.
 		cpu:        500m
 		memory:     200Mi	    
 	    
-**QoS Class: Burstable**  ( cpu are same, however memory is not mentioned, if mentioned but their value differe in both limits and requests)
+**QoS Class: Burstable** ( AFTER HIGH PRIORITY ) ( cpu are same, however memory is not mentioned, if mentioned but their value differe in both limits and requests)
 	    
 	Limits:
 		cpu:  500m
 	Requests:
 		cpu:        500m
 	    
-**QoS Class: BestEffort**	    
+**QoS Class: BestEffort** ( LEAST PRIORITY )	    
 	    
 	RESOURCE & LIMITS IS NOT SET IN MENIFEST FILE .YAML	    
 	    
