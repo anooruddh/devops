@@ -3802,7 +3802,27 @@ The output shows that Kubernetes gave the Pod a QoS class of BestEffort.
 		  ...
 		status:
 		  qosClass: BestEffort	
+	    
+**QoS Class: Guaranteed**
 
+	Limits:
+		cpu:     500m
+		memory:  200Mi
+	Requests:
+		cpu:        500m
+		memory:     200Mi	    
+	    
+**QoS Class: Burstable**  ( cpu are same, however memory is not mentioned, if mentioned but their value differe in both limits and requests)
+	    
+	Limits:
+		cpu:  500m
+	Requests:
+		cpu:        500m
+	    
+**QoS Class: BestEffort**	    
+	    
+	RESOURCE & LIMITS IS NOT SET IN MENIFEST FILE .YAML	    
+	    
 # The lifecycle of a Kubernetes Pod
 
 		kubectl or any other API client submits the Pod spec to the API server.
