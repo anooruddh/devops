@@ -1772,7 +1772,27 @@ Whenever you want to check your inventory, you can run:
 
 # Set the order of task execution in Ansible with these two keywords
 Extend Ansible's flexibility by adding pre_tasks and post_tasks to your playbooks.
-	
+
+		$ cat patch-webservers.yml 
+		---
+
+		- hosts: webservers
+		  pre_tasks:
+		    - name: Disable web server in load balancer
+		      community.general.haproxy:
+			state: disabled
+			host: '{{ inventory_hostname_short }}'
+			fail_on_not_found: yes
+		      delegate_to: loadbalancer.example.com
+		  roles:
+		    - full_patches
+		  post_tasks:
+		    - name: Enable web server in load balancer
+		      community.general.haproxy:
+			state: enabled
+			host: '{{ inventory_hostname_short }}'
+			fail_on_not_found: yes
+		      delegate_to: loadbalancer.example.com	
 	
 ### Ansible Async POLL with Examples
 By default ansible will run tasks one after the other in sequentially. i,e Ansible executes the first task,after completion of the first task it will go for another task. In some situations task will take more time. If you take a example of apt-get update or yum update it will take more time compared to other tasks. so the playbook will take longer time to complete all the tasks.
