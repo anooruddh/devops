@@ -153,3 +153,121 @@ Finally, create the file vm-nginx-main.tf. This file will create the virtual mac
         disable_password_authentication = false
         custom_data = base64encode(data.template_file.nginx-vm-cloud-init.rendered)
       }
+
+
+# HCL (Hushicorp Configuration Language) Packer
+
+# What is Packer?
+
+Packer is an open source tool for creating identical machine images for multiple platforms from a single source configuration. Packer is lightweight, runs on every major operating system, and is highly performant, creating machine images for multiple platforms in parallel. Packer does not replace configuration management like Chef or Puppet. In fact, when building images, Packer is able to use tools like Chef or Puppet to install software onto the image.
+
+
+A machine image is a single static unit that contains a pre-configured operating system and installed software which is used to quickly create new running machines. Machine image formats change for each platform. Some examples include AMIs for EC2, VMDK/VMX files for VMware, OVF exports for VirtualBox, etc.
+
+# Packer Templates
+
+**.pkr.hcl or .pkr.json**
+
+Packer's behavior is determined by the Packer template, which consists of a series of declarations and commands for Packer to follow. This template tells Packer what plugins (builders, provisioners, post-processors) to use, how to configure each of those plugins, and what order to run them in.
+
+The template contains flexible variable injection tools, as well as built-in functions to help you customize your builds.
+
+Historically, Packer has used a JSON template for its configuration, but Packer is transitioning to a new template configuration format that uses HCL2 -- the same configuration language used by Terraform and HashiCorp's other products. This format is more flexible, more modular, and more concise than the original JSON template format. While the JSON format is still supported, certain new features in the Packer core will only be implemented for the newer HCL format. Please use the side bar to find documentation for the different template formats.
+
+
+# Provisioners
+
+Provisioners use builtin and third-party software to install and configure the machine image after booting. Provisioners prepare the system for use, so common use cases for provisioners include:
+
+      installing packages
+
+      patching the kernel
+
+      creating users
+
+      downloading application code
+
+Packer uses the HashiCorp Configuration Language - HCL - designed to allow concise descriptions of the required steps to get to a build file. This page describes the features of HCL2 exhaustively, if you would like to give a quick try to HCL2
+
+# Breakpoint Provisioner
+
+Type: breakpoint
+
+The breakpoint provisioner will pause until the user presses "enter" to resume the build. This is intended for debugging purposes, and allows you to halt at a particular part of the provisioning process.
+
+This is independent of the -debug flag, which will instead halt at every step and between every provisioner.
+
+»Basic Example
+
+      {
+        "builders": [
+          {
+            "type": "null",
+            "communicator": "none"
+          }
+        ],
+        "provisioners": [
+          {
+            "type": "shell-local",
+            "inline": "echo hi"
+          },
+          {
+            "type": "breakpoint",
+            "disable": false,
+            "note": "this is a breakpoint"
+          },
+          {
+            "type": "shell-local",
+            "inline": "echo hi 2"
+          }
+        ]
+      }
+
+# Create a Packer Image Template JSON file – Example
+
+Now let us write a Packer Image Template file. For this post, we will install Tomcat8 and OpenJDK8 on Ubuntu 16 Xenial image
+
+Here is Packer Template file with my configuration
+
+      {
+          "variables": {
+              "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+              "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}"
+          },
+          "builders": [
+              {
+                  "access_key": "{{user `aws_access_key`}}",
+                  "ami_name": "Tomcat8_OJDK8_AMI",
+                  "instance_type": "t3.micro",
+                  "region": "ap-south-1",
+                  "secret_key": "{{user `aws_secret_key`}}",
+                  "security_group_id":"sg-04cce0d3e58f065a0",
+                  "ssh_keypair_name":"SaravMacKeyPair",
+                  "ssh_private_key_file":"SaravMacKeyPair.pem",
+                  "associate_public_ip_address":"true",
+                  "source_ami_filter": {
+                    "filters": {
+                    "virtualization-type": "hvm",
+                    "name": "ubuntu/images/*ubuntu-xenial-16.04-amd64-server-*",
+                    "root-device-type": "ebs"
+                    },
+                    "owners": ["099720109477"],
+                    "most_recent": true
+                  },
+                  "ssh_username": "ubuntu",
+                  "type": "amazon-ebs"
+              }
+          ],
+          "provisioners": [
+              {
+                  "type": "shell",
+                  "inline":[
+                      "sudo add-apt-repository ppa:openjdk-r/ppa",
+                      "sudo apt-get update",
+                      "sudo apt-get install -y openjdk-8-jdk",
+                      "java -version",
+                      "sudo apt-get install -y tomcat8"
+                  ]
+              }
+          ]
+      }
