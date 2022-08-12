@@ -227,7 +227,9 @@ This is independent of the -debug flag, which will instead halt at every step an
 
 Now let us write a Packer Image Template file. For this post, we will install Tomcat8 and OpenJDK8 on Ubuntu 16 Xenial image
 
-Here is Packer Template file with my configuration
+## Here is Packer Template file with my configuration
+
+tomcat8_ojdk8.json
 
       {
           "variables": {
@@ -271,3 +273,30 @@ Here is Packer Template file with my configuration
               }
           ]
       }
+
+## Validate the Packer Image Template JSON file
+
+      aksarav@middlewareinventory:/apps/packer/tomcat8_ojdk8 $ pwd
+      /apps/packer/tomcat8_ojdk8
+      aksarav@middlewareinventory:/apps/packer/tomcat8_ojdk8 $ ls -lrt
+      total 8
+      -rw-r--r--  1 aksarav  wheel  1458 Jun  3 06:35 tomcat8_ojdk8.json
+      aksarav@middlewareinventory:/apps/packer/tomcat8_ojdk8 $ packer validate tomcat8_ojdk8.json 
+      Template validated successfully.
+      
+## Export AWS Key ID and Secret Key
+
+Before you run the packer build. You must export the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY into the environment variable.
+
+If you scroll back and Look at the first line of our JSON file, we are trying to get these values from the env [Environment Variable]
+
+      $ export AWS_ACCESS_KEY_ID="anaccesskey"
+      $ export AWS_SECRET_ACCESS_KEY="asecretkey"
+      
+## Packer Build – Run the Packer Image Template and Create AMI      
+
+Finally, It is a time to build our AMI
+
+      packer build tomcat8_ojdk8.json
+      
+      
