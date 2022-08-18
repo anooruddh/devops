@@ -70,5 +70,5 @@ To automatically star the OpenSSH service sshd, you need this command
 |---|---|
 | New-AzResourceGroup -Name 'myResourceGroup' -Location 'EastUS' | az group create --name myResourceGroup --location eastus |
 | Remove-AzResourceGroup -Name 'myResourceGroup' | az group delete --name myResourceGroup |
-| Get-AzVM -ResourceGroupName "ResourceGroup11" -Name "VirtualMachine07" | az group list --query "[?location=='westus']" | 
-| Set-AzVM -ResourceGroupName "ResourceGroup11" -Name "VirtualMachine07" -Generalized | az group update --resource-group MyResourceGroup --set tags.CostCenter='{"Dept":"IT","Environment":"Test"}' |
+| Get-AzVM -ResourceGroupName "ResourceGroup11" -Name "VirtualMachine07" | az vm list | 
+| Set-AzVM -ResourceGroupName "ResourceGroup11" -Name "VirtualMachine07" -Generalized | az vm update -n name -g group --remove tags.tagName |
