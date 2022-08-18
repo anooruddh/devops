@@ -63,3 +63,9 @@ To automatically star the OpenSSH service sshd, you need this command
 **To connect to the remote host, you have to use the HostName parameter instead of  ComputerName parameter:**        
 
         Enter-PSsession -HostName <computer name>
+
+# Powershell / AZ CLI
+
+| POWERSHELL  | AZ CLI  |
+|---|---|
+| New-AzResourceGroup -Name 'myResourceGroup' -Location 'EastUS' | az group create --name myResourceGroup --location eastus |
