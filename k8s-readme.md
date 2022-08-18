@@ -6259,7 +6259,7 @@ If you conclude the canary deployment is performing as expected, you can route a
 
 # replication set vs replication controller in kubernetes
 	    
-** The only difference between replica set and replication controller is the selector types. The replication controller supports equality based selectors whereas the replica set supports equality based as well as set based selectors **	    
+**The only difference between replica set and replication controller is the selector types. The replication controller supports equality based selectors whereas the replica set supports equality based as well as set based selectors**	    
 	    
 ## Replica Controller manifest
 
