@@ -6256,3 +6256,61 @@ If you conclude the canary deployment is performing as expected, you can route a
 1.2  You can keep the upgraded pods and remove the ones with the version 1 label
 	    
 1.3  Alternatively, you can even modify the service.yaml file and add the version specifier to the selector label. This instructs the load balancer to only route traffic to version 2 pods	    
+
+# replication set vs replication controller in kubernetes
+	    
+** The only difference between replica set and replication controller is the selector types. The replication controller supports equality based selectors whereas the replica set supports equality based as well as set based selectors **	    
+	    
+## Replica Controller manifest
+
+	---
+	apiVersion: v1
+	kind: ReplicationController
+	metadata: 
+	  name: nginx-rc
+	spec:
+	  replicas: 3
+	  selector:
+	    app: nginx
+	    tier: dev
+	  template: 
+	    metadata:
+	      name: nginx
+	      labels: 
+		app: nginx
+		tier: dev
+	    spec:
+	      containers:
+	      - name: nginx-container
+		image: nginx
+		ports:
+		- containerPort: 80	    
+	    
+## Replica Set manifest
+	    
+	---
+	apiVersion: apps/v1
+	kind: ReplicaSet
+	metadata: 
+	  name: nginx-rs
+	spec:
+	  replicas: 3
+	  selector:
+	    matchLabels:
+	      env: prod
+	    matchExpressions:
+	    - { key: tier, operator: In, values: [frontend] }
+	  template:
+	    metadata:
+	      name: nginx
+	      labels: 
+		env: prod
+		tier: frontend
+	    spec:
+	      containers:
+	      - name: nginx-container
+		image: nginx
+		ports:
+		- containerPort: 80	    
+	    
+## Note - The matchLabel works exactly same as the equality based selector, and the matchExpression is used to specify the set based selectors.	    
