@@ -6,39 +6,40 @@ Packer is an open source tool for creating identical machine images for multiple
 
 
 # Provisioners
-  Overview
-  Breakpoint
-  File
-  PowerShell
-  Shell
-  Shell (Local)
-  Windows Shell
-  Windows Restart
-  Custom
-  Community-Supported
+
+    Overview
+    Breakpoint
+    File
+    PowerShell
+    Shell
+    Shell (Local)
+    Windows Shell
+    Windows Restart
+    Custom
+    Community-Supported
   
   
   
 # Builder  
 
 
-  "builders": {
-    "type": "amazon-ebs",
-    "access_key": "AKIAIOSFODNN7EXAMPLE",
-    "secret_key": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
-    "region": "us-east-1",
-  }
+    "builders": {
+      "type": "amazon-ebs",
+      "access_key": "AKIAIOSFODNN7EXAMPLE",
+      "secret_key": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+      "region": "us-east-1",
+    }
   
   
 # Sample Packer json
 
 ## template 
 
-  {
-    "variables": {
-      "ami_id": "ami-01e78c5619c5e68b4",
-      "app_name": "httpd"
-    },
+    {
+      "variables": {
+        "ami_id": "ami-01e78c5619c5e68b4",
+        "app_name": "httpd"
+      },
 
     "builders": [{
       "type": "amazon-ebs",
@@ -65,6 +66,6 @@ Packer is an open source tool for creating identical machine images for multiple
   
 ## demo-script.sh
 
-  #!/bin/bash
-  sudo yum -y update
-  sudo yum install -y httpd
+    #!/bin/bash
+    sudo yum -y update
+    sudo yum install -y httpd
