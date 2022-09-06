@@ -215,3 +215,5 @@ To automatically star the OpenSSH service sshd, you need this command
         ]
       }]
     }
+
+# Generalize Command - sysprep.exe /oobe /generalize /mode:vm /shutdown
