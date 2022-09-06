@@ -217,3 +217,44 @@ To automatically star the OpenSSH service sshd, you need this command
     }
 
 # Generalize Command - sysprep.exe /oobe /generalize /mode:vm /shutdown
+----------------------------------------------------------------------------------------------------------------------
+# To create a VM image, follow these steps:
+
+1.  Create some variables.
+
+    $vmName = "myVM"
+    $rgName = "myResourceGroup"
+    $location = "EastUS"
+    $imageName = "myImage"
+     
+2.  Make sure the VM has been deallocated.
+
+    Stop-AzVM -ResourceGroupName $rgName -Name $vmName -Force
+
+3.  Set the status of the virtual machine to Generalized.
+
+    Set-AzVm -ResourceGroupName $rgName -Name $vmName -Generalized
+
+4.  Get the virtual machine.
+
+    $vm = Get-AzVM -Name $vmName -ResourceGroupName $rgName
+    
+5.  Create the image configuration.
+
+    $image = New-AzImageConfig -Location $location -SourceVirtualMachineId $vm.Id
+    
+6.  Create the image.
+
+    New-AzImage -Image $image -ImageName $imageName -ResourceGroupName $rgName
+    
+# Some Commands
+
+    Stop-AzVM
+    Set-AzVm
+    Get-AzVM
+    New-AzImageConfig
+    Set-AzImageOsDisk
+    Get-AzSnapshot
+    New-AzImageConfig
+
+New-AzImage
