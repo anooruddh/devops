@@ -72,3 +72,146 @@ To automatically star the OpenSSH service sshd, you need this command
 | Remove-AzResourceGroup -Name 'myResourceGroup' | az group delete --name myResourceGroup |
 | Get-AzVM -ResourceGroupName "ResourceGroup11" -Name "VirtualMachine07" | az vm list | 
 | Set-AzVM -ResourceGroupName "ResourceGroup11" -Name "VirtualMachine07" -Generalized | az vm update -n name -g group --remove tags.tagName |
+
+
+
+# Create Windows VM images with Azure PowerShell
+
+## Get the VM
+
+    $sourceVM = Get-AzVM `
+       -Name sourceVM `
+       -ResourceGroupName myResourceGroup
+   
+## Create a resource group   
+
+    $resourceGroup = New-AzResourceGroup `
+       -Name 'myGalleryRG' `
+       -Location 'EastUS'
+   
+## Create a gallery   
+
+    $gallery = New-AzGallery `
+       -GalleryName 'myGallery' `
+       -ResourceGroupName $resourceGroup.ResourceGroupName `
+       -Location $resourceGroup.Location `
+       -Description 'Azure Compute Gallery for my organization'
+   
+## Create an image definition   
+
+    $galleryImage = New-AzGalleryImageDefinition `
+       -GalleryName $gallery.Name `
+       -ResourceGroupName $resourceGroup.ResourceGroupName `
+       -Location $gallery.Location `
+       -Name 'myImageDefinition' `
+       -OsState specialized `
+       -OsType Windows `
+       -Publisher 'myPublisher' `
+       -Offer 'myOffer' `
+       -Sku 'mySKU'
+   
+## Create an image version
+
+    $region1 = @{Name='South Central US';ReplicaCount=1}
+       $region2 = @{Name='East US';ReplicaCount=2}
+       $targetRegions = @($region1,$region2)
+
+    New-AzGalleryImageVersion `
+       -GalleryImageDefinitionName $galleryImage.Name`
+       -GalleryImageVersionName '1.0.0' `
+       -GalleryName $gallery.Name `
+       -ResourceGroupName $resourceGroup.ResourceGroupName `
+       -Location $resourceGroup.Location `
+       -TargetRegion $targetRegions  `
+       -Source $sourceVM.Id.ToString() `
+       -PublishingProfileEndOfLifeDate '2030-12-01'
+   
+## Create a VM
+
+    # Create some variables for the new VM.
+    $resourceGroup = "myResourceGroup"
+    $location = "South Central US"
+    $vmName = "mySpecializedVM"
+
+    # Create a resource group
+    New-AzResourceGroup -Name $resourceGroup -Location $location
+
+    # Create the network resources.
+    $subnetConfig = New-AzVirtualNetworkSubnetConfig -Name mySubnet -AddressPrefix 192.168.1.0/24
+    $vnet = New-AzVirtualNetwork -ResourceGroupName $resourceGroup -Location $location `
+      -Name MYvNET -AddressPrefix 192.168.0.0/16 -Subnet $subnetConfig
+    $pip = New-AzPublicIpAddress -ResourceGroupName $resourceGroup -Location $location `
+      -Name "mypublicdns$(Get-Random)" -AllocationMethod Static -IdleTimeoutInMinutes 4
+    $nsgRuleRDP = New-AzNetworkSecurityRuleConfig -Name myNetworkSecurityGroupRuleRDP  -Protocol Tcp `
+      -Direction Inbound -Priority 1000 -SourceAddressPrefix * -SourcePortRange * -DestinationAddressPrefix * `
+      -DestinationPortRange 3389 -Access Deny
+    $nsg = New-AzNetworkSecurityGroup -ResourceGroupName $resourceGroup -Location $location `
+      -Name myNetworkSecurityGroup -SecurityRules $nsgRuleRDP
+    $nic = New-AzNetworkInterface -Name $vmName -ResourceGroupName $resourceGroup -Location $location `
+      -SubnetId $vnet.Subnets[0].Id -PublicIpAddressId $pip.Id -NetworkSecurityGroupId $nsg.Id
+
+    # Create a virtual machine configuration using $imageVersion.Id to specify the image version.
+    $vmConfig = New-AzVMConfig -VMName $vmName -VMSize Standard_D1_v2 | `
+    Set-AzVMSourceImage -Id $galleryImage.Id | `
+    Add-AzVMNetworkInterface -Id $nic.Id
+
+    # Create a virtual machine
+    New-AzVM -ResourceGroupName $resourceGroup -Location $location -VM $vmConfig
+    
+## Share the gallery
+
+    # Get the object ID for the user
+    $user = Get-AzADUser -StartsWith alinne_montes@contoso.com
+    # Grant access to the user for our gallery
+    New-AzRoleAssignment `
+       -ObjectId $user.Id `
+       -RoleDefinitionName Reader `
+       -ResourceName $gallery.Name `
+       -ResourceType Microsoft.Compute/galleries `
+       -ResourceGroupName $resourceGroup.ResourceGroupName
+       
+       
+## Generalize a VM
+
+    {
+      "builders": [{
+        "type": "azure-arm",
+
+        "client_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx",
+        "client_secret": "ppppppp-pppp-pppp-pppp-ppppppppppp",
+        "tenant_id": "zzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
+        "subscription_id": "yyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyy",
+
+        "managed_image_resource_group_name": "myPackerGroup",
+        "managed_image_name": "myPackerImage",
+
+        "os_type": "Windows",
+        "image_publisher": "MicrosoftWindowsServer",
+        "image_offer": "WindowsServer",
+        "image_sku": "2016-Datacenter",
+
+        "communicator": "winrm",
+        "winrm_use_ssl": true,
+        "winrm_insecure": true,
+        "winrm_timeout": "5m",
+        "winrm_username": "packer",
+
+        "azure_tags": {
+            "dept": "Engineering",
+            "task": "Image deployment"
+        },
+
+        "build_resource_group_name": "myPackerGroup",
+        "vm_size": "Standard_D2_v2"
+      }],
+      "provisioners": [{
+        "type": "powershell",
+        "inline": [
+          "Add-WindowsFeature Web-Server",
+          "while ((Get-Service RdAgent).Status -ne 'Running') { Start-Sleep -s 5 }",
+          "while ((Get-Service WindowsAzureGuestAgent).Status -ne 'Running') { Start-Sleep -s 5 }",
+          "& $env:SystemRoot\\System32\\Sysprep\\Sysprep.exe /oobe /generalize /quiet /quit",
+          "while($true) { $imageState = Get-ItemProperty HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Setup\\State | Select ImageState; if($imageState.ImageState -ne 'IMAGE_STATE_GENERALIZE_RESEAL_TO_OOBE') { Write-Output $imageState.ImageState; Start-Sleep -s 10  } else { break } }"
+        ]
+      }]
+    }
