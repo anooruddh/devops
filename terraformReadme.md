@@ -360,6 +360,8 @@ for expressions: loop over lists and maps.
 		
 # Condition
 
+<CONDITION> ? <TRUE_VAL> <FALSE_VAL>
+	
 		var.a != "" ? var.a : "default-a"
 
 If var.a is an empty string then the result is "default-a", but otherwise it is the actual value of var.a.
