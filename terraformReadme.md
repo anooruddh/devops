@@ -326,3 +326,40 @@ terraform state pull
 terraform state push
 State Locking
 
+# Terraform Loops
+
+Loops
+Terraform offers several different looping constructs, each intended to be used in a slightly different scenario:
+
+count parameter: loop over resources.
+for_each expressions: loop over resources and inline blocks within a resource.
+for expressions: loop over lists and maps.
+
+		resource "aws_iam_user" "example" {
+		count = 3
+		name  = "neo.${count.index}"
+		}
+		
+		resource "aws_iam_user" "example" {
+		  for_each = toset(var.user_names)
+		  name     = each.value
+		}		
+		
+		variable "hero_thousand_faces" {
+		  description = "map"
+		  type        = map(string)
+		  default     = {
+		    neo      = "hero"
+		    trinity  = "love interest"
+		    morpheus = "mentor"
+		  }
+		}
+		output "bios" {
+		  value = [for name, role in var.hero_thousand_faces : "${name} is the ${role}"]
+		}	
+		
+# Condition
+
+		var.a != "" ? var.a : "default-a"
+
+If var.a is an empty string then the result is "default-a", but otherwise it is the actual value of var.a.
