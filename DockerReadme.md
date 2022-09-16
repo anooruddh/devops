@@ -1300,3 +1300,4 @@ Create a file ./var.env, refer this in your docker/compose file
 
 ## Build Command	
 		$ docker build --target golang_builder -t alexellis2/href-counter:latest .
+
