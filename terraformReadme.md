@@ -365,3 +365,17 @@ for expressions: loop over lists and maps.
 		var.a != "" ? var.a : "default-a"
 
 If var.a is an empty string then the result is "default-a", but otherwise it is the actual value of var.a.
+
+	
+	
+# Environment Variable
+	
+	prefix environment variable with TF_VAR_
+	eg . TF_VAR_av_zone
+	
+	variable "av_zone"
+	
+	resource "aws_resourcegroups_group" "test" {
+  		name = "test-group"	
+	        region = var.av_zone
+	}
