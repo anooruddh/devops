@@ -6314,3 +6314,35 @@ If you conclude the canary deployment is performing as expected, you can route a
 		- containerPort: 80	    
 	    
 ## Note - The matchLabel works exactly same as the equality based selector, and the matchExpression is used to specify the set based selectors.	    
+
+# Using Kubernetes Port, TargetPort, and NodePort
+	    
+Port configurations for Kubernetes Services
+	    
+In Kubernetes there are several different port configurations for Kubernetes services:
+
+Port exposes the Kubernetes service on the specified port within the cluster. Other pods within the cluster can communicate with this server on the specified port.
+TargetPort is the port on which the service will send requests to, that your pod will be listening on. Your application in the container will need to be listening on this port also.
+NodePort exposes a service externally to the cluster by means of the target nodes IP address and the NodePort. NodePort is the default setting if the port field is not specified.
+Let’s look at how to use these ports in your Kubernetes manifest.
+	    
+## Using Port, TargetPort, and NodePort	    
+
+		apiVersion: v1
+		kind: Service
+		metadata:
+		name: hello-world
+		spec:
+		type: NodePort
+		selector:
+		app: hello-world
+		ports:
+		- protocol: TCP
+		port: 8080
+		targetPort: 80
+		nodePort: 30036	    
+	    
+From the above examples the hello-world service will be exposed internally to cluster applications on port 8080 and externally to the cluster on the node IP address on 30036. It will also forward requests to pods with the label “app: hello-world” on port 80.
+	    
+	    $ kubectl run -i --tty ubuntu --image=ubuntu --restart=Never -- sh 
+	    $ curl hello-world:8080
