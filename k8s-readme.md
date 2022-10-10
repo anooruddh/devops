@@ -6346,3 +6346,12 @@ From the above examples the hello-world service will be exposed internally to cl
 	    
 	    $ kubectl run -i --tty ubuntu --image=ubuntu --restart=Never -- sh 
 	    $ curl hello-world:8080
+
+# target-port , port and node-port
+	    
+**nodePort**: The port on the node where external traffic will come in on
+	    
+**port**: The port of this service
+	    
+**targetPort**: The target port on the pod(s) to forward traffic to.This is the actual port on which your application is running inside the container.	    	    
+	    
