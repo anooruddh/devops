@@ -6354,16 +6354,17 @@ From the above examples the hello-world service will be exposed internally to cl
 **port**: The port of this service
 	    
 **targetPort**: The target port on the pod(s) to forward traffic to.This is the actual port on which your application is running inside the container.	    	    
-	apiVersion: v1
-	kind: Service
-	metadata:
-	name: hello-world
-	spec:
-	type: NodePort
-	selector:
-	app: hello-world
-	ports:
-	- protocol: TCP
-	port: 8080
-	targetPort: 80
-	nodePort: 30036	    
+	    
+		apiVersion: v1
+		kind: Service
+		metadata:
+		name: hello-world
+		spec:
+		type: NodePort
+		selector:
+		app: hello-world
+		ports:
+		- protocol: TCP
+		port: 8080
+		targetPort: 80
+		nodePort: 30036	    
