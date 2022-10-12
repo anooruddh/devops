@@ -1,3 +1,8 @@
+# Sample Video
+https://www.youtube.com/watch?v=yZa03MYHsag
+
+https://github.com/listentolearn/aws-ami-builder-packer
+
 # HashiCorp Packer
 
 Packer is an open source tool for creating identical machine images for multiple platforms from a single source configuration. It helps you automate for machine image building — whether you want your image on AWS, GCP, Docker, a private cloud or QEMU. For example, if you have to build a base server image from an Ubuntu server ISO, it should have your security and telemetry settings. You could use Packer to start an instance, apply your security and telemetry provisioning steps, and then save it. That is going to work for many environments.
