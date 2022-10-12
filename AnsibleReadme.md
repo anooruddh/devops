@@ -2161,6 +2161,7 @@ Luckily Ansible supports the concept of dynamic inventory in which we have some 
 ##Run playbooks with group name patterns
 	
 ##win_ping.yml	
+	
 		---
 		- hosts: windows
 		  gather_facts: false
