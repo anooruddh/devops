@@ -2131,3 +2131,60 @@ Note: Templating happens on the Ansible controller, not on the task’s target h
 	to_nice_json(a, indent=4, sort_keys=True, *args, **kw): convert to human redable json
 	to_yaml(a, *args, **kw): convert to yaml
 	to_nice_yaml(a, indent=4, *args, **kw): convert to human redable yaml	
+
+#Using Ansible Dynamic Inventory with Azure
+	
+Ansible uses a term called inventory to refer to the set of systems or machines that our Ansible playbook or command work against. There are two ways to manage inventory:-
+
+##Static Inventory
+	
+##Dynamic Inventory	
+	
+By default, the static inventory is defined in /etc/ansible/hosts in which we provide information about the target system. In most of the cloud platform when the server gets reboot then it reassigns a new public address and again we have to update that in our static inventory, so this can’t be the lasting option.
+	
+Luckily Ansible supports the concept of dynamic inventory in which we have some python scripts and a .ini file through which we can provision machines dynamically without knowing its public or private address
+	
+#Ansible Dynamic Inventory on Azure
+	
+##myazure_rm.yml	
+	
+		plugin: azure_rm
+		include_vm_resource_groups:
+		  - ansible-inventory-test-rg
+		auth_source: auto
+		conditional_groups:
+		  linux: "'CentOS' in image.offer"
+		  windows: "'WindowsServer' in image.offer"
+		keyed_groups:
+		 - key: tags.applicationRole	
+
+##Run playbooks with group name patterns
+	
+##win_ping.yml	
+		---
+		- hosts: windows
+		  gather_facts: false
+
+		  vars_prompt:
+		    - name: username
+		      prompt: "Enter local username"
+		      private: false
+		    - name: password
+		      prompt: "Enter password"
+
+		  vars:
+		    ansible_user: "{{ username }}"
+		    ansible_password: "{{ password }}"
+		    ansible_connection: winrm
+		    ansible_winrm_transport: ntlm
+		    ansible_winrm_server_cert_validation: ignore
+
+		  tasks:
+		    - name: run win_ping
+		      win_ping:	
+
+#Run
+	
+		Run the win_ping.yml playbook
+	
+		ansible-playbook win_ping.yml -i myazure_rm.yml
