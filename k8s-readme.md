@@ -4318,8 +4318,8 @@ When you interact directly with Kubernetes, using kubectl for example, you’re 
 			  apiGroup: ""	    
 	    
 
-# Note: If you need to check if you ha
-	    ve permission to run a command before actually running it, you can use the kubectl auth can-i command:
+# Note: If you need to check if you have permission to run a command before actually running it, you can use the kubectl auth can-i command:
+	    
 
 			$ kubectl auth can-i get pods
 			no	    
