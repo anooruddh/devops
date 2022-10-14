@@ -3938,7 +3938,7 @@ The resources, such as Job, Deployment, ReplicaSet, and DaemonSet, support match
 
 ## Kubernetes supports two type of selectors −
 
-Equality-based selectors - They allow filtering by key and value. Operators used as part of this are: =, ==, !=
+**Equality-based selectors** - They allow filtering by key and value. Operators used as part of this are: =, ==, !=
 	
 		root@kube-master:~# kubectl get pods --show-labels		
 		kubectl get pods -l 'environment = prod'  --show-labels
@@ -3946,7 +3946,7 @@ Equality-based selectors - They allow filtering by key and value. Operators used
 	
 	
 
-Set-based selectors - Set-based selectors allow filtering of keys according to a set of values. Operators used as part of this are: in, notin, exists.
+**Set-based selectors** - Set-based selectors allow filtering of keys according to a set of values. Operators used as part of this are: in, notin, exists.
 	
 		kubectl get pods -l 'environment in (prod,staging)' --show-labels
 		kubectl get pods -l 'environment,environment notin (staging)' --show-labels
