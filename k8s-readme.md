@@ -6369,7 +6369,7 @@ From the above examples the hello-world service will be exposed internally to cl
 		targetPort: 80
 		nodePort: 30036	    
 
-#Troubleshooting Pods in Kubernetes
+# Troubleshooting Pods in Kubernetes
 	    
 You should start troubleshooting the Deployments from the bottom.
 
@@ -6389,15 +6389,15 @@ Most of the time the issue exits in Pods itself. You should make sure that Pods 
 
 		    kubectl exec -ti <pod name> — bash : is useful to run an interactive command within one of the containers of the Pod.
 	    
-#Common Pods errors:
+# Common Pods errors:
 	    
 There are two types of errors,
 
-##Startup errors
+## Startup errors
 	    
-##Runtime errors	    
+## Runtime errors	    
 	    
-#Startup errors include the following,	    
+# Startup errors include the following,	    
 
 		ImagePullBackoff
 	    
@@ -6411,7 +6411,7 @@ There are two types of errors,
 	    
 		InvalidImageName	    
 	    
-#Runtime errors include the following,
+# Runtime errors include the following,
 
 		CrashLoopBackOff
 	    
@@ -6433,9 +6433,9 @@ There are two types of errors,
 	    
 		TeardownNetworkError	    
 	    
-#Most common error and how to fix them:	    
+# Most common error and how to fix them:	    
 	    
-##ImagePullBackOff:
+## ImagePullBackOff:
 	    
 This error means K8s is unable to pull the image for one of the containers in the Pod.
 
@@ -6451,7 +6451,7 @@ The first two cases can be solved by correcting the image name and tag.
 
 For the last, you should add the credentials to your private registry in a Secret and reference it in your Pods.
 	    
-##CrossLoopBackOff:
+## CrossLoopBackOff:
 	    
 If the container can’t start, then K8s shows the CrashLoopBackOff message as a status.
 
@@ -6471,7 +6471,7 @@ If you can’t see the logs because your container is restarting too quickly, yo
 	    
 Which prints the error messages from the previous container.
 	    
-##RunContainerError:
+## RunContainerError:
 	    
 The error appears when the container is unable to start.
 
@@ -6484,7 +6484,7 @@ The issue is usually due to misconfiguration such as:
 	    
 You should use kubectl describe pod <pod-name> to inspect and analyse the errors.	    
 	    
-##Pods in a Pending state:	    
+## Pods in a Pending state:	    
 	    
 When you create a Pod, the Pod stays in the Pending state.
 
@@ -6506,7 +6506,7 @@ For errors that are created as a result of ResourceQuotas, you can inspect the l
 	    
 	    	$ kubectl get events --sort-by=.metadata.creationTimestamp
 	    
-##Pods in a not Ready state:
+## Pods in a not Ready state:
 	    
 If a Pod is Running but not Ready it means that the Readiness probe is failing.
 
