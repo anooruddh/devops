@@ -6381,13 +6381,13 @@ Finally, You should check the connection between Ingress and the Service.
 
 Most of the time the issue exits in Pods itself. You should make sure that Pods are Running and Ready.
 	    
-	    kubectl logs <pod name> : is useful to check the logs of the containers of the pod
-	    
-	    kubectl describe pod <pod name> : is useful to retrieve the list of events associated with the Pod
-	    
-	    kubectl get pod <pod name> -o yaml : is useful to extract the YAML definition of the Pod as stored in Kubernetes.
-	    
-	    kubectl exec -ti <pod name> — bash : is useful to run an interactive command within one of the containers of the Pod.
+		    kubectl logs <pod name> : is useful to check the logs of the containers of the pod
+
+		    kubectl describe pod <pod name> : is useful to retrieve the list of events associated with the Pod
+
+		    kubectl get pod <pod name> -o yaml : is useful to extract the YAML definition of the Pod as stored in Kubernetes.
+
+		    kubectl exec -ti <pod name> — bash : is useful to run an interactive command within one of the containers of the Pod.
 	    
 #Common Pods errors:
 	    
@@ -6441,11 +6441,11 @@ This error means K8s is unable to pull the image for one of the containers in th
 
 Common cause of the error could be one of the following,
 
-1.The Image name is invalid
-	    
-2.You specified non existing tag for the Image
-	    
-3.The image that you are trying to pull belongs to a private registry and k8s does not have credentials to access it.
+		1.The Image name is invalid
+
+		2.You specified non existing tag for the Image
+
+		3.The image that you are trying to pull belongs to a private registry and k8s does not have credentials to access it.
 	    
 The first two cases can be solved by correcting the image name and tag.
 
@@ -6457,11 +6457,11 @@ If the container can’t start, then K8s shows the CrashLoopBackOff message as a
 
 Usually, a container can’t start when:
 
-1.There’s an error in the application that prevents it from starting.
-	    
-2.You misconfigured the container.
-	    
-3.The Liveness probe failed too many times.
+		1.There’s an error in the application that prevents it from starting.
+
+		2.You misconfigured the container.
+
+		3.The Liveness probe failed too many times.
 	    
 You should try and retrieve the logs from that container to investigate why it failed.
 
@@ -6479,8 +6479,8 @@ That’s even before the application inside the container starts.
 
 The issue is usually due to misconfiguration such as:
 
-1.Mounting a not-existent volume such as ConfigMap or Secrets.
-2.Mounting a read-only volume as read-write.
+		1.Mounting a not-existent volume such as ConfigMap or Secrets.
+		2.Mounting a read-only volume as read-write.
 	    
 You should use kubectl describe pod <pod-name> to inspect and analyse the errors.	    
 	    
@@ -6492,11 +6492,11 @@ Why?
 
 Assuming that your scheduler component is running fine, here are the causes:
 
-1.The cluster doesn’t have enough resources such as CPU and memory to run the Pod.
-	    
-2.The current Namespace has a ResourceQuota object and creating the Pod will make the Namespace go over the quota.
-	    
-3.The Pod is bound to a Pending PersistentVolumeClaim.
+		1.The cluster doesn’t have enough resources such as CPU and memory to run the Pod.
+
+		2.The current Namespace has a ResourceQuota object and creating the Pod will make the Namespace go over the quota.
+
+		3.The Pod is bound to a Pending PersistentVolumeClaim.
 	    
 Your best option is to inspect the Events section in the kubectl describe command:
 	    
