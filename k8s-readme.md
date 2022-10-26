@@ -6368,3 +6368,148 @@ From the above examples the hello-world service will be exposed internally to cl
 		port: 8080
 		targetPort: 80
 		nodePort: 30036	    
+
+#Troubleshooting Pods in Kubernetes
+	    
+You should start troubleshooting the Deployments from the bottom.
+
+First, check the pod is Running and Ready.
+
+If the Pods is Ready, You should investigate if the Service can distribute the traffic to the Pods.
+
+Finally, You should check the connection between Ingress and the Service.
+
+Most of the time the issue exits in Pods itself. You should make sure that Pods are Running and Ready.
+	    
+	    kubectl logs <pod name> : is useful to check the logs of the containers of the pod
+	    
+	    kubectl describe pod <pod name> : is useful to retrieve the list of events associated with the Pod
+	    
+	    kubectl get pod <pod name> -o yaml : is useful to extract the YAML definition of the Pod as stored in Kubernetes.
+	    
+	    kubectl exec -ti <pod name> — bash : is useful to run an interactive command within one of the containers of the Pod.
+	    
+#Common Pods errors:
+	    
+There are two types of errors,
+
+##Startup errors
+	    
+##Runtime errors	    
+	    
+#Startup errors include the following,	    
+
+		ImagePullBackoff
+	    
+		ImageInspectError
+	    
+		ErrImagePull
+	    
+		ErrImageNeverPull
+	    
+		RegistryUnavailable
+	    
+		InvalidImageName	    
+	    
+#Runtime errors include the following,
+
+		CrashLoopBackOff
+	    
+		RunContainerError
+	    
+		KillContainerError
+	    
+		VerifyNonRootError
+	    
+		RunInitContainerError
+	    
+		CreatePodSandboxError
+	    
+		ConfigPodSandboxError
+	    
+		KillPodSandboxError
+	    
+		SetupNetworkError
+	    
+		TeardownNetworkError	    
+	    
+#Most common error and how to fix them:	    
+	    
+##ImagePullBackOff:
+	    
+This error means K8s is unable to pull the image for one of the containers in the Pod.
+
+Common cause of the error could be one of the following,
+
+1.The Image name is invalid
+	    
+2.You specified non existing tag for the Image
+	    
+3.The image that you are trying to pull belongs to a private registry and k8s does not have credentials to access it.
+	    
+The first two cases can be solved by correcting the image name and tag.
+
+For the last, you should add the credentials to your private registry in a Secret and reference it in your Pods.
+	    
+##CrossLoopBackOff:
+	    
+If the container can’t start, then K8s shows the CrashLoopBackOff message as a status.
+
+Usually, a container can’t start when:
+
+1.There’s an error in the application that prevents it from starting.
+	    
+2.You misconfigured the container.
+	    
+3.The Liveness probe failed too many times.
+	    
+You should try and retrieve the logs from that container to investigate why it failed.
+
+If you can’t see the logs because your container is restarting too quickly, you can use the following command:	    
+	    
+	    	$ kubectl logs <pod-name> --previous
+	    
+Which prints the error messages from the previous container.
+	    
+##RunContainerError:
+	    
+The error appears when the container is unable to start.
+
+That’s even before the application inside the container starts.
+
+The issue is usually due to misconfiguration such as:
+
+1.Mounting a not-existent volume such as ConfigMap or Secrets.
+2.Mounting a read-only volume as read-write.
+	    
+You should use kubectl describe pod <pod-name> to inspect and analyse the errors.	    
+	    
+##Pods in a Pending state:	    
+	    
+When you create a Pod, the Pod stays in the Pending state.
+
+Why?
+
+Assuming that your scheduler component is running fine, here are the causes:
+
+1.The cluster doesn’t have enough resources such as CPU and memory to run the Pod.
+	    
+2.The current Namespace has a ResourceQuota object and creating the Pod will make the Namespace go over the quota.
+	    
+3.The Pod is bound to a Pending PersistentVolumeClaim.
+	    
+Your best option is to inspect the Events section in the kubectl describe command:
+	    
+	    	$ kubectl describe pod <pod name>
+	    
+For errors that are created as a result of ResourceQuotas, you can inspect the logs of the cluster with:
+	    
+	    	$ kubectl get events --sort-by=.metadata.creationTimestamp
+	    
+##Pods in a not Ready state:
+	    
+If a Pod is Running but not Ready it means that the Readiness probe is failing.
+
+When the Readiness probe is failing, the Pod isn’t attached to the Service, and no traffic is forwarded to that instance.
+
+A failing Readiness probe is an application-specific error, so you should inspect the Events section in kubectl describe to identify the error.	    
