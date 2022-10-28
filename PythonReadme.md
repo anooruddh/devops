@@ -754,3 +754,7 @@ Here, we are passing *args and **kwargs as an argument in the myFun function. wh
 
                         args: ('geeks', 'for', 'geeks')
                         kwargs {'first': 'Geeks', 'mid': 'for', 'last': 'Geeks'}                        
+
+# __init__ in Python
+
+The __init__ function is called every time an object is created from a class. The __init__ method lets the class initialize the object's attributes and serves no other purpose. It is only used within classes
