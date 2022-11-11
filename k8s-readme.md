@@ -6519,7 +6519,11 @@ A failing Readiness probe is an application-specific error, so you should inspec
 # Azure Managed Kubernetes (AKS) pulling private container images from Azure Container Registry (ACR)
 	    
 Going through a more realistic example of private container images being deployed into an AKS cluster.
-— — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — Updated on Jan/2018: Another way of achieving the same results is to ensure the service principal used by your AKS server is on the Reader role of your ACR, in which case you won’t need to create a cluster secret. More information on this can be found here.
+	    
+— — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — 
+	    
+	    Updated on Jan/2018: Another way of achieving the same results is to ensure the service principal used by your AKS server is on the Reader role of your ACR, in which case you won’t need to create a cluster secret. More information on this can be found here.
+	    
 — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
 Microsoft has just recently released a preview of AKS, its Managed Kubernetes offering which is a response to GKE (Google Kubernetes Engine). It is still early days but it does sound great to have that on Azure — that is, when you don’t bump into one of the known issues.
@@ -6627,7 +6631,8 @@ Create a file named azure-vote.yml with the contents below. Make sure you use th
 		    app: azure-vote-front
 		Deploy the application into your cluster:
 
-kubectl create -f azure-vote.yml
+		kubectl create -f azure-vote.yml
+	    
 During the deployment process the cluster will use the secret to connect to the private registry. To confirm all worked properly, just fire the commandkubectl get pods. The result will show all the current pods in the cluster and their respective statuses.
 
 That’s it! All done. Hopefully this also works for you and you have saved a few bangs of your head against the wall. :)	    
