@@ -6513,3 +6513,121 @@ If a Pod is Running but not Ready it means that the Readiness probe is failing.
 When the Readiness probe is failing, the Pod isn’t attached to the Service, and no traffic is forwarded to that instance.
 
 A failing Readiness probe is an application-specific error, so you should inspect the Events section in kubectl describe to identify the error.	    
+
+----------------------------------------------------------------------------------------------------------------------------
+	    
+# Azure Managed Kubernetes (AKS) pulling private container images from Azure Container Registry (ACR)
+	    
+Going through a more realistic example of private container images being deployed into an AKS cluster.
+— — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — Updated on Jan/2018: Another way of achieving the same results is to ensure the service principal used by your AKS server is on the Reader role of your ACR, in which case you won’t need to create a cluster secret. More information on this can be found here.
+— — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
+
+Microsoft has just recently released a preview of AKS, its Managed Kubernetes offering which is a response to GKE (Google Kubernetes Engine). It is still early days but it does sound great to have that on Azure — that is, when you don’t bump into one of the known issues.
+
+The only problem is that all examples I found so far only use public container images from Docker Hub, which is most probably not what you would use for your own projects in production. So here I will go through a more “real life” scenario, based on the Microsoft walkthrough example, but provisioning the cluster, the registry and deploying a container based on a private container image.
+
+In order to proceed you will need to have Azure CLI 2 installed, so if you haven’t done that yet, here is how you can do it. Also make sure you have logged in on azure with the CLI command az login.
+
+Let’s start by provisioning the container registry:
+
+	az acr create --name REGISTRY_NAME --resource-group RESOURCE_GROUP --sku Basic
+	    
+Open the Azure Portal in your browser and look for all your Container Repositories. Select the one you have just created, then go to its Settings and Access Keys. Enable Amin user and copy the password.
+
+
+Download Microsoft’s sample container image and tag it with the ACR address we have just created:
+
+		docker pull microsoft/azure-vote-front:redis-v1
+		docker tag microsoft/azure-vote-front:redis-v1 REGISTRY_NAME.azurecr.io/microsoft/azure-vote-front:redis-v1
+	    
+When you do this for your own images, just make sure you prefix them with your full registry address. Once that is done, push it onto your private registry:
+
+		docker login REGISTRY_NAME.azurecr.io --username USERNAME --password PASSWORD
+		docker push REGISTRY_NAME.azurecr.io/microsoft/azure-vote-front:redis-v1
+	    
+If you don’t have a cluster already, create one:
+
+		az aks create -g RESOURCE_NAME -n CLUSTER_NAME -location eastus
+	    
+Make sure that the location specified above is one of the supported ones on the preview. This bit has been quite unstable since the launch, with some regions simply not accepting new clusters after a few days. So if you start getting to many issues with your cluster, do go to the AKS GitHub account and check whether is there any known issue or existing work around for your problem.
+
+Install the AKS CLI:
+
+		az aks install-cli
+	    
+Download the configuration settings and set the current context to connect to your kube cluster:
+
+		az aks get-credentials -g RESOURCE_NAME -n CLUSTER_NAME
+	    
+You are almost all set now. You just need to create a “docker-registry” secret in the cluster, which you can then use in your yml file:
+
+		kubectl create secret docker-registry SECRET_NAME --docker-server=REGISTRY_NAME.azurecr.io --docker-username=USERNAME --docker-password=PASSWORD --docker-email=ANY_VALID_EMAIL
+	    
+Create a file named azure-vote.yml with the contents below. Make sure you use the correct image name and secret that we have previously defined.
+
+		apiVersion: apps/v1beta1
+		kind: Deployment
+		metadata:
+		  name: azure-vote-back
+		spec:
+		  replicas: 1
+		  template:
+		    metadata:
+		      labels:
+			app: azure-vote-back
+		    spec:
+		      containers:
+		      - name: azure-vote-back
+			image: redis
+			ports:
+			- containerPort: 6379
+			  name: redis
+		---
+		apiVersion: v1
+		kind: Service
+		metadata:
+		  name: azure-vote-back
+		spec:
+		  ports:
+		  - port: 6379
+		  selector:
+		    app: azure-vote-back
+		---
+		apiVersion: apps/v1beta1
+		kind: Deployment
+		metadata:
+		  name: azure-vote-front
+		spec:
+		  replicas: 1
+		  template:
+		    metadata:
+		      labels:
+			app: azure-vote-front
+		    spec:
+		      containers:
+		      - name: azure-vote-front
+			image: REGISTRY_NAME.azurecr.io/microsoft/azure-vote-front:redis-v1
+			ports:
+			- containerPort: 80
+			env:
+			- name: REDIS
+			  value: "azure-vote-back"
+			imagePullSecrets:
+			- name: SECRET_NAME
+		---
+		apiVersion: v1
+		kind: Service
+		metadata:
+		  name: azure-vote-front
+		spec:
+		  type: LoadBalancer
+		  ports:
+		  - port: 80
+		  selector:
+		    app: azure-vote-front
+		Deploy the application into your cluster:
+
+kubectl create -f azure-vote.yml
+During the deployment process the cluster will use the secret to connect to the private registry. To confirm all worked properly, just fire the commandkubectl get pods. The result will show all the current pods in the cluster and their respective statuses.
+
+That’s it! All done. Hopefully this also works for you and you have saved a few bangs of your head against the wall. :)	    
