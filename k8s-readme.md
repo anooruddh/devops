@@ -5452,6 +5452,9 @@ Switch again the context to newly created user, to see if he can view the pods n
 			pod/nginx   1/1     Running   0          66s	    
 	    
 
+# Role and ClusterRole
+  ## A Role always sets permissions within a particular namespace; when you create a Role, you have to specify the namespace it belongs in. ClusterRole, by contrast, is a non-namespaced resource
+	    
 #  Deployments vs StatefulSets vs DaemonSets
 	    
 In Kubernetes we find different resources for deploying applications such as
