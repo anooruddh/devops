@@ -134,3 +134,9 @@ Here are some commonly used built-in variables:
 - System.JobName - The name of the current job.
 
 - System.PullRequest.PullRequestId - The ID of the pull request (if triggered by PR).
+
+How to Use
+Reference built-in variables with $(VariableName):
+
+		- script: echo $(Build.BuildNumber)
+		- script: echo $(Agent.OS)
