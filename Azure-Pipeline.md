@@ -95,3 +95,42 @@ Summary Table:
 - script	Custom shell/batch command
 - dependsOn	Set dependencies between jobs/stages
 - condition	Control execution based on conditions
+
+
+# Pipeline and Build Variables
+
+Azure Pipelines provides many built-in variables that are automatically set by the system. These variables give you information about the pipeline run, agent, repository, and more.
+
+Here are some commonly used built-in variables:
+
+## Pipeline and Build Variables
+
+- Build.BuildId - The unique ID of the build.
+
+- Build.BuildNumber - The build number displayed in the UI.
+
+- Build.DefinitionName - The name of the pipeline.
+
+- Build.Repository.Name - The name of the repository.
+
+- Build.SourceBranch - The branch the build was triggered for.
+
+- Build.SourceVersion - The commit hash for the build.
+
+  ## Agent Variables
+
+- Agent.Name - The name of the agent running the job.
+
+- Agent.OS - The operating system of the agent.
+
+- Agent.JobStatus - The status of the job (e.g., Succeeded, Failed).
+
+  ## System Variables
+
+- System.Debug - Indicates if debugging is enabled.
+
+- System.StageName - The name of the current stage.
+
+- System.JobName - The name of the current job.
+
+- System.PullRequest.PullRequestId - The ID of the pull request (if triggered by PR).
