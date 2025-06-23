@@ -266,7 +266,7 @@ Service Discovery and load balancing: Kubernetes has a feature which assigns the
 - [x] Deployments and Automatic Rollbacks: During the configuration changes for the application hosted on the Kubernetes, progressively monitors the health to ensure that it does not terminate all the instances at once, it makes an automatic rollback only in the case of failure.
 - [x] Configuration Management and Secrets: All classifies information like keys and passwords are stored under module called Secrets in Kubernetes. These Secrets are used especially while configuring the application without having to reconstruct the image.
 
-## Namespaces - Virtual cluster within Kubernetes cluster ( you can a new namespace as per your requirement ) 
+## Namespaces - Virtual cluster within Kubernetes cluster ( you can create a new namespace as per your requirement ) 
 
 ### Create - kubectl create namespace test 
 
